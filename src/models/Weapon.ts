@@ -1,4 +1,5 @@
 export type ElementType =
+  | { key: 'none'; label: '無属性' }
   | { key: 'fire'; label: '火' }
   | { key: 'water'; label: '水' }
   | { key: 'ice'; label: '氷' }
@@ -6,6 +7,7 @@ export type ElementType =
   | { key: 'dragon'; label: '龍' };
 
 export const ELEMENT_TYPES: ElementType[] = [
+  { key: 'none', label: '無属性' },
   { key: 'fire', label: '火' },
   { key: 'water', label: '水' },
   { key: 'ice', label: '氷' },

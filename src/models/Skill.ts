@@ -1,36 +1,47 @@
-export type SkillCategory = 'weapon' | 'armor' | 'group' | 'series';
-export type MonsterPartState = 'normal' | 'wounded' | 'exposed';
+import type { MonsterPartState } from '../services/DamageCalculator';
 
-export interface SkillBonusCondition {
+export type SkillCategory = 'weapon' | 'armor' | 'group' | 'series';
+
+export interface SkillParameters {
+  baseWeaponMultiplier?: number; // 基礎武器倍率
+  additionAttackBonus?: number; // 加算攻撃力
+  attackMultiplierBonus?: number; // 攻撃乗算倍率
+  motionValue?: number; // モーション値
+  sharpnessModifier?: number; // 切れ味補正
+  criticalDamageModifier?: number; // 会心ダメージ補正
+  criticalRate?: number; // 会心率
+  criticalRateBonus?: number; // 加算会心率
+  physicalHitZone?: number; // 物理肉質
+  baseElementValue?: number; // 元の属性値
+  elementMultiplier?: number; // 属性乗算補正
+  elementAddition?: number; // 属性加算補正
+  elementModifier?: number; // 属性補正
+  elementalHitZone?: number; // 属性肉質
   minHitZone: number; // 適用される肉質の下限
   maxHitZone: number; // 適用される肉質の上限
   applicableStates: MonsterPartState[]; // 適用される部位の状態
 }
 
-export interface SkillBonus {
-  weaponMultiplierBonus?: number; // 武器倍率への乗算補正
-  weaponAdditionBonus?: number; // 武器倍率への加算補正
-  elementMultiplierBonus?: number; // 属性値への乗算補正
-  elementAdditionBonus?: number; // 属性値への加算補正
-  criticalRateBonus?: number; // 会心率への加算補正
-  condition: SkillBonusCondition; // ボーナスの条件
-}
-
 export interface Skill {
   category: SkillCategory; // スキルのカテゴリー
   name: string; // スキル名称
-  bonuses: SkillBonus[]; // スキルによるボーナス
+  levels: SkillLevel[]; // スキルレベルの配列
+}
+
+export interface SkillLevel {
+  level: number; // スキルレベル
+  skillBonuses: SkillParameters[]; // スキルボーナスの配列
 }
 
 export class SkillData {
   category: SkillCategory;
   name: string;
-  bonuses: SkillBonus[];
+  levels: SkillLevel[];
 
-  constructor(category: SkillCategory, name: string, bonuses: SkillBonus[]) {
+  constructor(category: SkillCategory, name: string, levels: SkillLevel[]) {
     this.category = category;
     this.name = name;
-    this.bonuses = bonuses;
+    this.levels = levels;
   }
 
   // 必要に応じてスキルの情報を取得するメソッドを追加できます

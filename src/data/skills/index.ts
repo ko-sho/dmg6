@@ -12,9 +12,11 @@ import { mindEye } from './MindEye';
 import { peakPerformance } from './PeakPerformance';
 import { weaknessExploit } from './WeaknessExploit';
 import { zenState } from './ZenState';
+import { nushiSoul } from './NushiSoul';
+import { kokusyokuIttai } from './KokusyokuIttai';
 
 export const skillsByCategory = {
   attack: [attackBoost, criticalBoost, mindEye],
-  defense: [adrenalineRush, challenger, counterstrike, maximumMight, peakPerformance, latentPower, masterfulStrike, weaknessExploit, chainCrit, elementalAbsorption],
-  special: [zenState],
+  defense: [adrenalineRush, challenger, counterstrike, maximumMight, peakPerformance, latentPower, masterfulStrike, weaknessExploit, chainCrit, elementalAbsorption, zenState],
+  special: [nushiSoul, kokusyokuIttai],
 };

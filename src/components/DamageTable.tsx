@@ -10,6 +10,16 @@ export interface DamageTableRow {
   physical: number;
   elemental: number;
   critRate?: number; // 期待会心率（0-1）
+  baseWeaponMultiplier?: number;
+  attackMultiplierBonus?: number;
+  additionAttackBonus?: number;
+  motionValue?: number;
+  sharpnessModifier?: number;
+  criticalDamageModifier?: number;
+  baseElementValue?: number;
+  elementMultiplier?: number;
+  elementAddition?: number;
+  elementModifier?: number;
 }
 
 interface DamageTableProps {
@@ -93,6 +103,8 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
           </TableBody>
         </Table>
       </TableContainer>
+      {/* 計算に使われたパラメータ値のテーブルを追加（縦長形式） */}
+      {/* パラメータ合計テーブルはSelectedParamsSummaryに移行のため削除 */}
     </Box>
   );
 };

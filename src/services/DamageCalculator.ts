@@ -28,7 +28,7 @@ export class DamageCalculator {
       attackMultiplierBonus,
       motionValue,
       sharpnessModifier,
-      criticalDamageModifier = 1.25, // デフォルト値を1.25に
+      criticalDamageModifier = 1.0, // デフォルト値を1.0に修正
       physicalHitZone,
     } = params;
 

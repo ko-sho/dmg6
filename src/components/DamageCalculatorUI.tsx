@@ -12,6 +12,9 @@ import type { WeaponParameters } from '../models/Weapon';
 import type { SkillParameters } from '../models/Skill';
 import DamageTable from './DamageTable';
 import { calculateDamageTable } from '../services/DamageTableService';
+import SelectedParamsSummary from './SelectedParamsSummary';
+import SharpnessSelector from './SharpnessSelector';
+import type { SharpnessColor } from '../models/Sharpness';
 // MUI imports
 import { Card, CardHeader, CardContent, Stack, Box, Button, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -39,6 +42,7 @@ const DamageCalculatorUI = () => {
   const [selectedMonster, setSelectedMonster] = useState<Monster | null>(null);
   const [damageResult, setDamageResult] = useState<string | null>(null);
   const [damageTableRows, setDamageTableRows] = useState<DamageTableRow[]>([]);
+  const [sharpness, setSharpness] = useState<SharpnessColor>('white');
 
   const handleCalculateDamage = () => {
     type ResultType = {
@@ -60,7 +64,8 @@ const DamageCalculatorUI = () => {
       weaponInfo,
       selectedSkills,
       selectedMotions,
-      selectedMonster
+      selectedMonster,
+      sharpness // 追加: 切れ味
     );
 
     // 結果JSON
@@ -82,7 +87,8 @@ const DamageCalculatorUI = () => {
           <CardHeader title="Weapon" />
           <CardContent>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <WeaponInput weapon={weaponInfo} setWeapon={setWeaponInfo} />
+              <SharpnessSelector value={sharpness} onChange={setSharpness} />
+              <WeaponInput weapon={weaponInfo} setWeapon={setWeaponInfo} sharpnessColor={sharpness} setSharpnessColor={setSharpness} />
             </Box>
           </CardContent>
         </Card>
@@ -154,7 +160,15 @@ const DamageCalculatorUI = () => {
             <CardContent>
               {/* DamageTableでダメージ表を表示。未実装部分はモック値。*/}
               {selectedMonster && damageTableRows.length > 0 ? (
-                <DamageTable rows={damageTableRows} />
+                <>
+                  <SelectedParamsSummary
+                    weapon={weaponInfo}
+                    selectedSkills={selectedSkills}
+                    selectedMotions={selectedMotions}
+                    sharpnessColor={sharpness}
+                  />
+                  <DamageTable rows={damageTableRows} />
+                </>
               ) : (
                 <Box sx={{ color: 'text.secondary', my: 2 }}>
                   {/* DamageTable未実装時のモック表示 */}

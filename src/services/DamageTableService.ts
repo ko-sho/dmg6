@@ -3,6 +3,8 @@ import type { SkillParameters } from '../models/Skill';
 import type { Motion } from '../models/Motion';
 import type { Monster } from '../models/Monster';
 import { DamageCalculator, type DamageParameters } from './DamageCalculator';
+import { SHARPNESS_LEVELS } from '../models/Sharpness';
+import type { SharpnessColor } from '../models/Sharpness';
 
 export interface DamageTableRow {
   part: string;
@@ -13,16 +15,28 @@ export interface DamageTableRow {
   physical: number;
   elemental: number;
   critRate: number;
+  baseWeaponMultiplier: number;
+  attackMultiplierBonus: number;
+  additionAttackBonus: number;
+  motionValue: number;
+  sharpnessModifier: number;
+  criticalDamageModifier: number;
+  baseElementValue: number;
+  elementMultiplier: number;
+  elementAddition: number;
+  elementModifier: number;
 }
 
 export function calculateDamageTable(
   weaponInfo: WeaponParameters,
   selectedSkills: { key: string; level: number; skillData: SkillParameters[] }[],
   selectedMotions: Motion[],
-  selectedMonster: Monster | null
+  selectedMonster: Monster | null,
+  sharpnessColor: SharpnessColor = 'white'
 ): DamageTableRow[] {
   if (!selectedMonster || selectedMotions.length === 0) return [];
   const motion = selectedMotions[0];
+  const sharpnessObj = SHARPNESS_LEVELS.find(s => s.color === sharpnessColor) ?? SHARPNESS_LEVELS[5];
   const getAllSelectedSkillParams = () =>
     selectedSkills.flatMap(s => {
       const params = s.skillData;
@@ -73,7 +87,7 @@ export function calculateDamageTable(
         additionAttackBonus: totalAttackBonus,
         attackMultiplierBonus: totalAttackMultiplierBonus,
         motionValue: motion.motionValue,
-        sharpnessModifier: motion.sharpnessModifier,
+        sharpnessModifier: sharpnessObj.modifier,
         criticalDamageModifier: 1 + totalCriticalDamageModifier,
         criticalRate: baseCriticalRate,
         criticalRateBonus: 0,
@@ -104,6 +118,16 @@ export function calculateDamageTable(
         physical,
         elemental,
         critRate,
+        baseWeaponMultiplier: weaponInfo.weaponMultiplier,
+        attackMultiplierBonus: totalAttackMultiplierBonus,
+        additionAttackBonus: totalAttackBonus,
+        motionValue: motion.motionValue,
+        sharpnessModifier: sharpnessObj.modifier,
+        criticalDamageModifier: 1 + totalCriticalDamageModifier,
+        baseElementValue: weaponInfo.baseElementValue,
+        elementMultiplier: motion.elementMultiplier,
+        elementAddition: totalElementAddition,
+        elementModifier: totalElementModifier,
       });
     });
   });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ELEMENT_TYPES } from '../models/Weapon';
 import type { Weapon, ElementType } from '../models/Weapon';
+import type { SharpnessColor } from '../models/Sharpness';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -12,9 +13,11 @@ import Select from '@mui/material/Select';
 interface WeaponInputProps {
   weapon: Weapon;
   setWeapon: React.Dispatch<React.SetStateAction<Weapon>>;
+  sharpnessColor?: SharpnessColor;
+  setSharpnessColor?: (color: SharpnessColor) => void;
 }
 
-const WeaponInput: React.FC<WeaponInputProps> = ({ weapon, setWeapon }) => {
+const WeaponInput: React.FC<WeaponInputProps> = ({ weapon, setWeapon, sharpnessColor }) => {
   const handleInputChange = (field: keyof Weapon, value: string | number | ElementType) => {
     setWeapon({ ...weapon, [field]: value });
   };
@@ -22,6 +25,11 @@ const WeaponInput: React.FC<WeaponInputProps> = ({ weapon, setWeapon }) => {
   return (
     <Box component="section" sx={{ mb: 2 }}>
       <Stack direction="column" spacing={2}>
+        {sharpnessColor && (
+          <Box sx={{ mb: 1 }}>
+            <strong>選択中の切れ味: {sharpnessColor}</strong>
+          </Box>
+        )}
         <TextField
           type="number"
           label="武器倍率"

@@ -24,8 +24,10 @@ const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, s
 
   // モーション値の合計
   const totalMotionValue = selectedMotions.reduce((sum, m) => sum + (m.motionValue || 0), 0);
-  // モーションは複数選択可。ここでは最初の1つを代表値として表示
-  const motion = selectedMotions[0];
+  // モーション補正値の平均
+  const avgElementMultiplier = selectedMotions.length > 0
+    ? (selectedMotions.reduce((sum, m) => sum + (m.elementMultiplier || 0), 0) / selectedMotions.length).toFixed(2)
+    : '-';
 
   const sharpnessObj = SHARPNESS_LEVELS.find(s => s.color === sharpnessColor) ?? SHARPNESS_LEVELS[5];
 
@@ -66,7 +68,7 @@ const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, s
           </TableRow>
           <TableRow>
             <TableCell>属性乗算補正</TableCell>
-            <TableCell>{motion ? motion.elementMultiplier : '-'}</TableCell>
+            <TableCell>{selectedMotions.length > 0 ? avgElementMultiplier : '-'}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>属性加算補正</TableCell>
@@ -79,7 +81,7 @@ const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, s
         </TableBody>
       </Table>
       <Typography variant="caption" color="text.secondary">
-        ※スキル補正は合算値、モーション値は合計、その他モーションは最初の選択を代表値として表示。
+        ※スキル補正は全て合算（攻撃乗算は掛け算）、モーション値は合計、属性乗算補正は選択中モーションの平均値を表示。
       </Typography>
     </Box>
   );

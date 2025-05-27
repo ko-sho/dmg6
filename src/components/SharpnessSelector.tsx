@@ -18,8 +18,8 @@ const colorLabels: Record<SharpnessColor, string> = {
 
 const SharpnessSelector: React.FC<SharpnessSelectorProps> = ({ value, onChange }) => {
   return (
-    <Box sx={{ width: '100%' }}>
-      <Typography variant="subtitle2" sx={{ mb: 1 }}>切れ味</Typography>
+    <Box sx={{ width: '100%', marginBottom: 4 }}>
+      <Typography variant="subtitle2" sx={{ mb: 1 }} color="text.primary">切れ味</Typography>
       <ToggleButtonGroup
         value={value}
         exclusive

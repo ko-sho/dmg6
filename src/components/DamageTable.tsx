@@ -35,20 +35,20 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
   const renderedParts: Record<string, boolean> = {};
 
   return (
-    <Box sx={{ mt: 3 }}>
+    <Box sx={{ mt: 3, width: '100%', overflowX: 'auto' }}>
       <Typography variant="subtitle1" sx={{ mb: 1 }}>
         ダメージ表
       </Typography>
-      <TableContainer component={Paper}>
-        <Table size="small">
+      <TableContainer component={Paper} sx={{ width: '100%', overflowX: 'auto', boxShadow: 0 }}>
+        <Table size="small" sx={{ minWidth: { xs: 340, sm: 480 }, width: 'max-content' }}>
           <TableHead>
             <TableRow>
-              <TableCell>部位</TableCell>
-              <TableCell>状態</TableCell>
-              <TableCell>ダメージ合計</TableCell>
-              <TableCell>会心ダメージ合計</TableCell>
-              <TableCell>期待会心率</TableCell>
-              <TableCell>期待値</TableCell>
+              <TableCell sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}>部位</TableCell>
+              <TableCell sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}>状態</TableCell>
+              <TableCell sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}>通常</TableCell>
+              <TableCell sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}>会心</TableCell>
+              <TableCell sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}>会心率</TableCell>
+              <TableCell sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}>期待値</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -56,7 +56,16 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
               const showPart = !renderedParts[row.part];
               if (showPart) renderedParts[row.part] = true;
               return (
-                <TableRow key={`${row.part}-${row.state}`}>
+                <TableRow key={`${row.part}-${row.state}`}
+                  sx={{
+                    '& td': {
+                      px: { xs: 0.5, sm: 1.5 },
+                      py: { xs: 0.5, sm: 1 },
+                      fontSize: { xs: '0.85rem', sm: '1rem' },
+                      wordBreak: 'keep-all',
+                    },
+                  }}
+                >
                   {showPart ? (
                     <TableCell rowSpan={partRowSpans[row.part]}>{row.part}</TableCell>
                   ) : null}

@@ -86,7 +86,7 @@ export function calculateDamageTable(
         baseWeaponMultiplier: weaponInfo.weaponMultiplier,
         additionAttackBonus: totalAttackBonus,
         attackMultiplierBonus: totalAttackMultiplierBonus,
-        motionValue: motion.motionValue,
+        motionValue: selectedMotions.reduce((sum, m) => sum + m.motionValue, 0),
         sharpnessModifier: sharpnessObj.modifier,
         criticalDamageModifier: 1 + totalCriticalDamageModifier,
         criticalRate: baseCriticalRate,

@@ -27,18 +27,27 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, selectedSkill, setSelected
         label={skill.label}
       />
       {isSelected && (
-        <Select
-          size="small"
-          value={level}
-          onChange={e => setSelectedSkill(skill.key, true, Number(e.target.value))}
-          sx={{ minWidth: 80, ml: 2, marginLeft: 'auto' }}
-        >
-          {Array.from({ length: skill.maxLevel }, (_, i) => i + 1).map(lv => (
-            <MenuItem key={lv} value={lv}>
-              Lv{lv}
-            </MenuItem>
-          ))}
-        </Select>
+        <>
+          {/* レベルに応じた説明文をcaptionで表示 */}
+          {(() => {
+            const desc = skill.skillLevels[level - 1]?.skillBonuses?.[0]?.description;
+            return desc ? (
+                <span style={{ fontSize: '0.68em', color: '#888', marginLeft: 'auto', width: "25%", textAlign: "right" }}>{desc}</span>
+            ) : null;
+          })()}
+          <Select
+            size="small"
+            value={level}
+            onChange={e => setSelectedSkill(skill.key, true, Number(e.target.value))}
+            sx={{ minWidth: 72, ml: 2, marginLeft: 1 }}
+          >
+            {Array.from({ length: skill.maxLevel }, (_, i) => i + 1).map(lv => (
+              <MenuItem key={lv} value={lv}>
+                Lv{lv}
+              </MenuItem>
+            ))}
+          </Select>
+        </>
       )}
     </Box>
   );

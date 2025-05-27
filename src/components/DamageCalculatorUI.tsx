@@ -3,7 +3,7 @@ import WeaponInput from './WeaponInput';
 import SkillSelector from './SkillSelector';
 import MotionSelector from './MotionSelector';
 import MonsterSelector from './MonsterSelector';
-import { skillsByCategory } from '../data/skills/index';
+import { skillsByCategory, skillCategoryLabels } from '../data/skills/index';
 import { TACHI_MOTIONS } from '../data/weapons/TachiMotions';
 import Redau from '../data/monsters/Redau';
 import type { Motion } from '../models/Motion';
@@ -16,7 +16,7 @@ import SelectedParamsSummary from './SelectedParamsSummary';
 import SharpnessSelector from './SharpnessSelector';
 import type { SharpnessColor } from '../models/Sharpness';
 // MUI imports
-import { Card, CardHeader, CardContent, Stack, Box, Button, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { Box, Button, Accordion, AccordionSummary, AccordionDetails, Stack, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 interface DamageTableRow {
@@ -83,100 +83,86 @@ const DamageCalculatorUI = () => {
     <Box sx={{ maxWidth: 700, mx: 'auto', my: 4 }}>
       <h1 style={{ textAlign: 'center', marginBottom: 32 }}>Damage Calculator Tool</h1>
       <Stack spacing={3}>
-        <Card>
-          <CardHeader title="Weapon" />
-          <CardContent>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <SharpnessSelector value={sharpness} onChange={setSharpness} />
-              <WeaponInput weapon={weaponInfo} setWeapon={setWeaponInfo} sharpnessColor={sharpness} setSharpnessColor={setSharpness} />
-            </Box>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader title="Skills" />
-          <CardContent>
-            {/* スキルカテゴリごとにアコーディオンで表示 */}
-            {Object.entries(skillsByCategory).map(([category, skills]) => (
-              <Accordion key={category} defaultExpanded sx={{ mb: 2 }}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <h3 style={{ margin: 0 }}>{category}</h3>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <SkillSelector
-                    skills={skills.map(skill => ({
-                      key: skill.name,
-                      label: skill.name,
-                      maxLevel: skill.levels.length,
-                      skillLevels: skill.levels // SkillLevel[] を渡す
-                    }))}
-                    selectedSkills={selectedSkills}
-                    setSelectedSkills={setSelectedSkills}
-                  />
-                </AccordionDetails>
-              </Accordion>
-            ))}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader title="Motion" />
-          <CardContent>
-            {/* モーションもアコーディオンでまとめる */}
-            <Accordion defaultExpanded>
+        {/* 武器入力: Boxでラップしダークモード対応の背景色。モバイル時は横マージン最小化 */}
+        <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
+          <Typography variant="h6" sx={{ mb: 1 }} color="text.primary">武器情報</Typography>
+          <SharpnessSelector value={sharpness} onChange={setSharpness} />
+          <WeaponInput weapon={weaponInfo} setWeapon={setWeaponInfo} sharpnessColor={sharpness} setSharpnessColor={setSharpness} />
+        </Box>
+        {/* スキル入力: Boxでラップしダークモード対応の背景色。モバイル時は横マージン最小化 */}
+        <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
+          {Object.entries(skillsByCategory).map(([category, skills]) => (
+            <Accordion key={category} defaultExpanded sx={{ mb: 2 }}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <h3 style={{ margin: 0 }}>モーション選択</h3>
+                <h3 style={{ margin: 0 }}>{skillCategoryLabels[category] || category}</h3>
               </AccordionSummary>
               <AccordionDetails>
-                <MotionSelector
-                  availableMotions={TACHI_MOTIONS.map((motion, idx) => ({
-                    key: `${motion.name}_${idx}`,
-                    label: motion.name,
-                    motionData: motion,
+                <SkillSelector
+                  skills={skills.map(skill => ({
+                    key: skill.name,
+                    label: skill.name,
+                    maxLevel: skill.levels.length,
+                    skillLevels: skill.levels // SkillLevel[] を渡す
                   }))}
-                  selectedMotions={selectedMotions}
-                  setSelectedMotions={setSelectedMotions}
+                  selectedSkills={selectedSkills}
+                  setSelectedSkills={setSelectedSkills}
                 />
               </AccordionDetails>
             </Accordion>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader title="Monster" />
-          <CardContent>
-            <MonsterSelector
-              availableMonsters={[Redau]}
-              selectedMonster={selectedMonster}
-              setSelectedMonster={setSelectedMonster}
-            />
-          </CardContent>
-        </Card>
+          ))}
+        </Box>
+        {/* モーション入力: Boxでラップしダークモード対応の背景色。モバイル時は横マージン最小化 */}
+        <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
+          <Accordion defaultExpanded>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <h3 style={{ margin: 0 }}>モーション選択</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <MotionSelector
+                availableMotions={TACHI_MOTIONS.map((motion, idx) => ({
+                  key: `${motion.name}_${idx}`,
+                  label: motion.name,
+                  motionData: motion,
+                }))}
+                selectedMotions={selectedMotions}
+                setSelectedMotions={setSelectedMotions}
+              />
+            </AccordionDetails>
+          </Accordion>
+        </Box>
+        {/* モンスター入力: Boxでラップしダークモード対応の背景色。モバイル時は横マージン最小化 */}
+        <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
+          <MonsterSelector
+            availableMonsters={[Redau]}
+            selectedMonster={selectedMonster}
+            setSelectedMonster={setSelectedMonster}
+          />
+        </Box>
         <Box textAlign="center">
           <Button variant="contained" color="primary" onClick={handleCalculateDamage}>
             Calculate Damage
           </Button>
         </Box>
         {damageResult && (
-          <Card>
-            <CardHeader title="Calculation Result" />
-            <CardContent>
-              {/* DamageTableでダメージ表を表示。未実装部分はモック値。*/}
-              {selectedMonster && damageTableRows.length > 0 ? (
-                <>
-                  <SelectedParamsSummary
-                    weapon={weaponInfo}
-                    selectedSkills={selectedSkills}
-                    selectedMotions={selectedMotions}
-                    sharpnessColor={sharpness}
-                  />
-                  <DamageTable rows={damageTableRows} />
-                </>
-              ) : (
-                <Box sx={{ color: 'text.secondary', my: 2 }}>
-                  {/* DamageTable未実装時のモック表示 */}
-                  ダメージ表（モック）
-                </Box>
-              )}
-            </CardContent>
-          </Card>
+          <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
+            {/* DamageTableでダメージ表を表示。未実装部分はモック値。*/}
+            {selectedMonster && damageTableRows.length > 0 ? (
+              <>
+                <SelectedParamsSummary
+                  weapon={weaponInfo}
+                  selectedSkills={selectedSkills}
+                  selectedMotions={selectedMotions}
+                  sharpnessColor={sharpness}
+                />
+                <DamageTable rows={damageTableRows} />
+              </>
+            ) : (
+              <Box sx={{ color: 'text.secondary', my: 2 }}>
+                {/* DamageTable未実装時のモック表示 */}
+                ダメージ表（モック）
+              </Box>
+            )}
+          </Box>
         )}
       </Stack>
     </Box>

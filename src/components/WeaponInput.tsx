@@ -17,7 +17,7 @@ interface WeaponInputProps {
   setSharpnessColor?: (color: SharpnessColor) => void;
 }
 
-const WeaponInput: React.FC<WeaponInputProps> = ({ weapon, setWeapon, sharpnessColor }) => {
+const WeaponInput: React.FC<WeaponInputProps> = ({ weapon, setWeapon }) => {
   const handleInputChange = (field: keyof Weapon, value: string | number | ElementType) => {
     setWeapon({ ...weapon, [field]: value });
   };
@@ -25,12 +25,7 @@ const WeaponInput: React.FC<WeaponInputProps> = ({ weapon, setWeapon, sharpnessC
   return (
     <Box component="section" sx={{ mb: 2 }}>
       <Stack direction="column" spacing={2}>
-        {sharpnessColor && (
-          <Box sx={{ mb: 1 }}>
-            <strong>選択中の切れ味: {sharpnessColor}</strong>
-          </Box>
-        )}
-        <TextField
+          <TextField
           type="number"
           label="武器倍率"
           value={weapon.weaponMultiplier}

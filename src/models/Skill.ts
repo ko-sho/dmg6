@@ -17,9 +17,10 @@ export interface SkillParameters {
   elementAddition?: number; // 属性加算補正
   elementModifier?: number; // 属性補正
   elementalHitZone?: number; // 属性肉質
-  minHitZone: number; // 適用される肉質の下限
-  maxHitZone: number; // 適用される肉質の上限
-  applicableStates: MonsterPartState[]; // 適用される部位の状態
+  minHitZone?: number; // 適用される肉質の下限
+  maxHitZone?: number; // 適用される肉質の上限
+  applicableStates?: MonsterPartState[]; // 適用される部位の状態
+  description?: string; // スキル効果説明文
 }
 
 export interface Skill {

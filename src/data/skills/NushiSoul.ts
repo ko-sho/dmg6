@@ -1,7 +1,7 @@
 import { SkillData } from '../../models/Skill';
 
 export const nushiSoul = new SkillData(
-  'special',
+  'group',
   'ヌシの魂',
   [
     {
@@ -12,6 +12,7 @@ export const nushiSoul = new SkillData(
           minHitZone: 0,
           maxHitZone: 100,
           applicableStates: ['normal', 'wounded', 'exposed'],
+          description: '攻撃1.05倍',
         },
       ],
     },

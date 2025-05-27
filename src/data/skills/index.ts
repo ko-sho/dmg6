@@ -14,9 +14,18 @@ import { weaknessExploit } from './WeaknessExploit';
 import { zenState } from './ZenState';
 import { nushiSoul } from './NushiSoul';
 import { kokusyokuIttai } from './KokusyokuIttai';
+import { resentment } from './Resentment';
 
 export const skillsByCategory = {
   attack: [attackBoost, criticalBoost, mindEye],
-  defense: [adrenalineRush, challenger, counterstrike, maximumMight, peakPerformance, latentPower, masterfulStrike, weaknessExploit, chainCrit, elementalAbsorption, zenState],
-  special: [nushiSoul, kokusyokuIttai],
+  defense: [adrenalineRush, challenger, counterstrike, maximumMight, peakPerformance, latentPower, masterfulStrike, weaknessExploit, chainCrit, elementalAbsorption, zenState, resentment],
+  group: [nushiSoul],
+  series: [kokusyokuIttai],
+};
+
+export const skillCategoryLabels: Record<string, string> = {
+  attack: '武器スキル',
+  defense: '防具スキル',
+  group: 'グループスキル',
+  series: 'シリーズスキル',
 };

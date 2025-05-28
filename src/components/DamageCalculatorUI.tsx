@@ -15,9 +15,16 @@ import { calculateDamageTable } from '../services/DamageTableService';
 import SelectedParamsSummary from './SelectedParamsSummary';
 import SharpnessSelector from './SharpnessSelector';
 import type { SharpnessColor } from '../models/Sharpness';
+import SaveLoadPreset from './SaveLoadPreset';
+import type { PresetData } from './SaveLoadPreset';
 // MUI imports
 import { Box, Button, Accordion, AccordionSummary, AccordionDetails, Stack, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import SaveIcon from '@mui/icons-material/Save';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import IconButton from '@mui/material/IconButton';
 
 interface DamageTableRow {
   part: string;
@@ -43,6 +50,20 @@ const DamageCalculatorUI = () => {
   const [damageResult, setDamageResult] = useState<string | null>(null);
   const [damageTableRows, setDamageTableRows] = useState<DamageTableRow[]>([]);
   const [sharpness, setSharpness] = useState<SharpnessColor>('white');
+  const [presetDialogOpen, setPresetDialogOpen] = useState(false);
+
+  // プリセット読込時のハンドラ
+  const handleLoadPreset = (preset: PresetData) => {
+    if (!preset) return;
+    if (preset.weaponInfo) setWeaponInfo(preset.weaponInfo as WeaponParameters);
+    if (preset.selectedSkills) setSelectedSkills(
+      Array.isArray(preset.selectedSkills)
+        ? (preset.selectedSkills as { key: string; level: number; skillData: SkillParameters[] }[])
+        : []
+    );
+    if (preset.selectedMotions) setSelectedMotions(preset.selectedMotions as Motion[]);
+    if (preset.selectedMonster) setSelectedMonster(preset.selectedMonster as Monster);
+  };
 
   const handleCalculateDamage = () => {
     type ResultType = {
@@ -81,7 +102,29 @@ const DamageCalculatorUI = () => {
 
   return (
     <Box sx={{ maxWidth: 700, mx: 'auto', my: 4 }}>
-      <h1 style={{ textAlign: 'center', marginBottom: 32 }}>Damage Calculator Tool</h1>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+        <h1 style={{ textAlign: 'center', margin: 0, flex: 1 }}>Damage Calculator Tool</h1>
+        <IconButton aria-label="プリセット保存/読込" onClick={() => setPresetDialogOpen(true)} size="large">
+          <SaveIcon />
+        </IconButton>
+      </Box>
+      <Dialog open={presetDialogOpen} onClose={() => setPresetDialogOpen(false)} maxWidth="sm" fullWidth>
+        <DialogTitle>プリセット保存/読込</DialogTitle>
+        <DialogContent>
+          <SaveLoadPreset
+            currentPreset={{
+              weaponInfo,
+              selectedSkills,
+              selectedMotions,
+              selectedMonster,
+            }}
+            onLoad={preset => {
+              handleLoadPreset(preset);
+              setPresetDialogOpen(false);
+            }}
+          />
+        </DialogContent>
+      </Dialog>
       <Stack spacing={3}>
         {/* 武器入力: Boxでラップしダークモード対応の背景色。モバイル時は横マージン最小化 */}
         <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>

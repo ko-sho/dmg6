@@ -18,6 +18,8 @@ export interface DamageParameters {
   minHitZone: number; // 適用される肉質の下限
   maxHitZone: number; // 適用される肉質の上限
   applicableStates: MonsterPartState[]; // 適用される部位の状態
+  // 属性会心補正（会心撃【属性】等）
+  elementalCriticalModifier?: number; // 属性会心時の属性ダメージ倍率（例: 1.35）
 }
 
 export class DamageCalculator {
@@ -50,19 +52,15 @@ export class DamageCalculator {
       baseElementValue,
       elementMultiplier,
       elementAddition,
-      sharpnessModifier,
       elementModifier,
       elementalHitZone,
+      elementalCriticalModifier = 1.0, // デフォルト1.0
     } = params;
-
+    // 属性ダメージ計算式に属性会心補正を掛ける
     const elementalDamage =
-      ((baseElementValue * elementMultiplier + elementAddition) *
-        sharpnessModifier *
-        elementModifier *
-        elementalHitZone) /
-      1000;
+      ((baseElementValue * elementMultiplier + elementAddition) * (elementModifier ?? 1) * (elementalHitZone / 100) * elementalCriticalModifier);
 
-    return Math.round(elementalDamage * 100) / 100; // 小数第2位で四捨五入
+    return Math.round(elementalDamage);
   }
 
   static calculateTotalDamage(params: DamageParameters): number {

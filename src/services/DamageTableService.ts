@@ -70,6 +70,9 @@ export function calculateDamageTable(
       const totalAttackMultiplierBonus = applicableSkills.reduce((prod, p) => prod * (p.attackMultiplierBonus ?? 1), 1);
       // elementModifierも全スキルの値を掛け合わせる
       const totalElementModifier = applicableSkills.reduce((prod, p) => prod * (p.elementModifier ?? 1), 1);
+      // 属性会心補正（会心撃【属性】等）をスキルから取得
+      // SkillParametersにelementalCriticalModifier（例: 1.35）を追加で対応
+      const totalElementalCriticalModifier = applicableSkills.reduce((prod, p) => prod * (p.elementalCriticalModifier ?? 1), 1);
       const getElementalHitZone = () => {
         switch (weaponInfo.elementType.key) {
           case 'fire': return state.fireHitZone;
@@ -95,16 +98,19 @@ export function calculateDamageTable(
         baseElementValue: weaponInfo.baseElementValue,
         elementMultiplier: motion.elementMultiplier,
         elementAddition: totalElementAddition,
-        elementModifier: totalElementModifier,
+        elementModifier: totalElementModifier * sharpnessObj.elementModifier, // 切れ味の属性補正を反映
         elementalHitZone,
         minHitZone: 0,
         maxHitZone: 100,
         applicableStates: [state.state],
+        elementalCriticalModifier: totalElementalCriticalModifier, // 追加
       };
       const physical = DamageCalculator.calculatePhysicalDamage({ ...params, criticalDamageModifier: 1 });
       const critPhysical = DamageCalculator.calculatePhysicalDamage({ ...params, criticalDamageModifier: 1.25 + totalCriticalDamageModifier });
+      // 通常の属性ダメージ
       const elemental = weaponInfo.elementType.key === 'none' ? 0 : DamageCalculator.calculateElementalDamage(params);
-      const critElemental = weaponInfo.elementType.key === 'none' ? 0 : DamageCalculator.calculateElementalDamage(params);
+      // 属性会心補正を反映した属性ダメージ
+      const critElemental = weaponInfo.elementType.key === 'none' ? 0 : DamageCalculator.calculateElementalDamage({ ...params, elementModifier: params.elementModifier * totalElementalCriticalModifier });
       const critRate = Math.max(0, Math.min(1, baseCriticalRate / 100));
       const total = physical + elemental;
       const critTotal = critPhysical + critElemental;

@@ -15,9 +15,10 @@ import { zenState } from './ZenState';
 import { nushiSoul } from './NushiSoul';
 import { kokusyokuIttai } from './KokusyokuIttai';
 import { resentment } from './Resentment';
+import { DragonAttack, FireAttack, IceAttack, ThunderAttack, WaterAttack } from './ElementalAttackSkills';
 
 export const skillsByCategory = {
-  attack: [attackBoost, criticalBoost, mindEye],
+  attack: [attackBoost, criticalBoost, mindEye, FireAttack, WaterAttack, ThunderAttack, IceAttack, DragonAttack],
   defense: [adrenalineRush, challenger, counterstrike, maximumMight, peakPerformance, latentPower, masterfulStrike, weaknessExploit, chainCrit, elementalAbsorption, zenState, resentment],
   group: [nushiSoul],
   series: [kokusyokuIttai],

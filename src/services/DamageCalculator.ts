@@ -56,11 +56,12 @@ export class DamageCalculator {
       elementalHitZone,
       elementalCriticalModifier = 1.0, // デフォルト1.0
     } = params;
-    // 属性ダメージ計算式に属性会心補正を掛ける
+    // 属性ダメージ計算式に属性会心補正を掛け、1/10する
     const elementalDamage =
-      ((baseElementValue * elementMultiplier + elementAddition) * (elementModifier ?? 1) * (elementalHitZone / 100) * elementalCriticalModifier);
+      ((baseElementValue * elementMultiplier + elementAddition) * (elementModifier ?? 1) * (elementalHitZone / 100) * elementalCriticalModifier) / 10;
 
-    return Math.round(elementalDamage);
+    // 小数第2位で四捨五入
+    return Math.round(elementalDamage * 100) / 100;
   }
 
   static calculateTotalDamage(params: DamageParameters): number {

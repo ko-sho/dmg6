@@ -34,6 +34,13 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
   });
   const renderedParts: Record<string, boolean> = {};
 
+  // 状態の日本語ラベル変換
+  const stateLabels: Record<string, string> = {
+    normal: '通常',
+    wounded: '傷口',
+    exposed: '弱点露出',
+  };
+
   return (
     <Box sx={{ mt: 3 }}>
       <Typography variant="subtitle1" sx={{ mb: 1 }}>
@@ -69,7 +76,7 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
                   {showPart ? (
                     <TableCell rowSpan={partRowSpans[row.part]}>{row.part}</TableCell>
                   ) : null}
-                  <TableCell>{row.state}</TableCell>
+                  <TableCell>{stateLabels[row.state] || row.state}</TableCell>
                   <TableCell>
                     {row.damage.split(' ')[0]}
                     {row.elemental !== 0 && (
@@ -113,23 +120,23 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
           {/* 平均行の追加 */}
           <TableBody>
             <TableRow>
-              <TableCell colSpan={2} align="right" sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>平均</TableCell>
-              <TableCell sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
+              <TableCell colSpan={2} align="left" sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>平均</TableCell>
+              <TableCell align="left" sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
                 {rows.length > 0 ? (
                   (rows.reduce((sum, row) => sum + Number(row.damage.split(' ')[0]), 0) / rows.length).toFixed(1)
                 ) : '-'}
               </TableCell>
-              <TableCell sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
+              <TableCell align="left" sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
                 {rows.length > 0 ? (
                   (rows.reduce((sum, row) => sum + Number(row.critDamage.split(' ')[0]), 0) / rows.length).toFixed(1)
                 ) : '-'}
               </TableCell>
-              <TableCell sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
+              <TableCell align="left" sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
                 {rows.length > 0 ? (
                   (rows.reduce((sum, row) => sum + (row.critRate !== undefined ? row.critRate : 0), 0) / rows.length * 100).toFixed(0) + '%'
                 ) : '-'}
               </TableCell>
-              <TableCell sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
+              <TableCell align="left" sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
                 {rows.length > 0 ? (
                   (rows.reduce((sum, row) => sum + Number(row.expected.split(' ')[0]), 0) / rows.length).toFixed(1)
                 ) : '-'}

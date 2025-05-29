@@ -16,7 +16,7 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, selectedSkill, setSelected
   const isSelected = !!selectedSkill;
   const level = selectedSkill?.level || 1;
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, px: 1 }}>
       <FormControlLabel
         control={
           <Checkbox

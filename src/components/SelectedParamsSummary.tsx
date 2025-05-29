@@ -45,49 +45,53 @@ const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, s
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell sx={{ fontSize: '0.95rem' }}>武器倍率</TableCell>
-            <TableCell sx={{ fontSize: '0.95rem' }}>{weapon.weaponMultiplier}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>切れ味補正</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{sharpnessObj.modifier}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell sx={{ fontSize: '0.95rem' }}>攻撃乗算補正</TableCell>
-            <TableCell sx={{ fontSize: '0.95rem' }}>{totalAttackMultiplierBonus}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>武器倍率</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{weapon.weaponMultiplier}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell sx={{ fontSize: '0.95rem' }}>加算攻撃力</TableCell>
             <TableCell sx={{ fontSize: '0.95rem' }}>{totalAttackBonus}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell sx={{ fontSize: '0.95rem' }}>モーション値</TableCell>
-            <TableCell sx={{ fontSize: '0.95rem' }}>{selectedMotions.length > 0 ? totalMotionValue : '-'}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>攻撃乗算補正</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{totalAttackMultiplierBonus}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell sx={{ fontSize: '0.95rem' }}>切れ味補正</TableCell>
-            <TableCell sx={{ fontSize: '0.95rem' }}>{sharpnessObj.modifier}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell sx={{ fontSize: '0.95rem' }}>会心ダメージ補正</TableCell>
-            <TableCell sx={{ fontSize: '0.95rem' }}>{1.25 + totalCriticalDamageModifier}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>属性</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{weapon.elementType?.label || '-'}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell sx={{ fontSize: '0.95rem' }}>属性値</TableCell>
             <TableCell sx={{ fontSize: '0.95rem' }}>{weapon.baseElementValue}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell sx={{ fontSize: '0.95rem' }}>属性乗算補正</TableCell>
-            <TableCell sx={{ fontSize: '0.95rem' }}>{selectedMotions.length > 0 ? avgElementMultiplier : '-'}</TableCell>
-          </TableRow>
-          <TableRow>
             <TableCell sx={{ fontSize: '0.95rem' }}>属性加算補正</TableCell>
             <TableCell sx={{ fontSize: '0.95rem' }}>{totalElementAddition}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell sx={{ fontSize: '0.95rem' }}>属性補正</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>属性乗算補正</TableCell>
             <TableCell sx={{ fontSize: '0.95rem' }}>{totalElementModifier}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell sx={{ fontSize: '0.95rem' }}>モーション値</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{selectedMotions.length > 0 ? totalMotionValue : '-'}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell sx={{ fontSize: '0.95rem' }}>モーション属性補正</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{selectedMotions.length > 0 ? avgElementMultiplier : '-'}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell sx={{ fontSize: '0.95rem' }}>会心ダメージ補正</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{1.25 + totalCriticalDamageModifier}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
       <Typography variant="caption" color="text.secondary">
-        ※スキル補正は全て合算（攻撃乗算は掛け算）、モーション値は合計、属性乗算補正は選択中モーションの平均値を表示。
+        ※スキル補正は全て合算（攻撃乗算は掛け算）、モーション値は合計、モーション属性補正は平均値を表示。
       </Typography>
     </Box>
   );

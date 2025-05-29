@@ -2,7 +2,9 @@ export type MonsterPartState = 'normal' | 'wounded' | 'exposed';
 
 export interface MonsterPartStateDetails {
   state: MonsterPartState; // 部位の状態
-  physicalHitZone: number; // 物理肉質
+  slashHitZone: number; // 斬撃肉質
+  bluntHitZone: number; // 打撃肉質
+  shotHitZone: number; // 射撃肉質
   fireHitZone: number; // 火属性肉質
   waterHitZone: number; // 水属性肉質
   iceHitZone: number; // 氷属性肉質

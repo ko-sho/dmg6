@@ -15,7 +15,10 @@ export const ELEMENT_TYPES: ElementType[] = [
   { key: 'dragon', label: '龍' },
 ];
 
+export type WeaponType = 'longsword';
+
 export interface WeaponParameters {
+  weaponType: WeaponType; // 武器種
   weaponMultiplier: number; // 武器倍率
   baseElementValue: number; // 属性値
   elementType: ElementType; // 属性種別
@@ -23,12 +26,14 @@ export interface WeaponParameters {
 }
 
 export class Weapon {
+  weaponType: WeaponType;
   weaponMultiplier: number;
   baseElementValue: number;
   elementType: ElementType;
   criticalRate: number;
 
   constructor(params: WeaponParameters) {
+    this.weaponType = params.weaponType;
     this.weaponMultiplier = params.weaponMultiplier;
     this.baseElementValue = params.baseElementValue;
     this.elementType = params.elementType;

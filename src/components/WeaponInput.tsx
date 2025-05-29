@@ -1,6 +1,6 @@
 import React from 'react';
 import { ELEMENT_TYPES } from '../models/Weapon';
-import type { Weapon, ElementType } from '../models/Weapon';
+import type { Weapon, ElementType, WeaponType } from '../models/Weapon';
 import type { SharpnessColor } from '../models/Sharpness';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -11,6 +11,10 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import SharpnessSelector from './SharpnessSelector';
 
+const WEAPON_TYPES: { key: WeaponType; label: string }[] = [
+  { key: 'longsword', label: '太刀' },
+];
+
 interface WeaponInputProps {
   weapon: Weapon;
   setWeapon: React.Dispatch<React.SetStateAction<Weapon>>;
@@ -19,13 +23,29 @@ interface WeaponInputProps {
 }
 
 const WeaponInput: React.FC<WeaponInputProps> = ({ weapon, setWeapon, sharpnessColor, setSharpnessColor }) => {
-  const handleInputChange = (field: keyof Weapon, value: string | number | ElementType) => {
+  const handleInputChange = (field: keyof Weapon, value: string | number | ElementType | WeaponType) => {
     setWeapon({ ...weapon, [field]: value });
   };
 
   return (
     <Box component="section" sx={{ mb: 2 }}>
       <Stack direction="column" spacing={2}>
+        {/* 武器種セレクト追加 */}
+        <FormControl sx={{ minWidth: 120 }}>
+          <InputLabel id="weapon-type-label">武器種</InputLabel>
+          <Select
+            labelId="weapon-type-label"
+            value={weapon.weaponType}
+            label="武器種"
+            onChange={(e) => handleInputChange('weaponType', e.target.value as WeaponType)}
+            sx={{ textAlign: 'left', '& .MuiSelect-select': { textAlign: 'left' } }}
+          >
+            {WEAPON_TYPES.map((type) => (
+              <MenuItem key={type.key} value={type.key}>{type.label}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        {/* ここまで武器種セレクト */}
         <SharpnessSelector value={sharpnessColor ?? 'white'} onChange={color => setSharpnessColor?.(color)} />
         <TextField
           type="number"

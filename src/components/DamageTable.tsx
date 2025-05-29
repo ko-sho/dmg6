@@ -118,23 +118,23 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
                   ) : null}
                   <TableCell>{stateLabels[row.state] || row.state}</TableCell>
                   <TableCell>
-                    {row.damage.split(" ")[0]}
+                    {Number(row.damage.split(" ")[0]).toFixed(2)}
                     {row.elemental !== 0 && (
                       <>
                         <br />
                         <Typography variant="caption" color="text.secondary">
-                          {row.elemental}
+                          {row.elemental.toFixed(2)}
                         </Typography>
                       </>
                     )}
                   </TableCell>
                   <TableCell>
-                    {row.critDamage.split(" ")[0]}
+                    {Number(row.critDamage.split(" ")[0]).toFixed(2)}
                     {row.elemental !== 0 && (
                       <>
                         <br />
                         <Typography variant="caption" color="text.secondary">
-                          {row.elemental}
+                          {row.elemental.toFixed(2)}
                         </Typography>
                       </>
                     )}
@@ -145,12 +145,12 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
                       : "-"}
                   </TableCell>
                   <TableCell>
-                    {row.expected.split(" ")[0]}
+                    {Number(row.expected.split(" ")[0]).toFixed(2)}
                     {row.elemental !== 0 && (
                       <>
                         <br />
                         <Typography variant="caption" color="text.secondary">
-                          {row.elemental}
+                          {row.elemental.toFixed(2)}
                         </Typography>
                       </>
                     )}
@@ -181,7 +181,7 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
                         (sum, row) => sum + Number(row.damage.split(" ")[0]),
                         0
                       ) / rows.length
-                    ).toFixed(1)
+                    ).toFixed(2)
                   : "-"}
               </TableCell>
               <TableCell align="left">
@@ -192,7 +192,7 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
                           sum + Number(row.critDamage.split(" ")[0]),
                         0
                       ) / rows.length
-                    ).toFixed(1)
+                    ).toFixed(2)
                   : "-"}
               </TableCell>
               <TableCell align="left">
@@ -215,7 +215,7 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
                         (sum, row) => sum + Number(row.expected.split(" ")[0]),
                         0
                       ) / rows.length
-                    ).toFixed(1)
+                    ).toFixed(2)
                   : "-"}
               </TableCell>
             </TableRow>

@@ -9,7 +9,11 @@ export interface DamageParameters {
   criticalDamageModifier?: number; // 会心ダメージ補正（デフォルト1.25）
   criticalRate: number; // 会心率
   criticalRateBonus: number; // 加算会心率
-  physicalHitZone: number; // 物理肉質
+  // 物理肉質を3種追加
+  slashHitZone: number;
+  bluntHitZone: number;
+  shotHitZone: number;
+  attackType: 'slash' | 'blunt' | 'shot';
   baseElementValue: number; // 元の属性値
   elementMultiplier: number; // 属性乗算補正
   elementAddition: number; // 属性加算補正
@@ -20,6 +24,7 @@ export interface DamageParameters {
   applicableStates: MonsterPartState[]; // 適用される部位の状態
   // 属性会心補正（会心撃【属性】等）
   elementalCriticalModifier?: number; // 属性会心時の属性ダメージ倍率（例: 1.35）
+  hitcount?: number; // 多段ヒット数（デフォルト1）
 }
 
 export class DamageCalculator {
@@ -31,9 +36,26 @@ export class DamageCalculator {
       motionValue,
       sharpnessModifier,
       criticalDamageModifier = 1.0, // デフォルト値を1.0に修正
-      physicalHitZone,
+      // 3種肉質
+      slashHitZone,
+      bluntHitZone,
+      shotHitZone,
+      attackType,
     } = params;
-
+    let physicalHitZone = 0;
+    switch (attackType) {
+      case 'slash':
+        physicalHitZone = slashHitZone;
+        break;
+      case 'blunt':
+        physicalHitZone = bluntHitZone;
+        break;
+      case 'shot':
+        physicalHitZone = shotHitZone;
+        break;
+      default:
+        physicalHitZone = slashHitZone;
+    }
     const effectiveWeaponMultiplier = (baseWeaponMultiplier * attackMultiplierBonus) + additionAttackBonus;
 
     const physicalDamage =
@@ -44,7 +66,8 @@ export class DamageCalculator {
         physicalHitZone) /
       10000;
 
-    return Math.round(physicalDamage * 100) / 100; // 小数第2位で四捨五入
+    // 多段ヒット考慮
+    return Math.round(physicalDamage * (params.hitcount ?? 1) * 100) / 100;
   }
 
   static calculateElementalDamage(params: DamageParameters): number {
@@ -55,13 +78,16 @@ export class DamageCalculator {
       elementModifier,
       elementalHitZone,
       elementalCriticalModifier = 1.0, // デフォルト1.0
+      hitcount = 1,
     } = params;
-    // 属性ダメージ計算式に属性会心補正を掛け、1/10する
-    const elementalDamage =
-      ((baseElementValue * elementMultiplier + elementAddition) * (elementModifier ?? 1) * (elementalHitZone / 100) * elementalCriticalModifier) / 10;
-
-    // 小数第2位で四捨五入
-    return Math.round(elementalDamage * 100) / 100;
+    // 1ヒットごとに端数処理（切り捨て）して合計
+    let total = 0;
+    for (let i = 0; i < hitcount; i++) {
+      const perHit =
+        ((baseElementValue * elementMultiplier + elementAddition) * (elementModifier ?? 1) * (elementalHitZone / 100) * elementalCriticalModifier) / 10;
+      total += Math.floor(perHit);
+    }
+    return total;
   }
 
   static calculateTotalDamage(params: DamageParameters): number {

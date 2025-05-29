@@ -11,6 +11,7 @@ import Arshveldo from "../data/monsters/Arshveldo";
 import GoreMagala from "../data/monsters/GoreMagala";
 import NuEgdra from "../data/monsters/NuEgdra";
 import ZoShia from "../data/monsters/ZoShia";
+import NekoTrainingTarupuncher from "../data/monsters/NekoTrainingTarupuncher";
 import type { Motion } from "../models/Motion";
 import type { Monster } from "../models/Monster";
 import type { WeaponParameters } from "../models/Weapon";
@@ -133,10 +134,10 @@ const DamageCalculatorUI = () => {
 
     const damageTableRows = calculateDamageTable(
       weaponInfo,
-      selectedSkills,
       selectedMotions,
       selectedMonster,
-      sharpness
+      sharpness,
+      selectedSkills
     );
 
     const result: ResultType = {
@@ -312,6 +313,7 @@ const DamageCalculatorUI = () => {
         >
           <MonsterSelector
             availableMonsters={[
+              NekoTrainingTarupuncher,
               Redau,
               UzTuna,
               NuEgdra,

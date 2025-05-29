@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import type { WeaponParameters } from '../models/Weapon';
 import type { SkillParameters } from '../models/Skill';
 import type { Motion } from '../models/Motion';
@@ -32,51 +32,57 @@ const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, s
   const sharpnessObj = SHARPNESS_LEVELS.find(s => s.color === sharpnessColor) ?? SHARPNESS_LEVELS[5];
 
   return (
-    <Box sx={{ mt: 2 }}>
-      <Typography variant="subtitle2" sx={{ mb: 1 }}>
+    <Box sx={{ mt: 2, minWidth: '90%' }}>
+      <Typography variant="subtitle2" sx={{ mb: 1, fontSize: '1rem' }}>
         選択中パラメータ（代表値）
       </Typography>
       <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ fontSize: '0.95rem' }}>パラメーター</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>値</TableCell>
+          </TableRow>
+        </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell>武器倍率</TableCell>
-            <TableCell>{weapon.weaponMultiplier}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>武器倍率</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{weapon.weaponMultiplier}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>攻撃乗算補正</TableCell>
-            <TableCell>{totalAttackMultiplierBonus}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>攻撃乗算補正</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{totalAttackMultiplierBonus}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>加算攻撃力</TableCell>
-            <TableCell>{totalAttackBonus}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>加算攻撃力</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{totalAttackBonus}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>モーション値</TableCell>
-            <TableCell>{selectedMotions.length > 0 ? totalMotionValue : '-'}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>モーション値</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{selectedMotions.length > 0 ? totalMotionValue : '-'}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>切れ味補正</TableCell>
-            <TableCell>{sharpnessObj.modifier}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>切れ味補正</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{sharpnessObj.modifier}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>会心ダメージ補正</TableCell>
-            <TableCell>{1.25 + totalCriticalDamageModifier}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>会心ダメージ補正</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{1.25 + totalCriticalDamageModifier}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>属性値</TableCell>
-            <TableCell>{weapon.baseElementValue}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>属性値</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{weapon.baseElementValue}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>属性乗算補正</TableCell>
-            <TableCell>{selectedMotions.length > 0 ? avgElementMultiplier : '-'}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>属性乗算補正</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{selectedMotions.length > 0 ? avgElementMultiplier : '-'}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>属性加算補正</TableCell>
-            <TableCell>{totalElementAddition}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>属性加算補正</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{totalElementAddition}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>属性補正</TableCell>
-            <TableCell>{totalElementModifier}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>属性補正</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{totalElementModifier}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

@@ -35,12 +35,12 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
   const renderedParts: Record<string, boolean> = {};
 
   return (
-    <Box sx={{ mt: 3, width: '100%', overflowX: 'auto' }}>
+    <Box sx={{ mt: 3 }}>
       <Typography variant="subtitle1" sx={{ mb: 1 }}>
         ダメージ表
       </Typography>
-      <TableContainer component={Paper} sx={{ width: '100%', overflowX: 'auto', boxShadow: 0 }}>
-        <Table size="small" sx={{ minWidth: { xs: 340, sm: 480 }, width: 'max-content' }}>
+      <TableContainer component={Paper} sx={{ overflowX: 'auto', boxShadow: 0 }}>
+        <Table size="small" sx={{ minWidth: '100%', width: 'max-content' }}>
           <TableHead>
             <TableRow>
               <TableCell sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}>部位</TableCell>
@@ -109,6 +109,32 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
                 </TableRow>
               );
             })}
+          </TableBody>
+          {/* 平均行の追加 */}
+          <TableBody>
+            <TableRow>
+              <TableCell colSpan={2} align="right" sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>平均</TableCell>
+              <TableCell sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
+                {rows.length > 0 ? (
+                  (rows.reduce((sum, row) => sum + Number(row.damage.split(' ')[0]), 0) / rows.length).toFixed(1)
+                ) : '-'}
+              </TableCell>
+              <TableCell sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
+                {rows.length > 0 ? (
+                  (rows.reduce((sum, row) => sum + Number(row.critDamage.split(' ')[0]), 0) / rows.length).toFixed(1)
+                ) : '-'}
+              </TableCell>
+              <TableCell sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
+                {rows.length > 0 ? (
+                  (rows.reduce((sum, row) => sum + (row.critRate !== undefined ? row.critRate : 0), 0) / rows.length * 100).toFixed(0) + '%'
+                ) : '-'}
+              </TableCell>
+              <TableCell sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
+                {rows.length > 0 ? (
+                  (rows.reduce((sum, row) => sum + Number(row.expected.split(' ')[0]), 0) / rows.length).toFixed(1)
+                ) : '-'}
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>

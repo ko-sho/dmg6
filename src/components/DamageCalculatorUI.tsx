@@ -6,6 +6,7 @@ import MonsterSelector from './MonsterSelector';
 import { skillsByCategory, skillCategoryLabels } from '../data/skills/index';
 import { TACHI_MOTIONS } from '../data/weapons/TachiMotions';
 import Redau from '../data/monsters/Redau';
+import UzTuna from '../data/monsters/UzTuna';
 import type { Motion } from '../models/Motion';
 import type { Monster } from '../models/Monster';
 import type { WeaponParameters } from '../models/Weapon';
@@ -13,12 +14,12 @@ import type { SkillParameters } from '../models/Skill';
 import DamageTable from './DamageTable';
 import { calculateDamageTable } from '../services/DamageTableService';
 import SelectedParamsSummary from './SelectedParamsSummary';
-import SharpnessSelector from './SharpnessSelector';
 import type { SharpnessColor } from '../models/Sharpness';
 import SaveLoadPreset from './SaveLoadPreset';
 import type { PresetData } from './SaveLoadPreset';
+import SkillLevelTable from './SkillLevelTable';
 // MUI imports
-import { Box, Button, Accordion, AccordionSummary, AccordionDetails, Stack, Typography } from '@mui/material';
+import { Box, Button, Accordion, AccordionSummary, AccordionDetails, Stack, Typography, Tabs, Tab } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SaveIcon from '@mui/icons-material/Save';
 import Dialog from '@mui/material/Dialog';
@@ -37,6 +38,15 @@ interface DamageTableRow {
   critRate: number; // 期待会心率
 }
 
+type ResultType = {
+  weaponInfo: WeaponParameters;
+  selectedSkills: { key: string; level: number; skillData: SkillParameters[] }[];
+  selectedMotions: Motion[];
+  selectedMonster: Monster | null;
+  sharpness: SharpnessColor;
+  damageTableRows: DamageTableRow[];
+};
+
 const DamageCalculatorUI = () => {
   const [weaponInfo, setWeaponInfo] = useState<WeaponParameters>({
     weaponMultiplier: 220,
@@ -51,6 +61,10 @@ const DamageCalculatorUI = () => {
   const [damageTableRows, setDamageTableRows] = useState<DamageTableRow[]>([]);
   const [sharpness, setSharpness] = useState<SharpnessColor>('white');
   const [presetDialogOpen, setPresetDialogOpen] = useState(false);
+  const [tabIndex, setTabIndex] = useState(0);
+  const [history, setHistory] = useState<ResultType[]>([]);
+  const [lastResult, setLastResult] = useState<ResultType | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // プリセット読込時のハンドラ
   const handleLoadPreset = (preset: PresetData) => {
@@ -63,41 +77,52 @@ const DamageCalculatorUI = () => {
     );
     if (preset.selectedMotions) setSelectedMotions(preset.selectedMotions as Motion[]);
     if (preset.selectedMonster) setSelectedMonster(preset.selectedMonster as Monster);
+    if (preset.sharpness) setSharpness(preset.sharpness as SharpnessColor);
   };
 
+  // 履歴保存時はselectedSkillsをSkillSelectorの型（key/level/skillData[]）で保存する
   const handleCalculateDamage = () => {
-    type ResultType = {
-      weaponInfo: WeaponParameters;
-      selectedSkills: SkillParameters[];
-      selectedMotions: Motion[];
-      selectedMonster: Monster | null;
-    };
-
-    // 選択中のモーション・モンスターがなければ何もしない
-    if (!selectedMonster || selectedMotions.length === 0) {
-      setDamageResult(null);
-      setDamageTableRows([]);
+    if (!selectedMonster) {
+      setErrorMessage('モンスターを選択してください');
       return;
     }
+    if (selectedMotions.length === 0) {
+      setErrorMessage('モーションを1つ以上選択してください');
+      return;
+    }
+    setErrorMessage(null);
 
-    // DamageTableServiceでダメージ表を計算
     const damageTableRows = calculateDamageTable(
       weaponInfo,
       selectedSkills,
       selectedMotions,
       selectedMonster,
-      sharpness // 追加: 切れ味
+      sharpness
     );
 
-    // 結果JSON
     const result: ResultType = {
       weaponInfo,
-      selectedSkills: selectedSkills.flatMap(s => s.skillData),
+      selectedSkills,
       selectedMotions,
       selectedMonster,
+      sharpness,
+      damageTableRows
     };
     setDamageResult(JSON.stringify(result, null, 2));
     setDamageTableRows(damageTableRows);
+
+    setHistory(prev => {
+      if (lastResult) {
+        return [lastResult, ...prev];
+      } else {
+        return prev;
+      }
+    });
+    setLastResult(result);
+    // 計算時、現在の結果タブ以外にいる場合のみ現在の結果タブ(0)に移動
+    if (tabIndex !== 0) {
+      setTabIndex(0);
+    }
   };
 
   return (
@@ -117,6 +142,7 @@ const DamageCalculatorUI = () => {
               selectedSkills,
               selectedMotions,
               selectedMonster,
+              sharpness, // 追加: 切れ味も保存
             }}
             onLoad={preset => {
               handleLoadPreset(preset);
@@ -128,14 +154,14 @@ const DamageCalculatorUI = () => {
       <Stack spacing={3}>
         {/* 武器入力: Boxでラップしダークモード対応の背景色。モバイル時は横マージン最小化 */}
         <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
-          <Typography variant="h6" sx={{ mb: 1 }} color="text.primary">武器情報</Typography>
-          <SharpnessSelector value={sharpness} onChange={setSharpness} />
+          <Typography variant="h6" sx={{ mb: 1 }} color="text.primary">武器</Typography>
           <WeaponInput weapon={weaponInfo} setWeapon={setWeaponInfo} sharpnessColor={sharpness} setSharpnessColor={setSharpness} />
         </Box>
         {/* スキル入力: Boxでラップしダークモード対応の背景色。モバイル時は横マージン最小化 */}
         <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
+          <Typography variant="h6" sx={{ mb: 1 }} color="text.primary">スキル</Typography>
           {Object.entries(skillsByCategory).map(([category, skills]) => (
-            <Accordion key={category} defaultExpanded sx={{ mb: 2 }}>
+            <Accordion key={category} defaultExpanded={false} sx={{ mb: 2 }}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <h3 style={{ margin: 0 }}>{skillCategoryLabels[category] || category}</h3>
               </AccordionSummary>
@@ -156,7 +182,8 @@ const DamageCalculatorUI = () => {
         </Box>
         {/* モーション入力: Boxでラップしダークモード対応の背景色。モバイル時は横マージン最小化 */}
         <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
-          <Accordion defaultExpanded>
+          <Typography variant="h6" sx={{ mb: 1 }} color="text.primary">モーション</Typography>
+          <Accordion defaultExpanded={false}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <h3 style={{ margin: 0 }}>モーション選択</h3>
             </AccordionSummary>
@@ -176,7 +203,7 @@ const DamageCalculatorUI = () => {
         {/* モンスター入力: Boxでラップしダークモード対応の背景色。モバイル時は横マージン最小化 */}
         <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
           <MonsterSelector
-            availableMonsters={[Redau]}
+            availableMonsters={[Redau, UzTuna]}
             selectedMonster={selectedMonster}
             setSelectedMonster={setSelectedMonster}
           />
@@ -185,26 +212,84 @@ const DamageCalculatorUI = () => {
           <Button variant="contained" color="primary" onClick={handleCalculateDamage}>
             Calculate Damage
           </Button>
+          {errorMessage && (
+            <Box sx={{ color: 'error.main', fontWeight: 'bold', mt: 1 }}>
+              {errorMessage}
+            </Box>
+          )}
         </Box>
-        {damageResult && (
+        {/* タブ追加型: 先頭は現在の入力状態, 以降は履歴 */}
+        {(damageResult || history.length > 0) && (
+          <Tabs
+            value={tabIndex}
+            onChange={(_, v) => setTabIndex(v)}
+            sx={{ mb: 2, bgcolor: 'background.default', borderRadius: 2, boxShadow: 1 }}
+            textColor="inherit"
+            indicatorColor="secondary"
+          >
+            <Tab label="現在の結果" sx={{ color: 'text.primary' }} />
+            {history.map((_, idx) => (
+              <Tab
+                key={`history-${idx}`}
+                label={`履歴${history.length - idx}`}
+                sx={{ color: 'text.primary' }}
+              />
+            ))}
+          </Tabs>
+        )}
+        {/* タブ内容の切り替え */}
+        {tabIndex === 0 && damageResult && (
           <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
-            {/* DamageTableでダメージ表を表示。未実装部分はモック値。*/}
             {selectedMonster && damageTableRows.length > 0 ? (
               <>
+                {/* スキルテーブルを一番上に */}
+                <SkillLevelTable selectedSkills={selectedSkills} />
+                {/* ダメージテーブル */}
+                <DamageTable rows={damageTableRows} />
+                {/* パラメータサマリー */}
                 <SelectedParamsSummary
                   weapon={weaponInfo}
                   selectedSkills={selectedSkills}
                   selectedMotions={selectedMotions}
                   sharpnessColor={sharpness}
                 />
-                <DamageTable rows={damageTableRows} />
               </>
             ) : (
               <Box sx={{ color: 'text.secondary', my: 2 }}>
-                {/* DamageTable未実装時のモック表示 */}
                 ダメージ表（モック）
               </Box>
             )}
+          </Box>
+        )}
+        {tabIndex > 0 && history[tabIndex - 1] && (
+          <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>#{history.length - (tabIndex - 1)} 計算結果</Typography>
+            </Box>
+            {/* スキルテーブルを一番上に */}
+            <SkillLevelTable selectedSkills={history[tabIndex - 1].selectedSkills} />
+            {/* ダメージテーブル */}
+            <DamageTable rows={history[tabIndex - 1].damageTableRows} />
+            {/* パラメータサマリー */}
+            <SelectedParamsSummary
+              weapon={history[tabIndex - 1].weaponInfo}
+              selectedSkills={history[tabIndex - 1].selectedSkills}
+              selectedMotions={history[tabIndex - 1].selectedMotions}
+              sharpnessColor={history[tabIndex - 1].sharpness}
+            />
+            {/* 履歴削除ボタン */}
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => {
+                  setHistory(prev => prev.filter((_, idx) => idx !== (tabIndex - 1)));
+                  setTabIndex(0); // 削除後は現在の結果タブに戻す
+                }}
+              >
+                この履歴を削除
+              </Button>
+            </Box>
           </Box>
         )}
       </Stack>

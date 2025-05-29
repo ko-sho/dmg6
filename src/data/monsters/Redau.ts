@@ -1,6 +1,6 @@
 import { Monster } from '../../models/Monster';
 
-export const Redau = new Monster('Redau', [
+export const Redau = new Monster('レ・ダウ', [
   {
     name: '頭',
     states: [

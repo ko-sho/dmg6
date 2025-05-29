@@ -9,6 +9,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import SharpnessSelector from './SharpnessSelector';
 
 interface WeaponInputProps {
   weapon: Weapon;
@@ -17,7 +18,7 @@ interface WeaponInputProps {
   setSharpnessColor?: (color: SharpnessColor) => void;
 }
 
-const WeaponInput: React.FC<WeaponInputProps> = ({ weapon, setWeapon }) => {
+const WeaponInput: React.FC<WeaponInputProps> = ({ weapon, setWeapon, sharpnessColor, setSharpnessColor }) => {
   const handleInputChange = (field: keyof Weapon, value: string | number | ElementType) => {
     setWeapon({ ...weapon, [field]: value });
   };
@@ -25,7 +26,8 @@ const WeaponInput: React.FC<WeaponInputProps> = ({ weapon, setWeapon }) => {
   return (
     <Box component="section" sx={{ mb: 2 }}>
       <Stack direction="column" spacing={2}>
-          <TextField
+        <SharpnessSelector value={sharpnessColor ?? 'white'} onChange={color => setSharpnessColor?.(color)} />
+        <TextField
           type="number"
           label="武器倍率"
           value={weapon.weaponMultiplier}

@@ -24,7 +24,7 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, selectedSkill, setSelected
             onChange={e => setSelectedSkill(skill.key, e.target.checked, 1)}
           />
         }
-        label={skill.label}
+        label={<span style={{ color: 'inherit' }}><Box component="span" sx={{ color: 'text.primary' }}>{skill.label}</Box></span>}
       />
       {isSelected && (
         <>

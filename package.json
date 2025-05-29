@@ -2,7 +2,7 @@
   "name": "dmg6",
   "private": true,
   "version": "0.0.0",
-  "homepage": "http://shokoshiishi.github.io/dmg6/",
+  "homepage": "http://ko-sho.github.io/dmg6/",
   "type": "module",
   "scripts": {
     "dev": "vite",

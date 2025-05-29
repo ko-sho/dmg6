@@ -18,6 +18,7 @@ import type { SharpnessColor } from '../models/Sharpness';
 import SaveLoadPreset from './SaveLoadPreset';
 import type { PresetData } from './SaveLoadPreset';
 import SkillLevelTable from './SkillLevelTable';
+import type { SkillData } from '../models/Skill';
 // MUI imports
 import { Box, Button, Accordion, AccordionSummary, AccordionDetails, Stack, Typography, Tabs, Tab } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -65,6 +66,8 @@ const DamageCalculatorUI = () => {
   const [history, setHistory] = useState<ResultType[]>([]);
   const [lastResult, setLastResult] = useState<ResultType | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const skillCategories = Object.keys(skillsByCategory) as (keyof typeof skillsByCategory)[];
+  const [skillTab, setSkillTab] = useState(0);
 
   // プリセット読込時のハンドラ
   const handleLoadPreset = (preset: PresetData) => {
@@ -157,49 +160,49 @@ const DamageCalculatorUI = () => {
           <Typography variant="h6" sx={{ mb: 1 }} color="text.primary">武器</Typography>
           <WeaponInput weapon={weaponInfo} setWeapon={setWeaponInfo} sharpnessColor={sharpness} setSharpnessColor={setSharpness} />
         </Box>
-        {/* スキル入力: Boxでラップしダークモード対応の背景色。モバイル時は横マージン最小化 */}
+        {/* スキル入力: カテゴリータブで切り替え */}
         <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
           <Typography variant="h6" sx={{ mb: 1 }} color="text.primary">スキル</Typography>
-          {Object.entries(skillsByCategory).map(([category, skills]) => (
-            <Accordion key={category} defaultExpanded={false} sx={{ mb: 2 }}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <h3 style={{ margin: 0 }}>{skillCategoryLabels[category] || category}</h3>
-              </AccordionSummary>
-              <AccordionDetails>
-                <SkillSelector
-                  skills={skills.map(skill => ({
-                    key: skill.name,
-                    label: skill.name,
-                    maxLevel: skill.levels.length,
-                    skillLevels: skill.levels // SkillLevel[] を渡す
-                  }))}
-                  selectedSkills={selectedSkills}
-                  setSelectedSkills={setSelectedSkills}
-                />
-              </AccordionDetails>
-            </Accordion>
-          ))}
+          <Tabs
+            value={skillTab}
+            onChange={(_, v) => setSkillTab(v)}
+            variant="scrollable"
+            scrollButtons="auto"
+            sx={{ mb: 1 }}
+          >
+            {skillCategories.map((category) => (
+              <Tab key={category} label={skillCategoryLabels[category] || category} />
+            ))}
+          </Tabs>
+          {/* 選択中カテゴリのスキルリストのみ表示（Accordion廃止） */}
+          <SkillSelector
+            skills={skillsByCategory[skillCategories[skillTab]].map((skill: SkillData) => ({
+              key: skill.name,
+              label: skill.name,
+              maxLevel: skill.levels.length,
+              skillLevels: skill.levels
+            }))}
+            selectedSkills={selectedSkills}
+            setSelectedSkills={setSelectedSkills}
+          />
         </Box>
-        {/* モーション入力: Boxでラップしダークモード対応の背景色。モバイル時は横マージン最小化 */}
-        <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
-          <Typography variant="h6" sx={{ mb: 1 }} color="text.primary">モーション</Typography>
-          <Accordion defaultExpanded={false}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <h3 style={{ margin: 0 }}>モーション選択</h3>
-            </AccordionSummary>
-            <AccordionDetails>
-              <MotionSelector
-                availableMotions={TACHI_MOTIONS.map((motion, idx) => ({
-                  key: `${motion.name}_${idx}`,
-                  label: motion.name,
-                  motionData: motion,
-                }))}
-                selectedMotions={selectedMotions}
-                setSelectedMotions={setSelectedMotions}
-              />
-            </AccordionDetails>
-          </Accordion>
-        </Box>
+        {/* モーション入力: Accordionのみでシンプル化 */}
+        <Accordion defaultExpanded={false} sx={{ bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="h6" color="text.primary" sx={{ m: 0 }}>モーション</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <MotionSelector
+              availableMotions={TACHI_MOTIONS.map((motion, idx) => ({
+                key: `${motion.name}_${idx}`,
+                label: motion.name,
+                motionData: motion,
+              }))}
+              selectedMotions={selectedMotions}
+              setSelectedMotions={setSelectedMotions}
+            />
+          </AccordionDetails>
+        </Accordion>
         {/* モンスター入力: Boxでラップしダークモード対応の背景色。モバイル時は横マージン最小化 */}
         <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
           <MonsterSelector

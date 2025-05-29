@@ -64,25 +64,30 @@ const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, s
             <TableCell sx={{ fontSize: '0.95rem' }}>属性</TableCell>
             <TableCell sx={{ fontSize: '0.95rem' }}>{weapon.elementType?.label || '-'}</TableCell>
           </TableRow>
-          <TableRow>
-            <TableCell sx={{ fontSize: '0.95rem' }}>属性値</TableCell>
-            <TableCell sx={{ fontSize: '0.95rem' }}>{weapon.baseElementValue}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell sx={{ fontSize: '0.95rem' }}>属性加算補正</TableCell>
-            <TableCell sx={{ fontSize: '0.95rem' }}>{totalElementAddition}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell sx={{ fontSize: '0.95rem' }}>属性乗算補正</TableCell>
-            <TableCell sx={{ fontSize: '0.95rem' }}>{totalElementModifier}</TableCell>
-          </TableRow>
+          {/* 属性が無属性でない場合のみ属性系パラメータを表示 */}
+          {weapon.elementType?.key !== 'none' && (
+            <>
+              <TableRow>
+                <TableCell sx={{ fontSize: '0.95rem' }}>属性値</TableCell>
+                <TableCell sx={{ fontSize: '0.95rem' }}>{weapon.baseElementValue}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ fontSize: '0.95rem' }}>属性加算補正</TableCell>
+                <TableCell sx={{ fontSize: '0.95rem' }}>{totalElementAddition}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ fontSize: '0.95rem' }}>属性乗算補正</TableCell>
+                <TableCell sx={{ fontSize: '0.95rem' }}>{totalElementModifier}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ fontSize: '0.95rem' }}>モーション属性補正</TableCell>
+                <TableCell sx={{ fontSize: '0.95rem' }}>{selectedMotions.length > 0 ? avgElementMultiplier : '-'}</TableCell>
+              </TableRow>
+            </>
+          )}
           <TableRow>
             <TableCell sx={{ fontSize: '0.95rem' }}>モーション値</TableCell>
             <TableCell sx={{ fontSize: '0.95rem' }}>{selectedMotions.length > 0 ? totalMotionValue : '-'}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell sx={{ fontSize: '0.95rem' }}>モーション属性補正</TableCell>
-            <TableCell sx={{ fontSize: '0.95rem' }}>{selectedMotions.length > 0 ? avgElementMultiplier : '-'}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell sx={{ fontSize: '0.95rem' }}>会心ダメージ補正</TableCell>

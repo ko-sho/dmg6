@@ -1,5 +1,15 @@
-import React from 'react';
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
+import React from "react";
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+} from "@mui/material";
 
 export interface DamageTableRow {
   part: string;
@@ -29,16 +39,16 @@ interface DamageTableProps {
 const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
   // 部位ごとにrowSpanを計算
   const partRowSpans: Record<string, number> = {};
-  rows.forEach(row => {
+  rows.forEach((row) => {
     partRowSpans[row.part] = (partRowSpans[row.part] || 0) + 1;
   });
   const renderedParts: Record<string, boolean> = {};
 
   // 状態の日本語ラベル変換
   const stateLabels: Record<string, string> = {
-    normal: '通常',
-    wounded: '傷口',
-    exposed: '弱点露出',
+    normal: "通常",
+    wounded: "傷口",
+    exposed: "弱点露出",
   };
 
   return (
@@ -46,16 +56,43 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
       <Typography variant="subtitle1" sx={{ mb: 1 }}>
         ダメージ表
       </Typography>
-      <TableContainer component={Paper} sx={{ overflowX: 'auto', boxShadow: 0 }}>
-        <Table size="small" sx={{ minWidth: '100%', width: 'max-content' }}>
+      <TableContainer
+        component={Paper}
+        sx={{ overflowX: "auto", boxShadow: 0 }}
+      >
+        <Table size="small" sx={{ minWidth: "100%", width: "max-content" }}>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}>部位</TableCell>
-              <TableCell sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}>状態</TableCell>
-              <TableCell sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}>通常</TableCell>
-              <TableCell sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}>会心</TableCell>
-              <TableCell sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}>会心率</TableCell>
-              <TableCell sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}>期待値</TableCell>
+              <TableCell
+                sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}
+              >
+                部位
+              </TableCell>
+              <TableCell
+                sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}
+              >
+                状態
+              </TableCell>
+              <TableCell
+                sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}
+              >
+                通常
+              </TableCell>
+              <TableCell
+                sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}
+              >
+                会心
+              </TableCell>
+              <TableCell
+                sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}
+              >
+                会心率
+              </TableCell>
+              <TableCell
+                sx={{ px: { xs: 0.5, sm: 1.5 }, py: { xs: 0.5, sm: 1 } }}
+              >
+                期待値
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -63,22 +100,25 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
               const showPart = !renderedParts[row.part];
               if (showPart) renderedParts[row.part] = true;
               return (
-                <TableRow key={`${row.part}-${row.state}`}
+                <TableRow
+                  key={`${row.part}-${row.state}`}
                   sx={{
-                    '& td': {
+                    "& td": {
                       px: { xs: 0.5, sm: 1.5 },
                       py: { xs: 0.5, sm: 1 },
-                      fontSize: { xs: '0.85rem', sm: '1rem' },
-                      wordBreak: 'keep-all',
+                      fontSize: { xs: "0.85rem", sm: "1rem" },
+                      wordBreak: "keep-all",
                     },
                   }}
                 >
                   {showPart ? (
-                    <TableCell rowSpan={partRowSpans[row.part]}>{row.part}</TableCell>
+                    <TableCell rowSpan={partRowSpans[row.part]}>
+                      {row.part}
+                    </TableCell>
                   ) : null}
                   <TableCell>{stateLabels[row.state] || row.state}</TableCell>
                   <TableCell>
-                    {row.damage.split(' ')[0]}
+                    {row.damage.split(" ")[0]}
                     {row.elemental !== 0 && (
                       <>
                         <br />
@@ -89,7 +129,7 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
                     )}
                   </TableCell>
                   <TableCell>
-                    {row.critDamage.split(' ')[0]}
+                    {row.critDamage.split(" ")[0]}
                     {row.elemental !== 0 && (
                       <>
                         <br />
@@ -100,10 +140,12 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
                     )}
                   </TableCell>
                   <TableCell>
-                    {row.critRate !== undefined ? `${Math.round(row.critRate * 100)}%` : '-'}
+                    {row.critRate !== undefined
+                      ? `${Math.round(row.critRate * 100)}%`
+                      : "-"}
                   </TableCell>
                   <TableCell>
-                    {row.expected.split(' ')[0]}
+                    {row.expected.split(" ")[0]}
                     {row.elemental !== 0 && (
                       <>
                         <br />
@@ -119,27 +161,62 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
           </TableBody>
           {/* 平均行の追加 */}
           <TableBody>
-            <TableRow>
-              <TableCell colSpan={2} align="left" sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>平均</TableCell>
-              <TableCell align="left" sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
-                {rows.length > 0 ? (
-                  (rows.reduce((sum, row) => sum + Number(row.damage.split(' ')[0]), 0) / rows.length).toFixed(1)
-                ) : '-'}
+            <TableRow
+              sx={{
+                "& td": {
+                  px: { xs: 0.5, sm: 1.5 },
+                  py: { xs: 1, sm: 1 },
+                  fontSize: { xs: "0.85rem", sm: "1rem" },
+                  wordBreak: "keep-all",
+                },
+              }}
+            >
+              <TableCell colSpan={2} align="left">
+                平均
               </TableCell>
-              <TableCell align="left" sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
-                {rows.length > 0 ? (
-                  (rows.reduce((sum, row) => sum + Number(row.critDamage.split(' ')[0]), 0) / rows.length).toFixed(1)
-                ) : '-'}
+              <TableCell align="left">
+                {rows.length > 0
+                  ? (
+                      rows.reduce(
+                        (sum, row) => sum + Number(row.damage.split(" ")[0]),
+                        0
+                      ) / rows.length
+                    ).toFixed(1)
+                  : "-"}
               </TableCell>
-              <TableCell align="left" sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
-                {rows.length > 0 ? (
-                  (rows.reduce((sum, row) => sum + (row.critRate !== undefined ? row.critRate : 0), 0) / rows.length * 100).toFixed(0) + '%'
-                ) : '-'}
+              <TableCell align="left">
+                {rows.length > 0
+                  ? (
+                      rows.reduce(
+                        (sum, row) =>
+                          sum + Number(row.critDamage.split(" ")[0]),
+                        0
+                      ) / rows.length
+                    ).toFixed(1)
+                  : "-"}
               </TableCell>
-              <TableCell align="left" sx={{ fontSize: { xs: '0.85rem', sm: '1rem' } }}>
-                {rows.length > 0 ? (
-                  (rows.reduce((sum, row) => sum + Number(row.expected.split(' ')[0]), 0) / rows.length).toFixed(1)
-                ) : '-'}
+              <TableCell align="left">
+                {rows.length > 0
+                  ? (
+                      (rows.reduce(
+                        (sum, row) =>
+                          sum + (row.critRate !== undefined ? row.critRate : 0),
+                        0
+                      ) /
+                        rows.length) *
+                      100
+                    ).toFixed(0) + "%"
+                  : "-"}
+              </TableCell>
+              <TableCell align="left">
+                {rows.length > 0
+                  ? (
+                      rows.reduce(
+                        (sum, row) => sum + Number(row.expected.split(" ")[0]),
+                        0
+                      ) / rows.length
+                    ).toFixed(1)
+                  : "-"}
               </TableCell>
             </TableRow>
           </TableBody>

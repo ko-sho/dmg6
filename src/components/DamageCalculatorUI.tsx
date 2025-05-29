@@ -7,6 +7,10 @@ import { skillsByCategory, skillCategoryLabels } from '../data/skills/index';
 import { TACHI_MOTIONS } from '../data/weapons/TachiMotions';
 import Redau from '../data/monsters/Redau';
 import UzTuna from '../data/monsters/UzTuna';
+import Arshveldo from '../data/monsters/Arshveldo';
+import GoreMagala from '../data/monsters/GoreMagala';
+import NuEgdra from '../data/monsters/NuEgdra';
+import ZoShia from '../data/monsters/ZoShia';
 import type { Motion } from '../models/Motion';
 import type { Monster } from '../models/Monster';
 import type { WeaponParameters } from '../models/Weapon';
@@ -206,7 +210,7 @@ const DamageCalculatorUI = () => {
         {/* モンスター入力: Boxでラップしダークモード対応の背景色。モバイル時は横マージン最小化 */}
         <Box sx={{ px: { xs: 0.5, sm: 3 }, py: 2, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
           <MonsterSelector
-            availableMonsters={[Redau, UzTuna]}
+            availableMonsters={[Redau, UzTuna, Arshveldo, GoreMagala, NuEgdra, ZoShia]}
             selectedMonster={selectedMonster}
             setSelectedMonster={setSelectedMonster}
           />

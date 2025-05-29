@@ -257,11 +257,7 @@ const DamageCalculatorUI = () => {
                   sharpnessColor={sharpness}
                 />
               </>
-            ) : (
-              <Box sx={{ color: 'text.secondary', my: 2 }}>
-                ダメージ表（モック）
-              </Box>
-            )}
+            ) : null}
           </Box>
         )}
         {tabIndex > 0 && history[tabIndex - 1] && (

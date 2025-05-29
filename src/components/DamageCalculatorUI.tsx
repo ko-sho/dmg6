@@ -129,7 +129,7 @@ const DamageCalculatorUI = () => {
     <Box sx={{ maxWidth: 700, mx: 'auto', my: 4 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
         <h1 style={{ textAlign: 'center', margin: 0, flex: 1 }}>Damage Calculator Tool</h1>
-        <IconButton aria-label="プリセット保存/読込" onClick={() => setPresetDialogOpen(true)} size="large">
+        <IconButton aria-label="プリセット保存/読込" onClick={() => setPresetDialogOpen(true)} size="large" sx={{ color: 'text.primary', bgcolor: 'background.paper', '&:hover': { bgcolor: 'action.hover' } }}>
           <SaveIcon />
         </IconButton>
       </Box>

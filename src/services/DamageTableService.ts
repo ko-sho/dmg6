@@ -27,7 +27,8 @@ export interface DamageTableRow {
   elementModifier: number;
 }
 
-function getApplicableSkills(
+// getApplicableSkillsをテスト用にexport
+export function getApplicableSkills(
   selectedSkills: {
     key: string;
     level: number;

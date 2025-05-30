@@ -17,17 +17,20 @@ import { kokusyokuIttai } from './KokusyokuIttai';
 import { resentment } from './Resentment';
 import { DragonAttack, FireAttack, IceAttack, ThunderAttack, WaterAttack } from './ElementalAttackSkills';
 import Hien from './Hien';
+import OffensiveGuard from './OffensiveGuard';
+import { nurebaMon } from './NurebaMon';
+import { criticalEye } from './CriticalEye';
 
 export const skillsByCategory = {
-  attack: [attackBoost, criticalBoost, Hien, mindEye, FireAttack, WaterAttack, ThunderAttack, IceAttack, DragonAttack],
-  defense: [adrenalineRush, challenger, counterstrike, maximumMight, peakPerformance, latentPower, masterfulStrike, weaknessExploit, chainCrit, elementalAbsorption, zenState, resentment],
+  weapon: [attackBoost, criticalBoost, Hien, mindEye, FireAttack, WaterAttack, ThunderAttack, IceAttack, DragonAttack, nurebaMon, criticalEye],
+  armor: [adrenalineRush, challenger, counterstrike, maximumMight, peakPerformance, latentPower, masterfulStrike, weaknessExploit, chainCrit, elementalAbsorption, zenState, resentment, OffensiveGuard],
   group: [nushiSoul],
   series: [kokusyokuIttai],
 };
 
 export const skillCategoryLabels: Record<string, string> = {
-  attack: '武器スキル',
-  defense: '防具スキル',
+  weapon: '武器スキル',
+  armor: '防具スキル',
   group: 'グループスキル',
   series: 'シリーズスキル',
 };

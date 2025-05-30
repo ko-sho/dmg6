@@ -6,8 +6,8 @@ const NuEgdra: Monster = {
     {
       name: '頭',
       states: [
-        { state: 'normal', slashHitZone: 70, bluntHitZone: 70, shotHitZone: 70, fireHitZone: 0, waterHitZone: 15, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
-        { state: 'wounded', slashHitZone: 80, bluntHitZone: 80, shotHitZone: 80, fireHitZone: 0, waterHitZone: 25, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
+        { state: 'normal', slashHitZone: 70, bluntHitZone: 75, shotHitZone: 50, fireHitZone: 0, waterHitZone: 15, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
+        { state: 'wounded', slashHitZone: 80, bluntHitZone: 85, shotHitZone: 60, fireHitZone: 0, waterHitZone: 25, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
       ],
     },
     {
@@ -19,28 +19,28 @@ const NuEgdra: Monster = {
     {
       name: '胴体',
       states: [
-        { state: 'normal', slashHitZone: 50, bluntHitZone: 50, shotHitZone: 50, fireHitZone: 0, waterHitZone: 15, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
-        { state: 'wounded', slashHitZone: 65, bluntHitZone: 65, shotHitZone: 65, fireHitZone: 0, waterHitZone: 25, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
+        { state: 'normal', slashHitZone: 50, bluntHitZone: 65, shotHitZone: 43, fireHitZone: 0, waterHitZone: 15, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
+        { state: 'wounded', slashHitZone: 65, bluntHitZone: 75, shotHitZone: 58, fireHitZone: 0, waterHitZone: 25, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
       ],
     },
     {
       name: '触腕',
       states: [
-        { state: 'normal', slashHitZone: 30, bluntHitZone: 30, shotHitZone: 30, fireHitZone: 0, waterHitZone: 15, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
+        { state: 'normal', slashHitZone: 30, bluntHitZone: 43, shotHitZone: 25, fireHitZone: 0, waterHitZone: 15, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
       ],
     },
     {
       name: '傘膜',
       states: [
-        { state: 'normal', slashHitZone: 30, bluntHitZone: 30, shotHitZone: 30, fireHitZone: 0, waterHitZone: 15, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
-        { state: 'wounded', slashHitZone: 65, bluntHitZone: 65, shotHitZone: 65, fireHitZone: 0, waterHitZone: 25, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
+        { state: 'normal', slashHitZone: 30, bluntHitZone: 43, shotHitZone: 25, fireHitZone: 0, waterHitZone: 15, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
+        { state: 'wounded', slashHitZone: 65, bluntHitZone: 75, shotHitZone: 58, fireHitZone: 0, waterHitZone: 25, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
       ],
     },
     {
       name: '腕6本',
       states: [
-        { state: 'normal', slashHitZone: 55, bluntHitZone: 55, shotHitZone: 55, fireHitZone: 0, waterHitZone: 15, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
-        { state: 'wounded', slashHitZone: 65, bluntHitZone: 65, shotHitZone: 65, fireHitZone: 0, waterHitZone: 25, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
+        { state: 'normal', slashHitZone: 55, bluntHitZone: 48, shotHitZone: 48, fireHitZone: 0, waterHitZone: 15, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
+        { state: 'wounded', slashHitZone: 65, bluntHitZone: 75, shotHitZone: 58, fireHitZone: 0, waterHitZone: 25, thunderHitZone: 10, iceHitZone: 5, dragonHitZone: 10 },
       ],
     },
   ],

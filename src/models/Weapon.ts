@@ -15,7 +15,7 @@ export const ELEMENT_TYPES: ElementType[] = [
   { key: 'dragon', label: '龍' },
 ];
 
-export type WeaponType = 'longsword';
+export type WeaponType = 'longsword' | 'greatsword';
 
 export interface WeaponParameters {
   weaponType: WeaponType; // 武器種

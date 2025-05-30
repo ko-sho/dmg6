@@ -5,6 +5,7 @@ import MotionSelector from "./MotionSelector";
 import MonsterSelector from "./MonsterSelector";
 import { skillsByCategory, skillCategoryLabels } from "../data/skills/index";
 import { TACHI_MOTIONS } from "../data/weapons/TachiMotions";
+import { GREATSWORD_MOTIONS } from "../data/weapons/GreatswordMotions";
 import Redau from "../data/monsters/Redau";
 import UzTuna from "../data/monsters/UzTuna";
 import Arshveldo from "../data/monsters/Arshveldo";
@@ -70,7 +71,7 @@ type ResultType = {
 // 今後他武器種追加時のためのモーションマップ
 const MOTIONS_BY_WEAPON_TYPE: Record<string, Motion[]> = {
   longsword: TACHI_MOTIONS,
-  // 例: greatsword: GREATSWORD_MOTIONS,
+  greatsword: GREATSWORD_MOTIONS,
 };
 
 const DamageCalculatorUI = () => {

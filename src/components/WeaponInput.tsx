@@ -13,6 +13,7 @@ import SharpnessSelector from './SharpnessSelector';
 
 const WEAPON_TYPES: { key: WeaponType; label: string }[] = [
   { key: 'longsword', label: '太刀' },
+  { key: 'greatsword', label: '大剣' },
 ];
 
 interface WeaponInputProps {

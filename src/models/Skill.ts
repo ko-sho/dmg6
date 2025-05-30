@@ -18,10 +18,11 @@ export interface SkillParameters {
   elementModifier?: number; // 属性補正
   elementalHitZone?: number; // 属性肉質
   elementalCriticalModifier?: number; // 属性会心時の属性ダメージ倍率（例: 1.35）
-  minHitZone?: number; // 適用される肉質の下限
-  maxHitZone?: number; // 適用される肉質の上限
+  minHitZone: number; // 適用される肉質の下限
+  maxHitZone: number; // 適用される肉質の上限
   applicableStates?: MonsterPartState[]; // 適用される部位の状態
   description?: string; // スキル効果説明文
+  isJumpAttackOnly?: boolean; // ジャンプ攻撃のみに適用する場合true
 }
 
 export interface Skill {

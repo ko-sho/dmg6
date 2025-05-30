@@ -1,4 +1,5 @@
-export type MotionAttackType = 'slash' | 'blunt' | 'shot';
+export const MOTION_ATTACK_TYPES = ['slash', 'blunt', 'shot'] as const;
+export type MotionAttackType = typeof MOTION_ATTACK_TYPES[number];
 
 export interface Motion {
   name: string; // モーション名
@@ -6,7 +7,7 @@ export interface Motion {
   elementMultiplier: number; // 属性倍率
   sharpnessModifier: number; // 切れ味補正倍率
   hitCount: number; // ヒット数
-  attackType: MotionAttackType; // 攻撃タイプ: 'slash' | 'blunt' | 'shot'
+  attackType: MotionAttackType; // 攻撃タイプ: enum MotionAttackType
   isJump?: boolean; // ジャンプ攻撃かどうか（省略時false）
 }
 

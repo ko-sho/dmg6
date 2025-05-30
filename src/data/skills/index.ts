@@ -16,9 +16,10 @@ import { nushiSoul } from './NushiSoul';
 import { kokusyokuIttai } from './KokusyokuIttai';
 import { resentment } from './Resentment';
 import { DragonAttack, FireAttack, IceAttack, ThunderAttack, WaterAttack } from './ElementalAttackSkills';
+import Hien from './Hien';
 
 export const skillsByCategory = {
-  attack: [attackBoost, criticalBoost, mindEye, FireAttack, WaterAttack, ThunderAttack, IceAttack, DragonAttack],
+  attack: [attackBoost, criticalBoost, Hien, mindEye, FireAttack, WaterAttack, ThunderAttack, IceAttack, DragonAttack],
   defense: [adrenalineRush, challenger, counterstrike, maximumMight, peakPerformance, latentPower, masterfulStrike, weaknessExploit, chainCrit, elementalAbsorption, zenState, resentment],
   group: [nushiSoul],
   series: [kokusyokuIttai],

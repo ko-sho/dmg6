@@ -150,7 +150,6 @@ const DamageCalculatorUI = () => {
     };
     setDamageResult(JSON.stringify(result, null, 2));
     setDamageTableRows(damageTableRows);
-
     setHistory((prev) => {
       if (lastResult) {
         return [lastResult, ...prev];
@@ -159,7 +158,6 @@ const DamageCalculatorUI = () => {
       }
     });
     setLastResult(result);
-    // 計算時、現在の結果タブ以外にいる場合のみ現在の結果タブ(0)に移動
     if (tabIndex !== 0) {
       setTabIndex(0);
     }
@@ -377,15 +375,15 @@ const DamageCalculatorUI = () => {
             {selectedMonster && damageTableRows.length > 0 ? (
               <>
                 {/* スキルテーブルを一番上に */}
-                <SkillLevelTable selectedSkills={selectedSkills} />
+                <SkillLevelTable selectedSkills={lastResult?.selectedSkills ?? selectedSkills} />
                 {/* ダメージテーブル */}
-                <DamageTable rows={damageTableRows} />
+                <DamageTable rows={lastResult?.damageTableRows ?? damageTableRows} />
                 {/* パラメータサマリー */}
                 <SelectedParamsSummary
-                  weapon={weaponInfo}
-                  selectedSkills={selectedSkills}
-                  selectedMotions={selectedMotions}
-                  sharpnessColor={sharpness}
+                  weapon={lastResult?.weaponInfo ?? weaponInfo}
+                  selectedSkills={lastResult?.selectedSkills ?? selectedSkills}
+                  selectedMotions={lastResult?.selectedMotions ?? selectedMotions}
+                  sharpnessColor={lastResult?.sharpness ?? sharpness}
                 />
               </>
             ) : null}

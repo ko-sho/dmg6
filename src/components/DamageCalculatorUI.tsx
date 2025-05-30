@@ -178,7 +178,7 @@ const DamageCalculatorUI = () => {
         }}
       >
         <h1 style={{ textAlign: "center", margin: 0, flex: 1 }}>
-          Damage Calculator Tool
+          MH Wilds Damage Calculator - モンスターハンターワイルズ ダメージ計算ツール -
         </h1>
         <IconButton
           aria-label="プリセット保存/読込"

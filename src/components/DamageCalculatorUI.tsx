@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import WeaponInput from "./WeaponInput";
 import SkillSelector from "./SkillSelector";
 import MotionSelector from "./MotionSelector";
@@ -166,6 +166,16 @@ const DamageCalculatorUI = () => {
 
   // 選択中武器種に応じたモーションリストを取得
   const availableMotions = MOTIONS_BY_WEAPON_TYPE[weaponInfo.weaponType] || [];
+
+  // 武器種変更時にselectedMotionsを有効なものだけにフィルタ
+  useEffect(() => {
+    setSelectedMotions((prev) =>
+      prev.filter((motion) =>
+        availableMotions.some((m) => m.name === motion.name)
+      )
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [weaponInfo.weaponType]);
 
   return (
     <Box sx={{ maxWidth: 700, mx: "auto", my: 4 }}>

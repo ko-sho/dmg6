@@ -9,6 +9,13 @@ import {
   TableRow,
   Paper,
   Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Checkbox,
+  ListItemText,
+  OutlinedInput,
 } from "@mui/material";
 
 export interface DamageTableRow {
@@ -36,26 +43,70 @@ interface DamageTableProps {
   rows: DamageTableRow[];
 }
 
+const STATE_OPTIONS = [
+  { value: "normal", label: "通常" },
+  { value: "wounded", label: "傷口" },
+  { value: "exposed", label: "弱点露出" },
+];
+
+const stateLabels: Record<string, string> = {
+  normal: "通常",
+  wounded: "傷口",
+  exposed: "弱点露出",
+};
+
 const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
+  const [selectedStates, setSelectedStates] = React.useState<string[]>(
+    STATE_OPTIONS.map((opt) => opt.value)
+  );
+
+  // フィルタリング
+  const filteredRows = rows.filter((row) => selectedStates.includes(row.state));
+
   // 部位ごとにrowSpanを計算
   const partRowSpans: Record<string, number> = {};
-  rows.forEach((row) => {
+  filteredRows.forEach((row) => {
     partRowSpans[row.part] = (partRowSpans[row.part] || 0) + 1;
   });
   const renderedParts: Record<string, boolean> = {};
-
-  // 状態の日本語ラベル変換
-  const stateLabels: Record<string, string> = {
-    normal: "通常",
-    wounded: "傷口",
-    exposed: "弱点露出",
-  };
 
   return (
     <Box sx={{ mt: 3 }}>
       <Typography variant="subtitle1" sx={{ mb: 1 }}>
         ダメージ表
       </Typography>
+      {/* 状態フィルタ */}
+      <FormControl sx={{ mb: 2, minWidth: 200 }} size="small">
+        <InputLabel id="state-filter-label">部位状態フィルタ</InputLabel>
+        <Select
+          labelId="state-filter-label"
+          multiple
+          value={selectedStates}
+          onChange={(e) =>
+            setSelectedStates(
+              typeof e.target.value === "string"
+                ? e.target.value.split(",")
+                : e.target.value
+            )
+          }
+          input={<OutlinedInput label="部位状態フィルタ" />}
+          renderValue={(selected) =>
+            selected
+              .map(
+                (val) =>
+                  STATE_OPTIONS.find((opt) => opt.value === val)?.label
+              )
+              .join(", ")
+          }
+        >
+          {STATE_OPTIONS.map((opt) => (
+            <MenuItem key={opt.value} value={opt.value}>
+              <Checkbox checked={selectedStates.indexOf(opt.value) > -1} />
+              <ListItemText primary={opt.label} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       <TableContainer
         component={Paper}
         sx={{ overflowX: "auto", boxShadow: 0 }}
@@ -96,7 +147,7 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => {
+            {filteredRows.map((row) => {
               const showPart = !renderedParts[row.part];
               if (showPart) renderedParts[row.part] = true;
               return (
@@ -175,46 +226,46 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
                 平均
               </TableCell>
               <TableCell align="left">
-                {rows.length > 0
+                {filteredRows.length > 0
                   ? (
-                      rows.reduce(
+                      filteredRows.reduce(
                         (sum, row) => sum + Number(row.damage.split(" ")[0]),
                         0
-                      ) / rows.length
+                      ) / filteredRows.length
                     ).toFixed(2)
                   : "-"}
               </TableCell>
               <TableCell align="left">
-                {rows.length > 0
+                {filteredRows.length > 0
                   ? (
-                      rows.reduce(
+                      filteredRows.reduce(
                         (sum, row) =>
                           sum + Number(row.critDamage.split(" ")[0]),
                         0
-                      ) / rows.length
+                      ) / filteredRows.length
                     ).toFixed(2)
                   : "-"}
               </TableCell>
               <TableCell align="left">
-                {rows.length > 0
+                {filteredRows.length > 0
                   ? (
-                      (rows.reduce(
+                      (filteredRows.reduce(
                         (sum, row) =>
                           sum + (row.critRate !== undefined ? row.critRate : 0),
                         0
                       ) /
-                        rows.length) *
+                        filteredRows.length) *
                       100
                     ).toFixed(0) + "%"
                   : "-"}
               </TableCell>
               <TableCell align="left">
-                {rows.length > 0
+                {filteredRows.length > 0
                   ? (
-                      rows.reduce(
+                      filteredRows.reduce(
                         (sum, row) => sum + Number(row.expected.split(" ")[0]),
                         0
-                      ) / rows.length
+                      ) / filteredRows.length
                     ).toFixed(2)
                   : "-"}
               </TableCell>

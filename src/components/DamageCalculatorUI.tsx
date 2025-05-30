@@ -13,8 +13,8 @@ import GoreMagala from "../data/monsters/GoreMagala";
 import NuEgdra from "../data/monsters/NuEgdra";
 import ZoShia from "../data/monsters/ZoShia";
 import NekoTrainingTarupuncher from "../data/monsters/NekoTrainingTarupuncher";
+import { Monster } from "../models/Monster";
 import type { Motion } from "../models/Motion";
-import type { Monster } from "../models/Monster";
 import type { WeaponParameters } from "../models/Weapon";
 import type { SkillParameters } from "../models/Skill";
 import DamageTable from "./DamageTable";
@@ -25,6 +25,7 @@ import SaveLoadPreset from "./SaveLoadPreset";
 import type { PresetData } from "./SaveLoadPreset";
 import SkillLevelTable from "./SkillLevelTable";
 import type { SkillData } from "../models/Skill";
+import SelectedMotionsTable from "./SelectedMotionsTable";
 // MUI imports
 import {
   Box,
@@ -116,9 +117,26 @@ const DamageCalculatorUI = () => {
       );
     if (preset.selectedMotions)
       setSelectedMotions(preset.selectedMotions as Motion[]);
-    if (preset.selectedMonster)
-      setSelectedMonster(preset.selectedMonster as Monster);
+    if (preset.selectedMonster) {
+      // プリセットのselectedMonsterを正しいインスタンスに復元
+      const monsterList = [
+        NekoTrainingTarupuncher,
+        Redau,
+        UzTuna,
+        NuEgdra,
+        Arshveldo,
+        GoreMagala,
+        ZoShia,
+      ];
+      const presetMonster = preset.selectedMonster as { name: string };
+      const found = monsterList.find((m) => m.name === presetMonster.name);
+      setSelectedMonster(found ? found : null);
+    }
     if (preset.sharpness) setSharpness(preset.sharpness as SharpnessColor);
+    // プリセット読込後にダメージ計算は自動実行しない
+    // setTimeout(() => {
+    //   handleCalculateDamage();
+    // }, 0);
   };
 
   // 履歴保存時はselectedSkillsをSkillSelectorの型（key/level/skillData[]）で保存する
@@ -393,6 +411,15 @@ const DamageCalculatorUI = () => {
                 <SkillLevelTable selectedSkills={lastResult?.selectedSkills ?? selectedSkills} />
                 {/* ダメージテーブル */}
                 <DamageTable rows={lastResult?.damageTableRows ?? damageTableRows} />
+                {/* 選択中モーション一覧テーブル */}
+                <SelectedMotionsTable
+                  motions={(lastResult?.selectedMotions ?? selectedMotions).map((motion) => ({
+                    name: motion.name,
+                    motionValue: motion.motionValue,
+                    elementModifier: motion.elementMultiplier,
+                    hits: motion.hitCount,
+                  }))}
+                />
                 {/* パラメータサマリー */}
                 <SelectedParamsSummary
                   weapon={lastResult?.weaponInfo ?? weaponInfo}

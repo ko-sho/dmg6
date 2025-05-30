@@ -27,6 +27,15 @@ export interface DamageTableRow {
   elementModifier: number;
 }
 
+// 属性タイプ→HitZone名のマッピング定数
+const ELEMENT_HITZONE_KEY: Record<string, string> = {
+  fire: "fireHitZone",
+  water: "waterHitZone",
+  thunder: "thunderHitZone",
+  ice: "iceHitZone",
+  dragon: "dragonHitZone",
+};
+
 // getApplicableSkillsをテスト用にexport
 export function getApplicableSkills(
   selectedSkills: {
@@ -68,6 +77,11 @@ function getPhysicalParams(
     bluntHitZone: number;
     shotHitZone: number;
     state: string;
+    fireHitZone?: number;
+    waterHitZone?: number;
+    thunderHitZone?: number;
+    iceHitZone?: number;
+    dragonHitZone?: number;
   },
   applicableSkills: SkillParameters[]
 ): DamageParameters {
@@ -96,7 +110,7 @@ function getPhysicalParams(
     elementMultiplier: motion.elementMultiplier,
     elementAddition: 0,
     elementModifier: 1,
-    elementalHitZone: state.slashHitZone,
+    elementalHitZone: state.slashHitZone, // ←ここは属性ごとに上書きするので仮
     minHitZone: 0,
     maxHitZone: 100,
     applicableStates: [
@@ -154,6 +168,15 @@ export function calculateDamageTable(
           state,
           applicableSkills
         );
+        // 属性肉質のキーを決定（マッピングでシンプル化）
+        let elementalHitZone = state.slashHitZone;
+        if (weaponInfo.elementType && weaponInfo.elementType.key !== "none") {
+          const key = weaponInfo.elementType.key;
+          const hitZoneKey = ELEMENT_HITZONE_KEY[key] as keyof typeof state || "slashHitZone";
+          if (state[hitZoneKey] !== undefined) {
+            elementalHitZone = state[hitZoneKey] as number;
+          }
+        }
         // 物理ダメージ
         totalPhysical += DamageCalculator.calculatePhysicalDamage({
           ...physicalParams,
@@ -164,35 +187,33 @@ export function calculateDamageTable(
           criticalDamageModifier: 1.25 + totalCriticalDamageModifier,
         });
         // 属性ダメージもモーションごとに計算
-        const elementalParams: DamageParameters = {
-          ...physicalParams,
-          attackType: "slash", // 属性には影響しないのでダミー
-          elementAddition: applicableSkills.reduce(
-            (sum, s) => sum + (s.elementAddition ?? 0),
-            0
-          ),
-          elementModifier: applicableSkills.reduce(
-            (mul, s) => mul * (s.elementModifier ?? 1),
-            1
-          ),
-          elementalHitZone: state.slashHitZone,
-          elementalCriticalModifier: applicableSkills.reduce(
-            (mul, s) => mul * (s.elementalCriticalModifier ?? 1),
-            1
-          ),
-          hitcount: motion.hitCount ?? 1,
-        };
-        const elemental =
-          weaponInfo.elementType && weaponInfo.elementType.key === "none"
-            ? 0
-            : DamageCalculator.calculateElementalDamage(elementalParams);
-        const critElemental =
-          weaponInfo.elementType && weaponInfo.elementType.key === "none"
-            ? 0
-            : DamageCalculator.calculateElementalDamage({
-                ...elementalParams,
-                elementModifier: elementalParams.elementModifier,
-              });
+        let elemental = 0;
+        let critElemental = 0;
+        if (weaponInfo.elementType && weaponInfo.elementType.key !== "none") {
+          const elementalParams: DamageParameters = {
+            ...physicalParams,
+            attackType: "slash", // 属性には影響しないのでダミー
+            elementAddition: applicableSkills.reduce(
+              (sum, s) => sum + (s.elementAddition ?? 0),
+              0
+            ),
+            elementModifier: applicableSkills.reduce(
+              (mul, s) => mul * (s.elementModifier ?? 1),
+              1
+            ),
+            elementalHitZone,
+            elementalCriticalModifier: applicableSkills.reduce(
+              (mul, s) => mul * (s.elementalCriticalModifier ?? 1),
+              1
+            ),
+            hitcount: motion.hitCount ?? 1,
+          };
+          elemental = DamageCalculator.calculateElementalDamage(elementalParams);
+          critElemental = DamageCalculator.calculateElementalDamage({
+            ...elementalParams,
+            elementModifier: elementalParams.elementModifier,
+          });
+        }
         totalElemental += elemental;
         totalCritElemental += critElemental;
         totalMotionValue += motion.motionValue;

@@ -122,12 +122,12 @@ const DamageCalculatorUI = () => {
 
   // 履歴保存時はselectedSkillsをSkillSelectorの型（key/level/skillData[]）で保存する
   const handleCalculateDamage = () => {
-    if (!selectedMonster) {
-      setErrorMessage("モンスターを選択してください");
-      return;
-    }
     if (selectedMotions.length === 0) {
       setErrorMessage("モーションを1つ以上選択してください");
+      return;
+    }
+    if (!selectedMonster) {
+      setErrorMessage("モンスターを選択してください");
       return;
     }
     setErrorMessage(null);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import type { SkillParameters } from '../models/Skill';
 
 interface SkillLevelTableProps {
@@ -9,8 +9,8 @@ interface SkillLevelTableProps {
 const SkillLevelTable: React.FC<SkillLevelTableProps> = ({ selectedSkills }) => {
   if (!selectedSkills || selectedSkills.length === 0) return null;
   return (
-    <Box sx={{ mt: 2, minWidth: '90%' }}>
-      <Typography variant="subtitle2" sx={{ mb: 1, fontSize: '1rem' }}>
+    <TableContainer sx={{ mt: 2, boxShadow: 0 }} component={Paper}>
+      <Typography variant="subtitle2" sx={{ p: 1 }}>
         適用スキル一覧
       </Typography>
       <Table size="small">
@@ -29,7 +29,7 @@ const SkillLevelTable: React.FC<SkillLevelTableProps> = ({ selectedSkills }) => 
           ))}
         </TableBody>
       </Table>
-    </Box>
+    </TableContainer>
   );
 };
 

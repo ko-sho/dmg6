@@ -407,10 +407,10 @@ const DamageCalculatorUI = () => {
           >
             {selectedMonster && damageTableRows.length > 0 ? (
               <>
-                {/* スキルテーブルを一番上に */}
-                <SkillLevelTable selectedSkills={lastResult?.selectedSkills ?? selectedSkills} />
-                {/* ダメージテーブル */}
+                {/* ダメージテーブルを一番上に */}
                 <DamageTable rows={lastResult?.damageTableRows ?? damageTableRows} />
+                {/* スキルテーブルを下に */}
+                <SkillLevelTable selectedSkills={lastResult?.selectedSkills ?? selectedSkills} />
                 {/* 選択中モーション一覧テーブル */}
                 <SelectedMotionsTable
                   motions={(lastResult?.selectedMotions ?? selectedMotions).map((motion) => ({

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography, TableContainer, Paper } from '@mui/material';
 import type { WeaponParameters } from '../models/Weapon';
 import type { SkillParameters } from '../models/Skill';
 import type { Motion } from '../models/Motion';
@@ -32,8 +32,8 @@ const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, s
   const sharpnessObj = SHARPNESS_LEVELS.find(s => s.color === sharpnessColor) ?? SHARPNESS_LEVELS[5];
 
   return (
-    <Box sx={{ mt: 2, minWidth: '90%' }}>
-      <Typography variant="subtitle2" sx={{ mb: 1, fontSize: '1rem' }}>
+    <TableContainer component={Paper} sx={{ mt: 2, boxShadow:0 }}>
+      <Typography variant="subtitle2" sx={{ p: 1 }}>
         選択中パラメータ（代表値）
       </Typography>
       <Table size="small">
@@ -98,7 +98,7 @@ const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, s
       <Typography variant="caption" color="text.secondary">
         ※スキル補正は全て合算（攻撃乗算は掛け算）、モーション値は合計、モーション属性補正は平均値を表示。
       </Typography>
-    </Box>
+    </TableContainer>
   );
 };
 

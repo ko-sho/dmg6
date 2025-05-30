@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Box,
   Table,
   TableBody,
   TableCell,
@@ -71,8 +70,8 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
   const renderedParts: Record<string, boolean> = {};
 
   return (
-    <Box sx={{ mt: 3 }}>
-      <Typography variant="subtitle1" sx={{ mb: 1 }}>
+    <TableContainer component={Paper} sx={{ mt: 2, boxShadow: 0 }}>
+      <Typography variant="subtitle2" sx={{ p: 1 }}>
         ダメージ表
       </Typography>
       {/* 状態フィルタ */}
@@ -275,7 +274,7 @@ const DamageTable: React.FC<DamageTableProps> = ({ rows }) => {
       </TableContainer>
       {/* 計算に使われたパラメータ値のテーブルを追加（縦長形式） */}
       {/* パラメータ合計テーブルはSelectedParamsSummaryに移行のため削除 */}
-    </Box>
+    </TableContainer>
   );
 };
 

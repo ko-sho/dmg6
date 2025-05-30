@@ -1,7 +1,7 @@
 import type { Monster } from '../../models/Monster';
 
 const NekoTrainingTarupuncher: Monster = {
-  name: '猫式訓練タルパンチャー',
+  name: 'ネコ式訓練タルパンチャー',
   parts: [
     {
       name: 'やわらかい',
@@ -27,11 +27,11 @@ const NekoTrainingTarupuncher: Monster = {
           slashHitZone: 40,
           bluntHitZone: 40,
           shotHitZone: 40,
-          fireHitZone: 30,
-          waterHitZone: 30,
-          thunderHitZone: 30,
-          iceHitZone: 30,
-          dragonHitZone: 30,
+          fireHitZone: 15,
+          waterHitZone: 15,
+          thunderHitZone: 15,
+          iceHitZone: 15,
+          dragonHitZone: 15,
         },
       ],
     },

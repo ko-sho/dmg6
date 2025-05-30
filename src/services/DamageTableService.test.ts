@@ -236,7 +236,9 @@ describe('DamageTableServiceのテスト', () => {
     const row = rows[0];
     // 期待値: (150*1.2+5)*20*1.32*1*70/10000
     const expectedPhysical = ((150*1.2+5)*20*1.32*1*70/10000);
-    expect(row.physical).toBeCloseTo(expectedPhysical, 2);
+    // 1ヒットごとに小数第1位で四捨五入
+    const expectedPhysicalRounded = Math.round(expectedPhysical * 10) / 10;
+    expect(row.physical).toBeCloseTo(expectedPhysicalRounded, 1);
     // パラメータも正しく反映されているか
     expect(row.baseWeaponMultiplier).toBe(150);
     expect(row.attackMultiplierBonus).toBe(1);
@@ -372,6 +374,7 @@ describe('DamageTableServiceのテスト', () => {
     expect(rowsWhite[0].physical).toBeLessThan(rowsYellow[0].physical);
     expect(rowsYellow[0].physical).toBeLessThan(rowsRed[0].physical);
     // 無色の物理ダメージ * 1.1 ≒ 赤色の物理ダメージ
-    expect(rowsRed[0].physical).toBeCloseTo(rowsNone[0].physical * 1.1, 2);
+    const expectedRed = Math.round(rowsNone[0].physical * 1.1 * 10) / 10;
+    expect(rowsRed[0].physical).toBeCloseTo(expectedRed, 1);
   });
 });

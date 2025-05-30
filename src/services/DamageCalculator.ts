@@ -6,6 +6,7 @@ export interface DamageParameters {
   attackMultiplierBonus: number; // 攻撃乗算倍率
   motionValue: number; // モーション値
   sharpnessModifier: number; // 切れ味補正
+  elementalSharpnessModifier: number; // 属性切れ味補正
   criticalDamageModifier?: number; // 会心ダメージ補正（デフォルト1.25）
   criticalRate: number; // 会心率
   criticalRateBonus: number; // 加算会心率
@@ -67,7 +68,11 @@ export class DamageCalculator {
       10000;
 
     // 多段ヒット考慮
-    return Math.round(physicalDamage * (params.hitcount ?? 1) * 100) / 100;
+    let totalPhysical = 0;
+    for (let i = 0; i < (params.hitcount ?? 1); i++) {
+      totalPhysical += Math.round(physicalDamage * 10) / 10;
+    }
+    return totalPhysical;
   }
 
   static calculateElementalDamage(params: DamageParameters): number {
@@ -77,15 +82,16 @@ export class DamageCalculator {
       elementAddition,
       elementModifier,
       elementalHitZone,
+      elementalSharpnessModifier,
       elementalCriticalModifier = 1.0, // デフォルト1.0
       hitcount = 1,
     } = params;
-    // 1ヒットごとに端数処理（切り捨て）して合計
+
     let total = 0;
     for (let i = 0; i < hitcount; i++) {
       const perHit =
-        ((baseElementValue * elementMultiplier + elementAddition) * (elementModifier ?? 1) * (elementalHitZone / 100) * elementalCriticalModifier) / 10;
-      total += Math.floor(perHit);
+        ((baseElementValue * elementMultiplier + elementAddition) * elementalSharpnessModifier * (elementModifier ?? 1) * (elementalHitZone / 100) * elementalCriticalModifier) / 10;
+      total += Math.round(perHit * 10) / 10;
     }
     return total;
   }
@@ -93,7 +99,6 @@ export class DamageCalculator {
   static calculateTotalDamage(params: DamageParameters): number {
     const physicalDamage = this.calculatePhysicalDamage(params);
     const elementalDamage = this.calculateElementalDamage(params);
-
-    return Math.round((physicalDamage + elementalDamage) * 100) / 100; // 小数第2位で四捨五入
+    return physicalDamage + elementalDamage;
   }
 }

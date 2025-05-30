@@ -11,6 +11,6 @@ export const SHARPNESS_LEVELS: Sharpness[] = [
   { color: 'orange', modifier: 0.75, elementModifier: 0.5 },
   { color: 'yellow', modifier: 1.0, elementModifier: 0.75 },
   { color: 'green', modifier: 1.05, elementModifier: 1.0 },
-  { color: 'blue', modifier: 1.2, elementModifier: 1.0625 },
-  { color: 'white', modifier: 1.32, elementModifier: 1.125 },
+  { color: 'blue', modifier: 1.2, elementModifier: 1.063 },
+  { color: 'white', modifier: 1.32, elementModifier: 1.15 },
 ];

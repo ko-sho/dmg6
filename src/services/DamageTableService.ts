@@ -73,6 +73,7 @@ function getPhysicalParams(
   weaponInfo: WeaponParameters,
   motion: Motion,
   sharpnessModifier: number,
+  elementalSharpnessModifier: number, // 追加
   state: {
     slashHitZone: number;
     bluntHitZone: number;
@@ -104,6 +105,7 @@ function getPhysicalParams(
     attackMultiplierBonus: totalAttackMultiplierBonus,
     motionValue: motion.motionValue,
     sharpnessModifier,
+    elementalSharpnessModifier, // 追加
     criticalDamageModifier: 1,
     criticalRate: weaponInfo.criticalRate + applicableSkills.reduce((x, skill) => x + (skill.criticalRateBonus ?? 0), 0),
     criticalRateBonus: 0,
@@ -170,6 +172,7 @@ export function calculateDamageTable(
           weaponInfo,
           motion,
           sharpnessObj.modifier,
+          sharpnessObj.elementModifier, // 追加
           state,
           applicableSkills
         );
@@ -198,6 +201,7 @@ export function calculateDamageTable(
           const elementalParams: DamageParameters = {
             ...physicalParams,
             attackType: "slash", // 属性には影響しないのでダミー
+            elementalSharpnessModifier: sharpnessObj.elementModifier,
             elementAddition: applicableSkills.reduce(
               (sum, s) => sum + (s.elementAddition ?? 0),
               0

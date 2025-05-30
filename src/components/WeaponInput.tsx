@@ -67,7 +67,11 @@ const WeaponInput: React.FC<WeaponInputProps> = ({ weapon, setWeapon, sharpnessC
           type="number"
           label="属性値"
           value={weapon.baseElementValue}
-          onChange={(e) => handleInputChange('baseElementValue', Number(e.target.value))}
+          onChange={(e) => {
+            // 入力値が空の場合は0にする
+            const val = e.target.value === '' ? 0 : Number(e.target.value);
+            handleInputChange('baseElementValue', Math.max(0, val));
+          }}
           InputProps={{ inputProps: { min: 0 } }}
           sx={{ minWidth: 120 }}
         />

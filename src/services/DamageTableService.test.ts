@@ -67,8 +67,8 @@ const skills: { key: string; level: number; skillData: SkillParameters[] }[] = [
   },
 ];
 
-describe('DamageTableService', () => {
-  it('calculateDamageTable returns correct structure', () => {
+describe('DamageTableServiceのテスト', () => {
+  it('calculateDamageTable: 正しい構造の行が返る', () => {
     const rows = calculateDamageTable(weaponInfo, motions, monster, sharpness, skills);
     expect(Array.isArray(rows)).toBe(true);
     expect(rows.length).toBe(1);
@@ -81,23 +81,23 @@ describe('DamageTableService', () => {
     expect(typeof rows[0].expected).toBe('string');
   });
 
-  it('calculateDamageTable returns 0 rows if no motions', () => {
+  it('calculateDamageTable: モーションが空なら0行', () => {
     const rows = calculateDamageTable(weaponInfo, [], monster, sharpness, skills);
     expect(rows.length).toBe(0);
   });
 
-  it('calculateDamageTable returns 0 rows if no monster', () => {
+  it('calculateDamageTable: モンスターがnullなら0行', () => {
     const rows = calculateDamageTable(weaponInfo, motions, null, sharpness, skills);
     expect(rows.length).toBe(0);
   });
 
-  it('calculateDamageTable handles no skills', () => {
+  it('calculateDamageTable: スキルなしでも計算できる', () => {
     const rows = calculateDamageTable(weaponInfo, motions, monster, sharpness, []);
     expect(rows.length).toBe(1);
     expect(typeof rows[0].physical).toBe('number');
   });
 
-  it('calculateDamageTable handles no sharpness (defaults to white)', () => {
+  it('calculateDamageTable: sharpness未指定時はwhiteで計算', () => {
     const rows = calculateDamageTable(weaponInfo, motions, monster, undefined, skills);
     expect(rows.length).toBe(1);
     expect(typeof rows[0].physical).toBe('number');
@@ -127,7 +127,7 @@ describe('DamageTableService', () => {
     expect(result[0].additionAttackBonus).toBe(10);
   });
 
-  it('getApplicableSkills: ジャンプ攻撃専用スキルはisJump時のみ適用', () => {
+  it('getApplicableSkills: ジャンプ攻撃専用スキルはジャンプ時のみ適用', () => {
     const skills = [
       {
         key: 'hien',
@@ -177,7 +177,7 @@ describe('DamageTableService', () => {
     expect(result.length).toBe(0);
   });
 
-  it('calculateDamageTable passes correct parameters to DamageCalculator', () => {
+  it('calculateDamageTable: DamageCalculatorに正しいパラメータが渡る', () => {
     // スキル・モーション・モンスター・シャープネスを組み合わせて、物理計算に渡る値を検証
     const testWeapon: WeaponParameters = {
       weaponType: 'longsword',
@@ -251,7 +251,7 @@ describe('DamageTableService', () => {
     expect(row.elementModifier).toBe(1);
   });
 
-  it('calculateDamageTable sets table-only values (not passed to DamageCalculator)', () => {
+  it('calculateDamageTable: 表用の値（DamageCalculatorに渡さない値）も正しく格納される', () => {
     // クリティカルボーナスや表用の値が正しく格納されているか
     const testWeapon: WeaponParameters = {
       weaponType: 'longsword',

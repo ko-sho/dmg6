@@ -17,12 +17,16 @@ export const ELEMENT_TYPES: ElementType[] = [
 
 export type WeaponType = 'longsword' | 'greatsword';
 
+// 太刀の練気ゲージ段階
+export type TachiSpiritGauge = 'none' | 'white' | 'yellow' | 'red';
+
 export interface WeaponParameters {
   weaponType: WeaponType; // 武器種
   weaponMultiplier: number; // 武器倍率
   baseElementValue: number; // 属性値
   elementType: ElementType; // 属性種別
   criticalRate: number; // 会心率
+  tachiSpiritGauge?: TachiSpiritGauge; // 太刀のみ有効
 }
 
 export class Weapon {

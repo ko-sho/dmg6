@@ -1,6 +1,6 @@
 import React from 'react';
 import { ELEMENT_TYPES } from '../models/Weapon';
-import type { Weapon, ElementType, WeaponType } from '../models/Weapon';
+import type { Weapon, ElementType, WeaponType, WeaponParameters } from '../models/Weapon';
 import type { SharpnessColor } from '../models/Sharpness';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -9,7 +9,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import type { SelectChangeEvent } from '@mui/material/Select';
 import SharpnessSelector from './SharpnessSelector';
+import type { TachiSpiritGauge } from '../models/Weapon';
 
 const WEAPON_TYPES: { key: WeaponType; label: string }[] = [
   { key: 'longsword', label: '太刀' },
@@ -17,15 +19,20 @@ const WEAPON_TYPES: { key: WeaponType; label: string }[] = [
 ];
 
 interface WeaponInputProps {
-  weapon: Weapon;
-  setWeapon: React.Dispatch<React.SetStateAction<Weapon>>;
-  sharpnessColor?: SharpnessColor;
-  setSharpnessColor?: (color: SharpnessColor) => void;
+  weapon: WeaponParameters;
+  setWeapon: (w: WeaponParameters) => void;
+  sharpnessColor: SharpnessColor;
+  setSharpnessColor: (c: SharpnessColor) => void;
 }
 
 const WeaponInput: React.FC<WeaponInputProps> = ({ weapon, setWeapon, sharpnessColor, setSharpnessColor }) => {
   const handleInputChange = (field: keyof Weapon, value: string | number | ElementType | WeaponType) => {
     setWeapon({ ...weapon, [field]: value });
+  };
+
+  // 練気ゲージ状態（太刀のみ）
+  const handleSpiritGaugeChange = (e: React.ChangeEvent<{ value: unknown }> | SelectChangeEvent) => {
+    setWeapon({ ...weapon, tachiSpiritGauge: e.target.value as TachiSpiritGauge });
   };
 
   return (
@@ -92,6 +99,24 @@ const WeaponInput: React.FC<WeaponInputProps> = ({ weapon, setWeapon, sharpnessC
           InputProps={{ inputProps: { min: -100, max: 100 } }}
           sx={{ minWidth: 120 }}
         />
+        {/* 太刀選択時のみ練気ゲージUIを表示 */}
+        {weapon.weaponType === 'longsword' && (
+          <FormControl sx={{ minWidth: 120 }}>
+            <InputLabel id="spirit-gauge-label">練気ゲージ段階</InputLabel>
+            <Select
+              labelId="spirit-gauge-label"
+              value={weapon.tachiSpiritGauge ?? 'none'}
+              label="練気ゲージ段階"
+              onChange={handleSpiritGaugeChange}
+              sx={{ textAlign: 'left', '& .MuiSelect-select': { textAlign: 'left' } }}
+            >
+              <MenuItem value="none">無色</MenuItem>
+              <MenuItem value="white">白色</MenuItem>
+              <MenuItem value="yellow">黄色</MenuItem>
+              <MenuItem value="red">赤色</MenuItem>
+            </Select>
+          </FormControl>
+        )}
       </Stack>
     </Box>
   );

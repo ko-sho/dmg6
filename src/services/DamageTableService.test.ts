@@ -321,4 +321,57 @@ describe('DamageTableServiceのテスト', () => {
     expect(row.elementAddition).toBe(0);
     expect(row.elementModifier).toBe(1);
   });
+
+  it('calculateDamageTable: 太刀の練気ゲージ補正が正しく攻撃力乗算に反映される', () => {
+    // 無色→白色→黄色→赤色で物理ダメージが増加することを検証
+    const baseParams = {
+      weaponType: 'longsword' as const,
+      weaponMultiplier: 100,
+      baseElementValue: 0,
+      elementType: { key: 'none', label: '無属性' } as const,
+      criticalRate: 0,
+    };
+    const testMotion: Motion = {
+      name: 'spirit test',
+      motionValue: 10,
+      elementMultiplier: 1,
+      sharpnessModifier: 1,
+      hitCount: 1,
+      attackType: 'slash',
+    };
+    const testMonster: Monster = {
+      name: 'test',
+      parts: [
+        {
+          name: 'head',
+          states: [
+            {
+              state: 'normal',
+              slashHitZone: 50,
+              bluntHitZone: 40,
+              shotHitZone: 30,
+              fireHitZone: 0,
+              waterHitZone: 0,
+              iceHitZone: 0,
+              thunderHitZone: 0,
+              dragonHitZone: 0,
+            },
+          ],
+        },
+      ],
+    };
+    // 無色
+    const rowsNone = calculateDamageTable({ ...baseParams, tachiSpiritGauge: 'none' }, [testMotion], testMonster, 'white', []);
+    // 白色
+    const rowsWhite = calculateDamageTable({ ...baseParams, tachiSpiritGauge: 'white' }, [testMotion], testMonster, 'white', []);
+    // 黄色
+    const rowsYellow = calculateDamageTable({ ...baseParams, tachiSpiritGauge: 'yellow' }, [testMotion], testMonster, 'white', []);
+    // 赤色
+    const rowsRed = calculateDamageTable({ ...baseParams, tachiSpiritGauge: 'red' }, [testMotion], testMonster, 'white', []);
+    expect(rowsNone[0].physical).toBeLessThan(rowsWhite[0].physical);
+    expect(rowsWhite[0].physical).toBeLessThan(rowsYellow[0].physical);
+    expect(rowsYellow[0].physical).toBeLessThan(rowsRed[0].physical);
+    // 無色の物理ダメージ * 1.1 ≒ 赤色の物理ダメージ
+    expect(rowsRed[0].physical).toBeCloseTo(rowsNone[0].physical * 1.1, 2);
+  });
 });

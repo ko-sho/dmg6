@@ -85,4 +85,48 @@ describe('WeaponInput UI', () => {
     expect(weapon.elementType.key).toBe('fire');
     expect(weapon.elementType.label).toBe('火');
   });
+
+  it('太刀選択時のみ練気ゲージセレクトが表示され、値が反映される', () => {
+    let weapon = new Weapon({
+      weaponType: 'longsword',
+      weaponMultiplier: 200,
+      baseElementValue: 0,
+      elementType: { key: 'none', label: '無属性' },
+      criticalRate: 0,
+      tachiSpiritGauge: 'none', // 初期値を明示的にセット
+    });
+    const setWeapon = (w: React.SetStateAction<Weapon>) => {
+      weapon = typeof w === 'function' ? w(weapon) : w;
+    };
+    render(
+      <WeaponInput weapon={weapon} setWeapon={setWeapon} sharpnessColor={'white'} setSharpnessColor={() => {}} />
+    );
+    // 練気ゲージセレクトが表示される
+    expect(screen.getByLabelText('練気ゲージ段階')).toBeInTheDocument();
+    // デフォルトは無色（none）
+    // MUI Selectはinput要素ではないので、選択中の値はtextContentで確認
+    expect(screen.getByLabelText('練気ゲージ段階').textContent).toContain('無色');
+    // 値を変更
+    fireEvent.mouseDown(screen.getByLabelText('練気ゲージ段階'));
+    fireEvent.click(screen.getByText('赤色'));
+    const weaponParams = weapon as unknown as import('../models/Weapon').WeaponParameters;
+    expect(weaponParams.tachiSpiritGauge).toBe('red');
+  });
+
+  it('大剣選択時は練気ゲージセレクトが表示されない', () => {
+    let weapon = new Weapon({
+      weaponType: 'greatsword',
+      weaponMultiplier: 200,
+      baseElementValue: 0,
+      elementType: { key: 'none', label: '無属性' },
+      criticalRate: 0,
+    });
+    const setWeapon = (w: React.SetStateAction<Weapon>) => {
+      weapon = typeof w === 'function' ? w(weapon) : w;
+    };
+    render(
+      <WeaponInput weapon={weapon} setWeapon={setWeapon} sharpnessColor={'white'} setSharpnessColor={() => {}} />
+    );
+    expect(screen.queryByLabelText('練気ゲージ段階')).toBeNull();
+  });
 });

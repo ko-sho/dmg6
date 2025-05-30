@@ -22,6 +22,7 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, selectedSkill, setSelected
           <Checkbox
             checked={isSelected}
             onChange={e => setSelectedSkill(skill.key, e.target.checked, 1)}
+            data-testid={`skill-checkbox-${skill.key}`}
           />
         }
         label={<span style={{ color: 'inherit' }}><Box component="span" sx={{ color: 'text.primary' }}>{skill.label}</Box></span>}
@@ -32,7 +33,7 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, selectedSkill, setSelected
           {(() => {
             const desc = skill.skillLevels[level - 1]?.skillBonuses?.[0]?.description;
             return desc ? (
-                <span style={{ fontSize: '0.68em', color: '#888', marginLeft: 'auto', width: "25%", textAlign: "right" }}>{desc}</span>
+                <span data-testid={`skill-desc-${skill.key}`} style={{ fontSize: '0.68em', color: '#888', marginLeft: 'auto', width: "25%", textAlign: "right" }}>{desc}</span>
             ) : null;
           })()}
           <Select
@@ -40,9 +41,10 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, selectedSkill, setSelected
             value={level}
             onChange={e => setSelectedSkill(skill.key, true, Number(e.target.value))}
             sx={{ minWidth: 72, ml: 2, marginLeft: 1 }}
+            data-testid={`skill-level-select-${skill.key}`}
           >
             {Array.from({ length: skill.maxLevel }, (_, i) => i + 1).map(lv => (
-              <MenuItem key={lv} value={lv}>
+              <MenuItem key={lv} value={lv} data-testid={`skill-level-item-${skill.key}-${lv}`}>
                 Lv{lv}
               </MenuItem>
             ))}

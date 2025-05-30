@@ -5,6 +5,7 @@ import { DamageCalculator, type DamageParameters } from "./DamageCalculator";
 import { SHARPNESS_LEVELS } from "../models/Sharpness";
 import type { SharpnessColor } from "../models/Sharpness";
 import type { SkillParameters } from "../models/Skill";
+import { TACHI_SPIRIT_GAUGE_MODIFIER } from '../data/weapons/TachiSpiritGaugeBonus';
 
 export interface DamageTableRow {
   part: string;
@@ -89,10 +90,14 @@ function getPhysicalParams(
     (sum, s) => sum + (s.additionAttackBonus ?? 0),
     0
   );
-  const totalAttackMultiplierBonus = applicableSkills.reduce(
+  let totalAttackMultiplierBonus = applicableSkills.reduce(
     (mul, s) => mul * (s.attackMultiplierBonus ?? 1),
     1
   );
+  // 太刀のみ練気ゲージ補正を掛ける
+  if (weaponInfo.weaponType === 'longsword' && weaponInfo.tachiSpiritGauge) {
+    totalAttackMultiplierBonus *= TACHI_SPIRIT_GAUGE_MODIFIER[weaponInfo.tachiSpiritGauge];
+  }
   return {
     baseWeaponMultiplier: weaponInfo.weaponMultiplier,
     additionAttackBonus: totalAttackBonus,

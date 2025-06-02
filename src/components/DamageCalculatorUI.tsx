@@ -43,6 +43,7 @@ const DamageCalculatorUI = () => {
           skillsByCategory={skillsByCategory}
           selectedSkills={calc.selectedSkills}
           setSelectedSkills={calc.setSelectedSkills}
+          weaponType={calc.weaponInfo.weaponType} // 追加
         />
         <MotionSection
           availableMotions={calc.availableMotions.map((motion, idx) => ({

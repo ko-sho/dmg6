@@ -21,6 +21,7 @@ export interface SkillParameters {
   applicableStates?: import('./Monster').MonsterPartState[]; // 適用される部位の状態
   description?: string; // スキル効果説明文
   isJumpAttackOnly?: boolean; // ジャンプ攻撃のみに適用する場合true
+  weaponType?: string; // このスキル効果が適用される武器種（省略時は全武器種）
 }
 
 export interface SelectedSkill {

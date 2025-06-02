@@ -102,6 +102,7 @@ export class DamageCalculator {
 
     let total = 0;
     for (let i = 0; i < hitcount; i++) {
+      console.log(elementModifier);
       const perHit =
         ((baseElementValue * elementMultiplier + elementAddition) * elementalSharpnessModifier * (elementModifier ?? 1) * (elementalHitZone / 100) * elementalCriticalModifier) / 10;
       total += Math.round(perHit * 10) / 10;

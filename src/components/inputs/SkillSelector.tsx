@@ -7,9 +7,10 @@ interface SkillSelectorProps {
   skills: { key: string; label: string; maxLevel: number; skillLevels: SkillLevel[] }[];
   selectedSkills: { key: string; level: number; skillData: SkillParameters[] }[];
   setSelectedSkills: React.Dispatch<React.SetStateAction<{ key: string; level: number; skillData: SkillParameters[] }[]>>;
+  weaponType: string; // 追加
 }
 
-const SkillSelector: React.FC<SkillSelectorProps> = ({ skills, selectedSkills, setSelectedSkills }) => {
+const SkillSelector: React.FC<SkillSelectorProps> = ({ skills, selectedSkills, setSelectedSkills, weaponType }) => {
   // SkillItemの選択状態・レベル変更を管理
   const handleSkillChange = (key: string, isChecked: boolean, level: number) => {
     if (isChecked) {
@@ -45,6 +46,7 @@ const SkillSelector: React.FC<SkillSelectorProps> = ({ skills, selectedSkills, s
             }}
             selectedSkill={selectedSkill}
             setSelectedSkill={handleSkillChange}
+            weaponType={weaponType} // 追加
           />
         );
       })}

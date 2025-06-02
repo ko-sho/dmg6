@@ -20,10 +20,11 @@ import Hien from './Hien';
 import OffensiveGuard from './OffensiveGuard';
 import { nurebaMon } from './NurebaMon';
 import { criticalEye } from './CriticalEye';
+import { coalescence } from './Coalescence';
 
 export const skillsByCategory = {
   weapon: [attackBoost, criticalBoost, Hien, mindEye, FireAttack, WaterAttack, ThunderAttack, IceAttack, DragonAttack, nurebaMon, criticalEye],
-  armor: [adrenalineRush, challenger, counterstrike, maximumMight, peakPerformance, latentPower, masterfulStrike, weaknessExploit, chainCrit, elementalAbsorption, zenState, resentment, OffensiveGuard],
+  armor: [adrenalineRush, challenger, counterstrike, maximumMight, peakPerformance, latentPower, masterfulStrike, weaknessExploit, chainCrit, elementalAbsorption, zenState, resentment, OffensiveGuard, coalescence],
   group: [nushiSoul],
   series: [kokusyokuIttai],
 };

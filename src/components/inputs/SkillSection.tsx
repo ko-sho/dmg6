@@ -12,6 +12,7 @@ interface SkillSectionProps {
   skillsByCategory: Record<string, SkillData[]>;
   selectedSkills: SelectedSkill[];
   setSelectedSkills: Dispatch<SetStateAction<SelectedSkill[]>>;
+  weaponType: string; // 追加
 }
 
 const SkillSection: React.FC<SkillSectionProps> = ({
@@ -22,6 +23,7 @@ const SkillSection: React.FC<SkillSectionProps> = ({
   skillsByCategory,
   selectedSkills,
   setSelectedSkills,
+  weaponType, // 追加
 }) => (
   <Box
     sx={{
@@ -59,6 +61,7 @@ const SkillSection: React.FC<SkillSectionProps> = ({
         }))}
         selectedSkills={selectedSkills}
         setSelectedSkills={setSelectedSkills}
+        weaponType={weaponType} // 追加
       />
     ) : null}
   </Box>

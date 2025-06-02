@@ -25,7 +25,8 @@ export function getApplicableSkills(
     skillData: SkillParameters[];
   }[],
   motion: Motion,
-  state: MonsterPartStateDetails
+  state: MonsterPartStateDetails,
+  weaponType?: string // 追加: 呼び出し元で渡す
 ) {
   return (selectedSkills || [])
     .flatMap((skill) => {
@@ -39,6 +40,8 @@ export function getApplicableSkills(
       return [];
     })
     .filter((skillParam) => {
+      // 武器種一致判定
+      if (skillParam.weaponType && weaponType && skillParam.weaponType !== weaponType) return false;
       // ジャンプ攻撃専用スキルの適用判定
       if (!!skillParam.isJumpAttackOnly && !motion.isJump) return false;
       // 部位の状態が適用可能かどうか
@@ -140,7 +143,8 @@ export function calculateDamageTable(
         const applicableSkills = getApplicableSkills(
           selectedSkills,
           motion,
-          state
+          state,
+          weaponInfo.weaponType // 追加
         );
         totalCriticalDamageModifier += applicableSkills.reduce(
           (sum, s) => sum + (s.criticalDamageModifier ?? 0),

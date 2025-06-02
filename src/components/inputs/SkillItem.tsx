@@ -10,9 +10,10 @@ interface SkillItemProps {
   skill: { key: string; label: string; maxLevel: number; skillLevels: SkillLevel[] };
   selectedSkill: { key: string; level: number; skillData: SkillParameters[] } | undefined;
   setSelectedSkill: (key: string, isChecked: boolean, level: number) => void;
+  weaponType: string; // 追加
 }
 
-const SkillItem: React.FC<SkillItemProps> = ({ skill, selectedSkill, setSelectedSkill }) => {
+const SkillItem: React.FC<SkillItemProps> = ({ skill, selectedSkill, setSelectedSkill, weaponType }) => {
   const isSelected = !!selectedSkill;
   const level = selectedSkill?.level || 1;
   return (
@@ -29,9 +30,11 @@ const SkillItem: React.FC<SkillItemProps> = ({ skill, selectedSkill, setSelected
       />
       {isSelected && (
         <>
-          {/* レベルに応じた説明文をcaptionで表示 */}
+          {/* レベルに応じた説明文をcaptionで表示（武器種でフィルタ） */}
           {(() => {
-            const desc = skill.skillLevels[level - 1]?.skillBonuses?.[0]?.description;
+            const bonuses = skill.skillLevels[level - 1]?.skillBonuses || [];
+            const filtered = bonuses.filter(b => !b.weaponType || b.weaponType === weaponType);
+            const desc = filtered[0]?.description;
             return desc ? (
                 <span data-testid={`skill-desc-${skill.key}`} style={{ fontSize: '0.68em', color: '#888', marginLeft: 'auto', width: "25%", textAlign: "right" }}>{desc}</span>
             ) : null;

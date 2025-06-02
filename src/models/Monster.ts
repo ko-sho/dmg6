@@ -14,14 +14,14 @@ export interface MonsterPartStateDetails {
 
 export interface MonsterPart {
   name: string; // 部位名
-  states: MonsterPartStateDetails[]; // 部位の状態ごとの詳細
+  states: readonly MonsterPartStateDetails[]; // 部位の状態ごとの詳細
 }
 
 export class Monster {
   name: string; // モンスター名
-  parts: MonsterPart[]; // 部位情報
+  parts: readonly MonsterPart[]; // 部位情報
 
-  constructor(name: string, parts: MonsterPart[]) {
+  constructor(name: string, parts: readonly MonsterPart[]) {
     this.name = name;
     this.parts = parts;
   }

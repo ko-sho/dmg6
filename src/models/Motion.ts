@@ -11,7 +11,7 @@ export interface Motion {
   isJump?: boolean; // ジャンプ攻撃かどうか（省略時false）
 }
 
-export class MotionData {
+export class MotionData implements Motion {
   name: string;
   motionValue: number;
   elementMultiplier: number;

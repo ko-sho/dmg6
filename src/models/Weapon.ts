@@ -1,19 +1,17 @@
-export type ElementType =
-  | { key: 'none'; label: '無属性' }
-  | { key: 'fire'; label: '火' }
-  | { key: 'water'; label: '水' }
-  | { key: 'ice'; label: '氷' }
-  | { key: 'thunder'; label: '雷' }
-  | { key: 'dragon'; label: '龍' };
+export type ElementTypeKey = 'none' | 'fire' | 'water' | 'ice' | 'thunder' | 'dragon';
+export interface ElementType {
+  key: ElementTypeKey;
+  label: string;
+}
 
-export const ELEMENT_TYPES: ElementType[] = [
+export const ELEMENT_TYPES: readonly ElementType[] = [
   { key: 'none', label: '無属性' },
   { key: 'fire', label: '火' },
   { key: 'water', label: '水' },
   { key: 'ice', label: '氷' },
   { key: 'thunder', label: '雷' },
   { key: 'dragon', label: '龍' },
-];
+] as const;
 
 export type WeaponType = 'longsword' | 'greatsword';
 
@@ -35,6 +33,7 @@ export class Weapon {
   baseElementValue: number;
   elementType: ElementType;
   criticalRate: number;
+  tachiSpiritGauge?: TachiSpiritGauge;
 
   constructor(params: WeaponParameters) {
     this.weaponType = params.weaponType;
@@ -42,6 +41,7 @@ export class Weapon {
     this.baseElementValue = params.baseElementValue;
     this.elementType = params.elementType;
     this.criticalRate = params.criticalRate;
+    this.tachiSpiritGauge = params.tachiSpiritGauge;
   }
 
   // 必要に応じて武器の情報を取得するメソッドを追加できます

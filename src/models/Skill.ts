@@ -1,5 +1,3 @@
-import type { MonsterPartState } from '../services/DamageCalculator';
-
 export type SkillCategory = 'weapon' | 'armor' | 'group' | 'series';
 
 export interface SkillParameters {
@@ -20,7 +18,7 @@ export interface SkillParameters {
   elementalCriticalModifier?: number; // 属性会心時の属性ダメージ倍率（例: 1.35）
   minHitZone: number; // 適用される肉質の下限
   maxHitZone: number; // 適用される肉質の上限
-  applicableStates?: MonsterPartState[]; // 適用される部位の状態
+  applicableStates?: import('./Monster').MonsterPartState[]; // 適用される部位の状態
   description?: string; // スキル効果説明文
   isJumpAttackOnly?: boolean; // ジャンプ攻撃のみに適用する場合true
 }
@@ -36,7 +34,7 @@ export interface SkillLevel {
   skillBonuses: SkillParameters[]; // スキルボーナスの配列
 }
 
-export class SkillData {
+export class SkillData implements Skill {
   category: SkillCategory;
   name: string;
   levels: SkillLevel[];

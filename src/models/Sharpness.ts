@@ -6,11 +6,11 @@ export interface Sharpness {
   elementModifier: number; // 属性補正
 }
 
-export const SHARPNESS_LEVELS: Sharpness[] = [
+export const SHARPNESS_LEVELS: readonly Sharpness[] = [
   { color: 'red', modifier: 0.5, elementModifier: 0.25 },
   { color: 'orange', modifier: 0.75, elementModifier: 0.5 },
   { color: 'yellow', modifier: 1.0, elementModifier: 0.75 },
   { color: 'green', modifier: 1.05, elementModifier: 1.0 },
   { color: 'blue', modifier: 1.2, elementModifier: 1.063 },
   { color: 'white', modifier: 1.32, elementModifier: 1.15 },
-];
+] as const;

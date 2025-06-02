@@ -70,14 +70,18 @@ const DamageTable: React.FC<DamageTableProps> = ({
   // 比較対象選択用
   const [compareIdx, setCompareIdx] = React.useState<string | number>(""); // "" = なし, number = allResults index
   const hasAllResults = Array.isArray(allResults) && allResults.length > 1;
-  const compareOptions = hasAllResults
-    ? allResults
-        .map((_, idx) => ({
-          label: idx === 0 ? "現在" : `履歴${allResults.length - idx}`,
-          idx,
-        }))
-        .filter((opt) => opt.idx !== currentIndex)
-    : [];
+
+  const compareOptions = React.useMemo(() => {
+    return hasAllResults
+      ? allResults
+          .map((_, idx) => ({
+            label: idx === 0 ? "現在" : `履歴${allResults.length - idx}`,
+            idx,
+          }))
+          .filter((opt) => opt.idx !== currentIndex)
+      : [];
+  }, [hasAllResults, allResults, currentIndex]);
+
   const compareRows =
     hasAllResults && compareIdx !== ""
       ? allResults[compareIdx as number]?.damageTableRows

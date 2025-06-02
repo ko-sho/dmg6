@@ -15,6 +15,7 @@ describe('SkillSection', () => {
         skillsByCategory={skillsByCategory}
         selectedSkills={[]}
         setSelectedSkills={() => {}}
+        weaponType='sword'
       />
     );
     expect(screen.getByText(/スキル/)).toBeInTheDocument();
@@ -29,6 +30,7 @@ describe('SkillSection', () => {
         skillsByCategory={skillsByCategory}
         selectedSkills={[]}
         setSelectedSkills={() => {}}
+        weaponType='sword'
       />
     );
     expect(screen.getByText('攻撃')).toBeInTheDocument();
@@ -44,6 +46,7 @@ describe('SkillSection', () => {
         skillsByCategory={{}}
         selectedSkills={[]}
         setSelectedSkills={() => {}}
+        weaponType='sword'
       />
     );
     expect(screen.getByText(/スキル/)).toBeInTheDocument();

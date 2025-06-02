@@ -34,7 +34,7 @@ describe('SkillSelector', () => {
 
   it('全てのスキルが表示される', () => {
     render(
-      <SkillSelector skills={skills} selectedSkills={[]} setSelectedSkills={vi.fn()} />
+      <SkillSelector skills={skills} selectedSkills={[]} setSelectedSkills={vi.fn()} weaponType='sword' />
     );
     expect(screen.getByText('攻撃')).toBeInTheDocument();
     expect(screen.getByText('見切り')).toBeInTheDocument();
@@ -43,7 +43,7 @@ describe('SkillSelector', () => {
   it('スキルを選択したときsetSelectedSkillsが呼ばれる', () => {
     const setSelectedSkills = vi.fn();
     render(
-      <SkillSelector skills={skills} selectedSkills={[]} setSelectedSkills={setSelectedSkills} />
+      <SkillSelector skills={skills} selectedSkills={[]} setSelectedSkills={setSelectedSkills} weaponType='sword' />
     );
     // SkillItemのチェックボックスを取得してクリック
     const attackCheckbox = screen.getByLabelText('攻撃');
@@ -59,6 +59,7 @@ describe('SkillSelector', () => {
         skills={skills}
         selectedSkills={[{ key: 'attackBoost', level: 3, skillData: [{ additionAttackBonus: 9, minHitZone: 0, maxHitZone: 0 }] }]}
         setSelectedSkills={setSelectedSkills}
+        weaponType='sword'
       />
     );
     const attackCheckbox = screen.getByLabelText('攻撃');
@@ -72,6 +73,7 @@ describe('SkillSelector', () => {
         skills={skills}
         selectedSkills={[{ key: 'attackBoost', level: 3, skillData: [{ additionAttackBonus: 9, minHitZone: 0, maxHitZone: 0 }] }]}
         setSelectedSkills={vi.fn()}
+        weaponType='sword'
       />
     );
     // SkillItemのレベル表示やチェック状態が反映されているか（ラベルやaria-checked属性等で判定）

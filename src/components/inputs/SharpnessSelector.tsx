@@ -1,5 +1,5 @@
 import React from 'react';
-import { SHARPNESS_LEVELS, type SharpnessColor } from '../models/Sharpness';
+import { SHARPNESS_LEVELS, type SharpnessColor } from '../../models/Sharpness';
 import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 
 interface SharpnessSelectorProps {

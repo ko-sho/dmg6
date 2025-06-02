@@ -1,7 +1,7 @@
 import React from 'react';
-import { ELEMENT_TYPES } from '../models/Weapon';
-import type { Weapon, ElementType, WeaponType, WeaponParameters } from '../models/Weapon';
-import type { SharpnessColor } from '../models/Sharpness';
+import { ELEMENT_TYPES } from '../../models/Weapon';
+import type { Weapon, ElementType, WeaponType, WeaponParameters } from '../../models/Weapon';
+import type { SharpnessColor } from '../../models/Sharpness';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -11,7 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import SharpnessSelector from './SharpnessSelector';
-import type { TachiSpiritGauge } from '../models/Weapon';
+import type { TachiSpiritGauge } from '../../models/Weapon';
 
 const WEAPON_TYPES: { key: WeaponType; label: string }[] = [
   { key: 'longsword', label: '太刀' },

@@ -4,7 +4,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
-import type { SkillLevel, SkillParameters } from '../models/Skill';
+import type { SkillLevel, SkillParameters } from '../../models/Skill';
 
 interface SkillItemProps {
   skill: { key: string; label: string; maxLevel: number; skillLevels: SkillLevel[] };

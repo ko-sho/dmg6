@@ -2,7 +2,7 @@ import React from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { Box, Typography, Tabs, Tab } from "@mui/material";
 import SkillSelector from "./SkillSelector";
-import type { SkillData, SkillParameters } from "../models/Skill";
+import type { SkillData, SkillParameters } from "../../models/Skill";
 
 interface SkillSectionProps {
   skillCategories: string[];

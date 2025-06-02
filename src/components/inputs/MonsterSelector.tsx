@@ -1,5 +1,5 @@
 import React from "react";
-import type { Monster } from "../models/Monster";
+import type { Monster } from "../../models/Monster";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";

@@ -4,11 +4,11 @@ import DamageTable from "./DamageTable";
 import SkillLevelTable from "./SkillLevelTable";
 import SelectedMotionsTable from "./SelectedMotionsTable";
 import SelectedParamsSummary from "./SelectedParamsSummary";
-import type { Motion } from "../models/Motion";
-import type { WeaponParameters } from "../models/Weapon";
-import type { SkillParameters } from "../models/Skill";
-import type { Monster } from "../models/Monster";
-import type { SharpnessColor } from "../models/Sharpness";
+import type { Motion } from "../../models/Motion";
+import type { WeaponParameters } from "../../models/Weapon";
+import type { SkillParameters } from "../../models/Skill";
+import type { Monster } from "../../models/Monster";
+import type { SharpnessColor } from "../../models/Sharpness";
 
 interface DamageTableRow {
   part: string;

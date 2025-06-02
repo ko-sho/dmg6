@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import WeaponInput from "./WeaponInput";
-import type { WeaponParameters } from "../models/Weapon";
-import type { SharpnessColor } from "../models/Sharpness";
+import type { WeaponParameters } from "../../models/Weapon";
+import type { SharpnessColor } from "../../models/Sharpness";
 
 interface WeaponSectionProps {
   weapon: WeaponParameters;

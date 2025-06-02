@@ -1,6 +1,6 @@
 import React from 'react';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import type { SkillParameters } from '../models/Skill';
+import type { SkillParameters } from '../../models/Skill';
 
 interface SkillLevelTableProps {
   selectedSkills: { key: string; level: number; skillData: SkillParameters[] }[];

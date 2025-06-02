@@ -1,11 +1,11 @@
 import React from "react";
 import { Tabs, Tab, Box, Button } from "@mui/material";
 import ResultPanel from "./ResultPanel";
-import type { Motion } from "../models/Motion";
-import type { WeaponParameters } from "../models/Weapon";
-import type { SkillParameters } from "../models/Skill";
-import type { Monster } from "../models/Monster";
-import type { SharpnessColor } from "../models/Sharpness";
+import type { Motion } from "../../models/Motion";
+import type { WeaponParameters } from "../../models/Weapon";
+import type { SkillParameters } from "../../models/Skill";
+import type { Monster } from "../../models/Monster";
+import type { SharpnessColor } from "../../models/Sharpness";
 
 interface DamageTableRow {
   part: string;

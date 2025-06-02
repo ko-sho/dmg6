@@ -1,6 +1,6 @@
 import React from 'react';
 import FormGroup from '@mui/material/FormGroup';
-import type { SkillParameters, SkillLevel } from '../models/Skill';
+import type { SkillParameters, SkillLevel } from '../../models/Skill';
 import SkillItem from './SkillItem';
 
 interface SkillSelectorProps {

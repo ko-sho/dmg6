@@ -3,7 +3,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MotionSelector from "./MotionSelector";
-import type { Motion } from "../models/Motion";
+import type { Motion } from "../../models/Motion";
 
 interface MotionSectionProps {
   availableMotions: { key: string; label: string; motionData: Motion }[];

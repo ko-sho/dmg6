@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Motion } from '../models/Motion';
+import type { Motion } from '../../models/Motion';
 import Checkbox from '@mui/material/Checkbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';

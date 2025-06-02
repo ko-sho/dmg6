@@ -49,16 +49,18 @@ const SkillSection: React.FC<SkillSectionProps> = ({
         />
       ))}
     </Tabs>
-    <SkillSelector
-      skills={skillsByCategory[skillCategories[skillTab]].map((skill: SkillData) => ({
-        key: skill.name,
-        label: skill.name,
-        maxLevel: skill.levels.length,
-        skillLevels: skill.levels,
-      }))}
-      selectedSkills={selectedSkills}
-      setSelectedSkills={setSelectedSkills}
-    />
+    {skillCategories.length > 0 && skillsByCategory[skillCategories[skillTab]] ? (
+      <SkillSelector
+        skills={skillsByCategory[skillCategories[skillTab]].map((skill: SkillData) => ({
+          key: skill.name,
+          label: skill.name,
+          maxLevel: skill.levels.length,
+          skillLevels: skill.levels,
+        }))}
+        selectedSkills={selectedSkills}
+        setSelectedSkills={setSelectedSkills}
+      />
+    ) : null}
   </Box>
 );
 

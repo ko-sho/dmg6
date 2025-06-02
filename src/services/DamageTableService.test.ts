@@ -5,7 +5,7 @@ import type { Motion } from '../models/Motion';
 import type { Monster } from '../models/Monster';
 import type { SharpnessColor } from '../models/Sharpness';
 import type { SkillParameters } from '../models/Skill';
-import type { MonsterPartState } from './DamageCalculator';
+import type { MonsterPartState } from '../models/Monster';
 // getApplicableSkillsをテスト用にimport
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

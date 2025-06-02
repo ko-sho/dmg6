@@ -31,6 +31,13 @@ const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, s
 
   const sharpnessObj = SHARPNESS_LEVELS.find(s => s.color === sharpnessColor) ?? SHARPNESS_LEVELS[5];
 
+  // 武器種の日本語ラベル
+  const weaponTypeLabels: Record<string, string> = {
+    longsword: '太刀',
+    greatsword: '大剣',
+    // 他の武器種があればここに追加
+  };
+
   return (
     <TableContainer component={Paper} sx={{ mt: 2, boxShadow:0 }}>
       <Typography variant="subtitle2" sx={{ p: 1 }}>
@@ -44,6 +51,10 @@ const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, s
           </TableRow>
         </TableHead>
         <TableBody>
+          <TableRow>
+            <TableCell sx={{ fontSize: '0.95rem' }}>武器種</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{weaponTypeLabels[weapon.weaponType] || weapon.weaponType}</TableCell>
+          </TableRow>
           <TableRow>
             <TableCell sx={{ fontSize: '0.95rem' }}>切れ味補正</TableCell>
             <TableCell sx={{ fontSize: '0.95rem' }}>{sharpnessObj.modifier}</TableCell>

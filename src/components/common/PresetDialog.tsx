@@ -4,11 +4,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import SaveLoadPreset from "./SaveLoadPreset";
 import type { PresetData } from "./SaveLoadPreset";
-import type { WeaponParameters } from "../models/Weapon";
-import type { SkillParameters } from "../models/Skill";
-import type { Motion } from "../models/Motion";
-import type { Monster } from "../models/Monster";
-import type { SharpnessColor } from "../models/Sharpness";
+import type { WeaponParameters } from "../../models/Weapon";
+import type { SkillParameters } from "../../models/Skill";
+import type { Motion } from "../../models/Motion";
+import type { Monster } from "../../models/Monster";
+import type { SharpnessColor } from "../../models/Sharpness";
 
 interface PresetDialogProps {
   open: boolean;

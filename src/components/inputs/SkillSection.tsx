@@ -2,7 +2,7 @@ import React from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { Box, Typography, Tabs, Tab } from "@mui/material";
 import SkillSelector from "./SkillSelector";
-import type { SkillData, SkillParameters } from "../../models/Skill";
+import type { SkillData, SelectedSkill } from "../../models/Skill";
 
 interface SkillSectionProps {
   skillCategories: string[];
@@ -10,8 +10,8 @@ interface SkillSectionProps {
   skillTab: number;
   setSkillTab: (tab: number) => void;
   skillsByCategory: Record<string, SkillData[]>;
-  selectedSkills: { key: string; level: number; skillData: SkillParameters[] }[];
-  setSelectedSkills: Dispatch<SetStateAction<{ key: string; level: number; skillData: SkillParameters[] }[]>>;
+  selectedSkills: SelectedSkill[];
+  setSelectedSkills: Dispatch<SetStateAction<SelectedSkill[]>>;
 }
 
 const SkillSection: React.FC<SkillSectionProps> = ({

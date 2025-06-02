@@ -4,29 +4,9 @@ import type { Monster } from "../models/Monster";
 import { DamageCalculator, type DamageParameters } from "./DamageCalculator";
 import { SHARPNESS_LEVELS } from "../models/Sharpness";
 import type { SharpnessColor } from "../models/Sharpness";
-import type { SkillParameters } from "../models/Skill";
+import type { SkillParameters, SelectedSkill } from "../models/Skill";
 import { TACHI_SPIRIT_GAUGE_MODIFIER } from '../data/weapons/TachiSpiritGaugeBonus';
-
-export interface DamageTableRow {
-  part: string;
-  state: string;
-  damage: string;
-  critDamage: string;
-  expected: string;
-  physical: number;
-  elemental: number;
-  critRate: number;
-  baseWeaponMultiplier: number;
-  attackMultiplierBonus: number;
-  additionAttackBonus: number;
-  motionValue: number;
-  sharpnessModifier: number;
-  criticalDamageModifier: number;
-  baseElementValue: number;
-  elementMultiplier: number;
-  elementAddition: number;
-  elementModifier: number;
-}
+import type { DamageTableRow } from "../models/DamageCalculatorTypes";
 
 // 属性タイプ→HitZone名のマッピング定数
 const ELEMENT_HITZONE_KEY: Record<string, string> = {
@@ -121,7 +101,7 @@ function getPhysicalParams(
     minHitZone: 0,
     maxHitZone: 100,
     applicableStates: [
-      state.state as import("./DamageCalculator").MonsterPartState,
+      state.state as import("../models/Monster").MonsterPartState,
     ],
     elementalCriticalModifier: 1,
     hitcount: motion.hitCount ?? 1,

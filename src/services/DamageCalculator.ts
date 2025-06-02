@@ -1,30 +1,44 @@
-export type MonsterPartState = 'normal' | 'wounded' | 'exposed';
+import type { MonsterPartState } from '../models/Monster';
+import type { MotionAttackType } from '../models/Motion';
 
-export interface DamageParameters {
+interface WeaponDamageParameters {
   baseWeaponMultiplier: number;
   additionAttackBonus: number;
   attackMultiplierBonus: number;
-  motionValue: number;
-  sharpnessModifier: number;
-  elementalSharpnessModifier: number;
   criticalDamageModifier?: number;
   criticalRate: number;
   criticalRateBonus: number;
+}
+
+interface MotionDamageParameters {
+  motionValue: number;
+  sharpnessModifier: number;
+  elementalSharpnessModifier: number;
+  hitcount?: number;
+  attackType: MotionAttackType;
+}
+
+interface MonsterPartDamageParameters {
   slashHitZone: number;
   bluntHitZone: number;
   shotHitZone: number;
-  attackType: import('../models/Motion').MotionAttackType;
+  elementalHitZone: number;
+  minHitZone: number;
+  maxHitZone: number;
+  applicableStates: MonsterPartState[];
+}
+
+interface ElementalDamageParameters {
   baseElementValue: number;
   elementMultiplier: number;
   elementAddition: number;
   elementModifier: number;
-  elementalHitZone: number;
-  minHitZone: number;
-  maxHitZone: number;
-  applicableStates: import('../models/Monster').MonsterPartState[];
   elementalCriticalModifier?: number;
-  hitcount?: number;
 }
+
+
+export interface DamageParameters extends WeaponDamageParameters, MotionDamageParameters, MonsterPartDamageParameters, ElementalDamageParameters {}
+
 
 export class DamageCalculator {
   static calculatePhysicalDamage(params: DamageParameters): number {
@@ -40,6 +54,7 @@ export class DamageCalculator {
       bluntHitZone,
       shotHitZone,
       attackType,
+      hitcount = 1,
     } = params;
     let physicalHitZone = 0;
     switch (attackType) {
@@ -67,7 +82,7 @@ export class DamageCalculator {
 
     // 多段ヒット考慮
     let totalPhysical = 0;
-    for (let i = 0; i < (params.hitcount ?? 1); i++) {
+    for (let i = 0; i < hitcount; i++) {
       totalPhysical += Math.round(physicalDamage * 10) / 10;
     }
     return totalPhysical;

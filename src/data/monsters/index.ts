@@ -1,8 +1,21 @@
 // モンスター定義の一括エクスポート
-export { default as Arshveldo } from "./Arshveldo";
-export { default as GoreMagala } from "./GoreMagala";
-export { default as NekoTrainingTarupuncher } from "./NekoTrainingTarupuncher";
-export { default as NuEgdra } from "./NuEgdra";
-export { default as Redau } from "./Redau";
-export { default as UzTuna } from "./UzTuna";
-export { default as ZoShia } from "./ZoShia";
+import { default as Arshveldo } from "./Arshveldo";
+import { default as GoreMagala } from "./GoreMagala";
+import { default as NekoTrainingTarupuncher } from "./NekoTrainingTarupuncher";
+import { default as NuEgdra } from "./NuEgdra";
+import { default as Redau } from "./Redau";
+import { default as UzTuna } from "./UzTuna";
+import { default as ZoShia } from "./ZoShia";
+import type { Monster } from "../../models/Monster";
+
+export const MONSTER_LIST: Monster[] = [
+  NekoTrainingTarupuncher,
+  Redau,
+  UzTuna,
+  NuEgdra,
+  Arshveldo,
+  GoreMagala,
+  ZoShia,
+];
+
+export { Arshveldo, GoreMagala, NekoTrainingTarupuncher, NuEgdra, Redau, UzTuna, ZoShia };

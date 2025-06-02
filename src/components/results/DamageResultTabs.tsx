@@ -3,29 +3,10 @@ import { Tabs, Tab, Box, Button } from "@mui/material";
 import ResultPanel from "./ResultPanel";
 import type { Motion } from "../../models/Motion";
 import type { WeaponParameters } from "../../models/Weapon";
-import type { SkillParameters } from "../../models/Skill";
+import type { SelectedSkill } from "../../models/Skill";
 import type { Monster } from "../../models/Monster";
 import type { SharpnessColor } from "../../models/Sharpness";
-
-interface DamageTableRow {
-  part: string;
-  state: string;
-  damage: string;
-  critDamage: string;
-  expected: string;
-  physical: number;
-  elemental: number;
-  critRate: number;
-}
-
-interface ResultType {
-  weaponInfo: WeaponParameters;
-  selectedSkills: { key: string; level: number; skillData: SkillParameters[] }[];
-  selectedMotions: Motion[];
-  selectedMonster: Monster | null;
-  sharpness: SharpnessColor;
-  damageTableRows: DamageTableRow[];
-}
+import type { DamageTableRow, ResultType } from "../../models/DamageCalculatorTypes";
 
 interface DamageResultTabsProps {
   tabIndex: number;
@@ -34,7 +15,7 @@ interface DamageResultTabsProps {
   history: ResultType[];
   lastResult: ResultType | null;
   damageTableRows: DamageTableRow[];
-  selectedSkills: { key: string; level: number; skillData: SkillParameters[] }[];
+  selectedSkills: SelectedSkill[];
   selectedMotions: Motion[];
   selectedMonster: Monster | null;
   weaponInfo: WeaponParameters;

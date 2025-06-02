@@ -14,6 +14,16 @@ export interface DamageTableRow {
   physical: number;
   elemental: number;
   critRate: number;
+  baseWeaponMultiplier: number;
+  attackMultiplierBonus: number;
+  additionAttackBonus: number;
+  motionValue: number;
+  sharpnessModifier: number;
+  criticalDamageModifier: number;
+  baseElementValue: number;
+  elementMultiplier: number;
+  elementAddition: number;
+  elementModifier: number;
 }
 
 export type ResultType = {

@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import { Button, TextField, Stack, Typography, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import type { WeaponParameters } from '../../models/Weapon';
+import type { SelectedSkill } from '../../models/Skill';
+import type { Motion } from '../../models/Motion';
+import type { Monster } from '../../models/Monster';
+import type { SharpnessColor } from '../../models/Sharpness';
 
-export type PresetData = {
-  // 必要に応じて型を拡張
-  [key: string]: unknown;
-};
+export interface PresetData {
+  weaponInfo: WeaponParameters;
+  selectedSkills: SelectedSkill[];
+  selectedMotions: Motion[];
+  selectedMonster: Monster | null;
+  sharpness: SharpnessColor;
+}
 
 interface SaveLoadPresetProps {
-  currentPreset: PresetData; // 保存したい条件オブジェクト
+  currentPreset: PresetData;
   onLoad: (preset: PresetData) => void;
 }
 

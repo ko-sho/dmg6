@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Motion } from '../../models/Motion';
+import type { Motion, AvailableMotion } from '../../models/Motion';
 import Checkbox from '@mui/material/Checkbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -7,7 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
 interface MotionSelectorProps {
-  availableMotions: { key: string; label: string; motionData: Motion }[];
+  availableMotions: AvailableMotion[];
   selectedMotions: Motion[];
   setSelectedMotions: React.Dispatch<React.SetStateAction<Motion[]>>;
 }

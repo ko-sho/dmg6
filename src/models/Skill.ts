@@ -23,6 +23,12 @@ export interface SkillParameters {
   isJumpAttackOnly?: boolean; // ジャンプ攻撃のみに適用する場合true
 }
 
+export interface SelectedSkill {
+  key: string;
+  level: number;
+  skillData: SkillParameters[];
+}
+
 export interface Skill {
   category: SkillCategory; // スキルのカテゴリー
   name: string; // スキル名称

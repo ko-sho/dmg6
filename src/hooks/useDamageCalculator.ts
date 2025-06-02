@@ -1,31 +1,16 @@
 import { useState, useEffect } from "react";
 import { skillsByCategory } from "../data/skills/index";
-import { TACHI_MOTIONS } from "../data/weapons/TachiMotions";
-import { GREATSWORD_MOTIONS } from "../data/weapons/GreatswordMotions";
-import { NekoTrainingTarupuncher, Redau, UzTuna, NuEgdra, Arshveldo, GoreMagala, ZoShia } from "../data/monsters";
+import { MOTIONS_BY_WEAPON_TYPE } from "../data/weapons/WeaponMotions";
+import { MONSTER_LIST } from "../data/monsters/index";
 import { calculateDamageTable } from "../services/DamageTableService";
 import type { Motion } from "../models/Motion";
 import type { WeaponParameters } from "../models/Weapon";
-import type { SkillParameters } from "../models/Skill";
+import type { SelectedSkill } from "../models/Skill";
 import type { Monster } from "../models/Monster";
 import type { SharpnessColor } from "../models/Sharpness";
 import type { PresetData } from "../components/common/SaveLoadPreset";
 import type { DamageTableRow, ResultType } from "../models/DamageCalculatorTypes";
 
-const MOTIONS_BY_WEAPON_TYPE: Record<string, Motion[]> = {
-  longsword: TACHI_MOTIONS,
-  greatsword: GREATSWORD_MOTIONS,
-};
-
-const MONSTER_LIST = [
-  NekoTrainingTarupuncher,
-  Redau,
-  UzTuna,
-  NuEgdra,
-  Arshveldo,
-  GoreMagala,
-  ZoShia,
-];
 
 export function useDamageCalculator() {
   const [weaponInfo, setWeaponInfo] = useState<WeaponParameters>({
@@ -35,9 +20,7 @@ export function useDamageCalculator() {
     elementType: { key: "none", label: "無属性" },
     criticalRate: 5,
   });
-  const [selectedSkills, setSelectedSkills] = useState<
-    { key: string; level: number; skillData: SkillParameters[] }[]
-  >([]);
+  const [selectedSkills, setSelectedSkills] = useState<SelectedSkill[]>([]);
   const [selectedMotions, setSelectedMotions] = useState<Motion[]>([]);
   const [selectedMonster, setSelectedMonster] = useState<Monster | null>(null);
   const [damageResult, setDamageResult] = useState<string | null>(null);
@@ -55,24 +38,15 @@ export function useDamageCalculator() {
 
   const handleLoadPreset = (preset: PresetData) => {
     if (!preset) return;
-    if (preset.weaponInfo) setWeaponInfo(preset.weaponInfo as WeaponParameters);
-    if (preset.selectedSkills)
-      setSelectedSkills(
-        Array.isArray(preset.selectedSkills)
-          ? (preset.selectedSkills as {
-              key: string;
-              level: number;
-              skillData: SkillParameters[];
-            }[])
-          : []
-      );
-    if (preset.selectedMotions)
-      setSelectedMotions(preset.selectedMotions as Motion[]);
+    // Assuming PresetData is now strictly typed, no need for as assertions
+    if (preset.weaponInfo) setWeaponInfo(preset.weaponInfo);
+    if (preset.selectedSkills) setSelectedSkills(preset.selectedSkills);
+    if (preset.selectedMotions) setSelectedMotions(preset.selectedMotions);
     if (preset.selectedMonster) {
-      const found = MONSTER_LIST.find((m) => m.name === (preset.selectedMonster as { name: string }).name);
+      const found = MONSTER_LIST.find((m: Monster) => m.name === preset.selectedMonster?.name);
       setSelectedMonster(found ? found : null);
     }
-    if (preset.sharpness) setSharpness(preset.sharpness as SharpnessColor);
+    if (preset.sharpness) setSharpness(preset.sharpness);
   };
 
   const handleCalculateDamage = () => {

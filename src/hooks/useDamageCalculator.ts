@@ -28,8 +28,7 @@ export function useDamageCalculator() {
   const [sharpness, setSharpness] = useState<SharpnessColor>("white");
   const [presetDialogOpen, setPresetDialogOpen] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
-  const [history, setHistory] = useState<ResultType[]>([]);
-  const [lastResult, setLastResult] = useState<ResultType | null>(null);
+  const [results, setResults] = useState<ResultType[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const skillCategories = Object.keys(skillsByCategory) as (keyof typeof skillsByCategory)[];
   const [skillTab, setSkillTab] = useState(0);
@@ -76,8 +75,32 @@ export function useDamageCalculator() {
     };
     setDamageResult(JSON.stringify(result, null, 2));
     setDamageTableRows(damageTableRows);
-    setHistory((prev) => (lastResult ? [lastResult, ...prev] : prev));
-    setLastResult(result);
+    setResults((prev) => {
+      // 直前と同じ内容なら履歴を増やさない
+      const prev0 = prev[0];
+      if (
+        prev0 &&
+        JSON.stringify({
+          weaponInfo: prev0.weaponInfo,
+          selectedSkills: prev0.selectedSkills,
+          selectedMotions: prev0.selectedMotions,
+          selectedMonster: prev0.selectedMonster,
+          sharpness: prev0.sharpness,
+        }) ===
+          JSON.stringify({
+            weaponInfo: result.weaponInfo,
+            selectedSkills: result.selectedSkills,
+            selectedMotions: result.selectedMotions,
+            selectedMonster: result.selectedMonster,
+            sharpness: result.sharpness,
+          })
+      ) {
+        // 内容が同じならdamageTableRowsだけ更新
+        return [{ ...result }, ...prev.slice(1)];
+      }
+      // 新しい結果を先頭に追加し、履歴は最大20件まで保持
+      return [result, ...prev].slice(0, 20);
+    });
     if (tabIndex !== 0) setTabIndex(0);
   };
 
@@ -98,8 +121,7 @@ export function useDamageCalculator() {
     sharpness, setSharpness,
     presetDialogOpen, setPresetDialogOpen,
     tabIndex, setTabIndex,
-    history, setHistory,
-    lastResult, setLastResult,
+    results, setResults,
     errorMessage, setErrorMessage,
     skillCategories, skillTab, setSkillTab,
     availableMotions,

@@ -1,6 +1,6 @@
 import type { WeaponParameters } from "../models/Weapon";
 import type { Motion } from "../models/Motion";
-import type { Monster } from "../models/Monster";
+import type { Monster, MonsterPartStateDetails } from "../models/Monster";
 import { DamageCalculator, type DamageParameters } from "./DamageCalculator";
 import { SHARPNESS_LEVELS } from "../models/Sharpness";
 import type { SharpnessColor } from "../models/Sharpness";
@@ -25,7 +25,7 @@ export function getApplicableSkills(
     skillData: SkillParameters[];
   }[],
   motion: Motion,
-  state: { slashHitZone: number; bluntHitZone: number; shotHitZone: number }
+  state: MonsterPartStateDetails
 ) {
   return (selectedSkills || [])
     .flatMap((skill) => {
@@ -41,6 +41,8 @@ export function getApplicableSkills(
     .filter((skillParam) => {
       // ジャンプ攻撃専用スキルの適用判定
       if (!!skillParam.isJumpAttackOnly && !motion.isJump) return false;
+      // 部位の状態が適用可能かどうか
+      if (skillParam.applicableStates && !skillParam.applicableStates?.includes(state.state)) return false;
       // minHitZone/maxHitZoneは number 型のみを許容
       const min = skillParam.minHitZone;
       const max = skillParam.maxHitZone;
@@ -132,8 +134,8 @@ export function calculateDamageTable(
       let totalCritElemental = 0;
       let totalMotionValue = 0;
       // critRate計算用にスキル合算値を先に算出
+      let maxCriticalBonus = Number.NEGATIVE_INFINITY;
       let totalCriticalDamageModifier = 0;
-      let totalCriticalBonus = 0;
       selectedMotions.forEach((motion) => {
         const applicableSkills = getApplicableSkills(
           selectedSkills,
@@ -144,10 +146,14 @@ export function calculateDamageTable(
           (sum, s) => sum + (s.criticalDamageModifier ?? 0),
           0
         );
-        totalCriticalBonus += applicableSkills.reduce(
-          (sum, s) => sum + (s.criticalRateBonus ?? 0), 
+        // For crit rate, take the maximum bonus among all motions for this part state
+        const critBonus = applicableSkills.reduce(
+          (sum, s) => sum + (s.criticalRateBonus ?? 0),
           0
         );
+        if (critBonus > maxCriticalBonus) {
+          maxCriticalBonus = critBonus;
+        }
         const physicalParams = getPhysicalParams(
           weaponInfo,
           motion,
@@ -207,9 +213,10 @@ export function calculateDamageTable(
         totalCritElemental += critElemental;
         totalMotionValue += motion.motionValue;
       });
+      // Use the maximum crit rate bonus for this part state
       const critRate = Math.max(
         0,
-        Math.min(1, (weaponInfo.criticalRate + totalCriticalBonus) / 100)
+        Math.min(1, (weaponInfo.criticalRate + (maxCriticalBonus === Number.NEGATIVE_INFINITY ? 0 : maxCriticalBonus)) / 100)
       );
       const total = totalPhysical + totalElemental;
       const critTotal = totalCritPhysical + totalCritElemental;

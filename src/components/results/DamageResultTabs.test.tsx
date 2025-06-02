@@ -26,13 +26,33 @@ describe("DamageResultTabs", () => {
     sharpness: "white" as SharpnessColor,
     onDeleteHistory: () => {},
   };
+  // Mock ResultType for testing purposes
+  const mockResult = {
+    damageResult: "100",
+    history: [],
+    lastResult: null,
+    damageTableRows: [],
+    selectedSkills: [],
+    selectedMotions: [],
+    selectedMonster: null,
+    weaponInfo: {
+      weaponType: "longsword" as WeaponType,
+      weaponMultiplier: 200,
+      baseElementValue: 0,
+      elementType: { key: "none" as ElementTypeKey, label: "無属性" },
+      criticalRate: 0,
+      tachiSpiritGauge: "none" as TachiSpiritGauge,
+    },
+    sharpness: "white" as SharpnessColor,
+  };
+
   it("タブが表示される", () => {
-    render(<DamageResultTabs {...baseProps} />);
+    render(<DamageResultTabs results={[mockResult]} {...baseProps} />);
     expect(screen.getByRole("tablist")).toBeInTheDocument();
   });
   it("onChangeが呼ばれる", () => {
     const setTabIndex = vi.fn();
-    render(<DamageResultTabs {...baseProps} setTabIndex={setTabIndex} />);
+    render(<DamageResultTabs results={[mockResult]} {...baseProps} setTabIndex={setTabIndex} />);
     // There may be only one tab, so just check the tablist exists
     expect(screen.getByRole("tablist")).toBeInTheDocument();
   });

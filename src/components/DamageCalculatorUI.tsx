@@ -72,17 +72,10 @@ const DamageCalculatorUI = () => {
         <DamageResultTabs
           tabIndex={calc.tabIndex}
           setTabIndex={calc.setTabIndex}
-          damageResult={calc.damageResult}
-          history={calc.history}
-          lastResult={calc.lastResult}
-          damageTableRows={calc.damageTableRows}
-          selectedSkills={calc.selectedSkills}
-          selectedMotions={calc.selectedMotions}
-          selectedMonster={calc.selectedMonster}
-          weaponInfo={calc.weaponInfo}
-          sharpness={calc.sharpness}
+          results={calc.results}
           onDeleteHistory={(idx) => {
-            calc.setHistory((prev) => prev.filter((_, i) => i !== idx));
+            // idx: 1 = first history, 2 = second history, ... (index 0 is always current)
+            calc.setResults((prev) => prev.filter((_, i) => i !== idx));
             calc.setTabIndex(0);
           }}
         />

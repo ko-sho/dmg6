@@ -9,21 +9,11 @@ import type { WeaponParameters } from "../../models/Weapon";
 import type { SkillParameters } from "../../models/Skill";
 import type { Monster } from "../../models/Monster";
 import type { SharpnessColor } from "../../models/Sharpness";
-
-interface DamageTableRow {
-  part: string;
-  state: string;
-  damage: string;
-  critDamage: string;
-  expected: string;
-  physical: number;
-  elemental: number;
-  critRate: number;
-}
+import type { DamageTableRow as FullDamageTableRow } from "../../models/DamageCalculatorTypes";
 
 interface ResultPanelProps {
   result?: {
-    damageTableRows: DamageTableRow[];
+    damageTableRows: FullDamageTableRow[];
     selectedSkills: { key: string; level: number; skillData: SkillParameters[] }[];
     selectedMotions: Motion[];
     selectedMonster: Monster | null;
@@ -31,16 +21,26 @@ interface ResultPanelProps {
     sharpness: SharpnessColor;
   } | null;
   fallback?: {
-    damageTableRows: DamageTableRow[];
+    damageTableRows: FullDamageTableRow[];
     selectedSkills: { key: string; level: number; skillData: SkillParameters[] }[];
     selectedMotions: Motion[];
     selectedMonster: Monster | null;
     weaponInfo: WeaponParameters;
     sharpness: SharpnessColor;
   };
+  // 新しいprops
+  allResults?: Array<{
+    damageTableRows: FullDamageTableRow[];
+    selectedSkills: { key: string; level: number; skillData: SkillParameters[] }[];
+    selectedMotions: Motion[];
+    selectedMonster: Monster | null;
+    weaponInfo: WeaponParameters;
+    sharpness: SharpnessColor;
+  }>;
+  currentIndex?: number;
 }
 
-const ResultPanel: React.FC<ResultPanelProps> = ({ result, fallback }) => {
+const ResultPanel: React.FC<ResultPanelProps> = ({ result, fallback, allResults, currentIndex = 0 }) => {
   const rows = result?.damageTableRows ?? fallback?.damageTableRows ?? [];
   const selectedSkills = result?.selectedSkills ?? fallback?.selectedSkills ?? [];
   const selectedMotions = result?.selectedMotions ?? fallback?.selectedMotions ?? [];
@@ -60,7 +60,12 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, fallback }) => {
         boxShadow: 1,
       }}
     >
-      <DamageTable rows={rows} />
+      {/* ダメージ表（比較セレクタはDamageTableに移譲） */}
+      <DamageTable
+        rows={rows}
+        allResults={allResults}
+        currentIndex={currentIndex}
+      />
       <SkillLevelTable selectedSkills={selectedSkills} />
       <SelectedMotionsTable
         motions={selectedMotions.map((motion) => ({

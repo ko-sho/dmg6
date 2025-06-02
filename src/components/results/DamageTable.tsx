@@ -16,6 +16,7 @@ import {
   ListItemText,
   OutlinedInput,
 } from "@mui/material";
+import DamageHeatmap from "./DamageHeatmap";
 
 export interface DamageTableRow {
   part: string;
@@ -450,6 +451,14 @@ const DamageTable: React.FC<DamageTableProps> = ({
       </TableContainer>
       {/* 計算に使われたパラメータ値のテーブルを追加（縦長形式） */}
       {/* パラメータ合計テーブルはSelectedParamsSummaryに移行のため削除 */}
+      {/* 比較ヒートマップ（テーブル下部に移動、フィルタ適用） */}
+      {compareRows && (
+        <DamageHeatmap
+          currentRows={filteredRows}
+          compareRows={compareRows.filter((row) => selectedStates.includes(row.state))}
+          valueType="expected"
+        />
+      )}
     </TableContainer>
   );
 };

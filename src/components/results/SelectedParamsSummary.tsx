@@ -1,10 +1,10 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow, Typography, TableContainer, Paper } from '@mui/material';
-import type { WeaponParameters } from '../models/Weapon';
-import type { SkillParameters } from '../models/Skill';
-import type { Motion } from '../models/Motion';
-import type { SharpnessColor } from '../models/Sharpness';
-import { SHARPNESS_LEVELS } from '../models/Sharpness';
+import type { WeaponParameters } from '../../models/Weapon';
+import type { SkillParameters } from '../../models/Skill';
+import type { Motion } from '../../models/Motion';
+import type { SharpnessColor } from '../../models/Sharpness';
+import { SHARPNESS_LEVELS } from '../../models/Sharpness';
 
 interface SelectedParamsSummaryProps {
   weapon: WeaponParameters;

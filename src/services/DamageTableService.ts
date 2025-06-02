@@ -4,7 +4,7 @@ import type { Monster } from "../models/Monster";
 import { DamageCalculator, type DamageParameters } from "./DamageCalculator";
 import { SHARPNESS_LEVELS } from "../models/Sharpness";
 import type { SharpnessColor } from "../models/Sharpness";
-import type { SkillParameters, SelectedSkill } from "../models/Skill";
+import type { SkillParameters } from "../models/Skill";
 import { TACHI_SPIRIT_GAUGE_MODIFIER } from '../data/weapons/TachiSpiritGaugeBonus';
 import type { DamageTableRow } from "../models/DamageCalculatorTypes";
 

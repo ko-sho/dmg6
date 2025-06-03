@@ -1,5 +1,4 @@
 import type { MonsterPartState } from '../models/Monster';
-import type { MotionAttackType } from '../models/Motion';
 
 interface WeaponDamageParameters {
   baseWeaponMultiplier: number;
@@ -15,7 +14,7 @@ interface MotionDamageParameters {
   sharpnessModifier: number;
   elementalSharpnessModifier: number;
   hitcount?: number;
-  attackType: MotionAttackType;
+  attackType: 'slash' | 'blunt' | 'shot'; // 物理攻撃の種類
 }
 
 interface MonsterPartDamageParameters {

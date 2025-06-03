@@ -48,7 +48,7 @@ const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, s
   //   : '-';
   let avgElementMultiplier = '-';
   if (cmpMotions.length > 0) {
-    avgElementMultiplier = (cmpMotions.reduce((sum, m) => sum + (m.elementMultiplier || 0), 0) / cmpMotions.length).toFixed(2);
+    avgElementMultiplier = (cmpMotions.reduce((sum, m) => sum + (m.StatusAttrRate || 0), 0) / cmpMotions.length).toFixed(2);
   }
 
   return (
@@ -121,8 +121,8 @@ const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, s
               </TableRow>
               <TableRow>
                 <TableCell sx={{ fontSize: '0.95rem' }}>モーション属性補正</TableCell>
-                <TableCell sx={{ fontSize: '0.95rem', color: (cmpMotions.length && Number(avgElementMultiplier) > (cmpMotions.reduce((sum, m) => sum + (m.elementMultiplier || 0), 0) / cmpMotions.length)) ? '#388e3c' : (cmpMotions.length && Number(avgElementMultiplier) < (cmpMotions.reduce((sum, m) => sum + (m.elementMultiplier || 0), 0) / cmpMotions.length)) ? '#d32f2f' : undefined }}>{avgElementMultiplier}</TableCell>
-                {compareResult && <TableCell sx={{ fontSize: '0.95rem', color: (cmpMotions.length && Number(avgElementMultiplier) < (cmpMotions.reduce((sum, m) => sum + (m.elementMultiplier || 0), 0) / cmpMotions.length)) ? '#388e3c' : (cmpMotions.length && Number(avgElementMultiplier) > (cmpMotions.reduce((sum, m) => sum + (m.elementMultiplier || 0), 0) / cmpMotions.length)) ? '#d32f2f' : undefined }}>{cmpMotions.length > 0 ? (cmpMotions.reduce((sum, m) => sum + (m.elementMultiplier || 0), 0) / cmpMotions.length).toFixed(2) : '-'}</TableCell>}
+                <TableCell sx={{ fontSize: '0.95rem', color: (cmpMotions.length && Number(avgElementMultiplier) > (cmpMotions.reduce((sum, m) => sum + (m.StatusAttrRate || 0), 0) / cmpMotions.length)) ? '#388e3c' : (cmpMotions.length && Number(avgElementMultiplier) < (cmpMotions.reduce((sum, m) => sum + (m.StatusAttrRate || 0), 0) / cmpMotions.length)) ? '#d32f2f' : undefined }}>{avgElementMultiplier}</TableCell>
+                {compareResult && <TableCell sx={{ fontSize: '0.95rem', color: (cmpMotions.length && Number(avgElementMultiplier) < (cmpMotions.reduce((sum, m) => sum + (m.StatusAttrRate || 0), 0) / cmpMotions.length)) ? '#388e3c' : (cmpMotions.length && Number(avgElementMultiplier) > (cmpMotions.reduce((sum, m) => sum + (m.StatusAttrRate || 0), 0) / cmpMotions.length)) ? '#d32f2f' : undefined }}>{cmpMotions.length > 0 ? (cmpMotions.reduce((sum, m) => sum + (m.StatusAttrRate || 0), 0) / cmpMotions.length).toFixed(2) : '-'}</TableCell>}
               </TableRow>
             </>
           )}

@@ -1,6 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import MotionSelector from "./MotionSelector";
 import { vi } from "vitest";
+import type { FullDataMotion } from "../../models/FullDataMotion";
+import type { Dispatch, SetStateAction } from "react";
 
 describe("MotionSelector", () => {
   const availableMotions = motions;
@@ -16,7 +18,7 @@ describe("MotionSelector", () => {
     expect(screen.getByText("B")).toBeInTheDocument();
   });
   it("選択時にsetSelectedMotionsが呼ばれる", () => {
-    const setSelectedMotions = vi.fn();
+    const setSelectedMotions = vi.fn<Dispatch<SetStateAction<FullDataMotion[]>>>();
     render(
       <MotionSelector
         availableMotions={availableMotions}
@@ -42,8 +44,9 @@ describe("MotionSelector", () => {
 
 export {};
 
-const motions = [
+const motions: FullDataMotion[] = [
   {
+    key: "0",
     name: "A",
     enName: "A",
     RSID: 1,
@@ -68,10 +71,10 @@ const motions = [
     IsUseCondDefaultSec: false,
     CondCustomSec: 0,
     StunDamage: 0,
-    FlagBit: 0,
+    FlagBit: "0",
     MultiHitTimer: 0,
     HealValue: 0,
-    PriorityFixed: 0,
+    PriorityFixed: "0",
     PriorityTypeFixed: "",
     DisableContactPointAdjust: false,
     IsContactPointAdjustIgnoreDamageAngle: false,
@@ -82,7 +85,6 @@ const motions = [
     RideDamage: 0,
     BattleRidingAttackType: "",
     RidingScarDamage: 0,
-    RidingSuccessDamage: 0,
     RidingSuccessDamageRawScar: 0,
     IsSkillHien: false,
     IsPointAttack: false,
@@ -119,10 +121,10 @@ const motions = [
     CustomShockAbsorberRate: 0,
     IsGestureAttack: false,
     HitEffectTypeFixed: "",
-    DisableHitEffect: false,
+    DisableHitEffect: "false",
     HitEffectAngleZ: 0,
     HitEffectAngleX: 0,
-    HitEffectOverwriteConnectID: "",
+    HitEffectOverwriteConnectID: 0,
     GeneralValue1: 0,
     GeneralValue2: 0,
     GeneralValue3: 0,
@@ -145,6 +147,8 @@ const motions = [
     GShapeParams: "",
   },
   {
+    key: "1",
+    MultiHitEmPartsMaxNum: 2,
     name: "B",
     enName: "B",
     RSID: 2,
@@ -169,10 +173,10 @@ const motions = [
     IsUseCondDefaultSec: false,
     CondCustomSec: 0,
     StunDamage: 0,
-    FlagBit: 0,
+    FlagBit: "0",
     MultiHitTimer: 0,
     HealValue: 0,
-    PriorityFixed: 0,
+    PriorityFixed: "0", 
     PriorityTypeFixed: "",
     DisableContactPointAdjust: false,
     IsContactPointAdjustIgnoreDamageAngle: false,
@@ -183,7 +187,6 @@ const motions = [
     RideDamage: 0,
     BattleRidingAttackType: "",
     RidingScarDamage: 0,
-    RidingSuccessDamage: 0,
     RidingSuccessDamageRawScar: 0,
     IsSkillHien: false,
     IsPointAttack: false,
@@ -198,7 +201,6 @@ const motions = [
     IsWeakPointLimit: false,
     NoDamageReaction: false,
     IsMultiHitEmParts: false,
-    MultiHitEmPartsMaxNum: 1,
     IsMultiHitEmWeak: false,
     MultiHitEmWeakMaxNum: 0,
     MultiHitRateCurve: "",
@@ -220,10 +222,10 @@ const motions = [
     CustomShockAbsorberRate: 0,
     IsGestureAttack: false,
     HitEffectTypeFixed: "",
-    DisableHitEffect: false,
+    DisableHitEffect: "false",
     HitEffectAngleZ: 0,
     HitEffectAngleX: 0,
-    HitEffectOverwriteConnectID: "",
+    HitEffectOverwriteConnectID: 0,
     GeneralValue1: 0,
     GeneralValue2: 0,
     GeneralValue3: 0,

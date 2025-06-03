@@ -13,8 +13,8 @@ import {
 export interface SelectedMotion {
   name: string;
   motionValue: number;
-  elementModifier?: number;
-  hits?: number;
+  elementMultiplier?: number;
+  hitCount?: number;
 }
 
 interface SelectedMotionsTableProps {
@@ -42,8 +42,8 @@ const SelectedMotionsTable: React.FC<SelectedMotionsTableProps> = ({ motions }) 
             <TableRow key={motion.name + idx}>
               <TableCell>{motion.name}</TableCell>
               <TableCell>{motion.motionValue}</TableCell>
-              <TableCell>{motion.elementModifier !== undefined ? motion.elementModifier : "-"}</TableCell>
-              <TableCell>{motion.hits !== undefined ? motion.hits : "-"}</TableCell>
+              <TableCell>{motion.elementMultiplier !== undefined ? motion.elementMultiplier : "-"}</TableCell>
+              <TableCell>{motion.hitCount !== undefined ? motion.hitCount : "-"}</TableCell>
             </TableRow>
           ))}
         </TableBody>

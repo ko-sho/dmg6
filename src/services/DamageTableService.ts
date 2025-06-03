@@ -70,12 +70,13 @@ function getPhysicalParams(
     iceHitZone?: number;
     dragonHitZone?: number;
   },
-  applicableSkills: SkillParameters[]
+  applicableSkills: SkillParameters[],
+  itemBuffs: number = 0 // 追加
 ): DamageParameters {
   const totalAttackBonus = applicableSkills.reduce(
     (sum, s) => sum + (s.additionAttackBonus ?? 0),
     0
-  );
+  ) + itemBuffs; // アイテムバフ加算
   let totalAttackMultiplierBonus = applicableSkills.reduce(
     (mul, s) => mul * (s.attackMultiplierBonus ?? 1),
     1
@@ -122,7 +123,8 @@ export function calculateDamageTable(
     key: string;
     level: number;
     skillData: SkillParameters[];
-  }[] = []
+  }[] = [],
+  itemBuffs: number = 0 // 追加: アイテムバフの合計攻撃力
 ): DamageTableRow[] {
   if (!selectedMonster || selectedMotions.length === 0) return [];
   const sharpnessObj =
@@ -164,7 +166,8 @@ export function calculateDamageTable(
           sharpnessObj.modifier,
           sharpnessObj.elementModifier, // 追加
           state,
-          applicableSkills
+          applicableSkills,
+          itemBuffs // 追加
         );
         // 属性肉質のキーを決定（マッピングでシンプル化）
         let elementalHitZone = state.slashHitZone;

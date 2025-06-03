@@ -44,6 +44,8 @@ describe("DamageResultTabs", () => {
       tachiSpiritGauge: "none" as TachiSpiritGauge,
     },
     sharpness: "white" as SharpnessColor,
+    selectedBuffs: [],
+    itemBuffsTotal: 0,
   };
 
   it("タブが表示される", () => {

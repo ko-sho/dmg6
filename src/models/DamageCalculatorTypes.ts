@@ -37,4 +37,6 @@ export type ResultType = {
   selectedMonster: Monster | null;
   sharpness: SharpnessColor;
   damageTableRows: DamageTableRow[];
+  selectedBuffs: string[]; // 追加: 計算時点のバフ
+  itemBuffsTotal: number; // 追加: 計算時点の合計値
 };

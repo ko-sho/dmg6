@@ -9,6 +9,8 @@ import WeaponSection from "./inputs/WeaponSection";
 import SkillSection from "./inputs/SkillSection";
 import MotionSection from "./inputs/MotionSection";
 import MonsterSelector from "./inputs/MonsterSelector";
+import SelectedMotionsTable from "./results/SelectedMotionsTable";
+import ItemBuffSection from "./inputs/ItemBuffSection";
 
 const DamageCalculatorUI = () => {
   const calc = useDamageCalculator();
@@ -35,6 +37,7 @@ const DamageCalculatorUI = () => {
           sharpnessColor={calc.sharpness}
           setSharpnessColor={calc.setSharpness}
         />
+        <ItemBuffSection selectedBuffs={calc.selectedBuffs} setSelectedBuffs={calc.setSelectedBuffs} />
         <SkillSection
           skillCategories={calc.skillCategories}
           skillCategoryLabels={skillCategoryLabels}
@@ -43,8 +46,9 @@ const DamageCalculatorUI = () => {
           skillsByCategory={skillsByCategory}
           selectedSkills={calc.selectedSkills}
           setSelectedSkills={calc.setSelectedSkills}
-          weaponType={calc.weaponInfo.weaponType} // 追加
+          weaponType={calc.weaponInfo.weaponType}
         />
+        {/* モーション選択欄を履歴タブの外にグローバルで表示 */}
         <MotionSection
           availableMotions={calc.availableMotions.map((motion, idx) => ({
             key: `${motion.name}_${idx}`,
@@ -70,6 +74,8 @@ const DamageCalculatorUI = () => {
           />
         </Box>
         <CalculateButton onClick={calc.handleCalculateDamage} errorMessage={calc.errorMessage} />
+        {/* 現在選択中のモーションセットをグローバルに1つだけ表示 */}
+        <SelectedMotionsTable motions={calc.selectedMotions} />
         <DamageResultTabs
           tabIndex={calc.tabIndex}
           setTabIndex={calc.setTabIndex}

@@ -75,7 +75,7 @@ const DamageHeatmap: React.FC<DamageHeatmapProps> = ({
         ）
       </Typography>
       <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
-        <Table size="small" sx={{ minWidth: 400 }}>
+        <Table size="small" sx={{ minWidth: 320 }}>
           <TableHead>
             <TableRow>
               <TableCell sx={{ fontWeight: 700 }}>部位\状態</TableCell>

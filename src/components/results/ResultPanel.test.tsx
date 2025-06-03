@@ -51,6 +51,8 @@ describe("ResultPanel", () => {
       tachiSpiritGauge: "none" as TachiSpiritGauge,
     },
     sharpness: "white" as SharpnessColor,
+    selectedBuffs: [],
+    itemBuffsTotal: 0,
   };
   it("パネルが表示される", () => {
     render(<ResultPanel result={baseResult} />);

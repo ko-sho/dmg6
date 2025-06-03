@@ -11,12 +11,14 @@ interface SelectedParamsSummaryProps {
   selectedSkills: { key: string; level: number; skillData: SkillParameters[] }[];
   selectedMotions: Motion[];
   sharpnessColor: SharpnessColor;
+  itemBuffsTotal?: number; // 追加
 }
 
-const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, selectedSkills, selectedMotions, sharpnessColor }) => {
+const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, selectedSkills, selectedMotions, sharpnessColor, itemBuffsTotal = 0 }) => {
   // スキルの合算値
+  console.log(itemBuffsTotal)
   const allSkillParams = selectedSkills.flatMap(s => s.skillData);
-  const totalAttackBonus = allSkillParams.reduce((sum, p) => sum + (p.additionAttackBonus || 0), 0);
+  const totalAttackBonus = allSkillParams.reduce((sum, p) => sum + (p.additionAttackBonus || 0), 0) + itemBuffsTotal; // アイテムバフ加算
   const totalAttackMultiplierBonus = allSkillParams.reduce((prod, p) => prod * (p.attackMultiplierBonus ?? 1), 1);
   const totalElementAddition = allSkillParams.reduce((sum, p) => sum + (p.elementAddition || 0), 0);
   const totalElementModifier = allSkillParams.reduce((prod, p) => prod * (p.elementModifier ?? 1), 1);
@@ -64,8 +66,8 @@ const SelectedParamsSummary: React.FC<SelectedParamsSummaryProps> = ({ weapon, s
             <TableCell sx={{ fontSize: '0.95rem' }}>{weapon.weaponMultiplier}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell sx={{ fontSize: '0.95rem' }}>加算攻撃力</TableCell>
-            <TableCell sx={{ fontSize: '0.95rem' }}>{totalAttackBonus}</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>攻撃力加算値</TableCell>
+            <TableCell sx={{ fontSize: '0.95rem' }}>{totalAttackBonus} {itemBuffsTotal > 0 ? `（アイテム+${itemBuffsTotal}）` : ''}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell sx={{ fontSize: '0.95rem' }}>攻撃乗算補正</TableCell>

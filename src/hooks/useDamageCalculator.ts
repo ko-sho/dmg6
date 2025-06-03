@@ -10,6 +10,8 @@ import type { Monster } from "../models/Monster";
 import type { SharpnessColor } from "../models/Sharpness";
 import type { PresetData } from "../components/common/SaveLoadPreset";
 import type { DamageTableRow, ResultType } from "../models/DamageCalculatorTypes";
+import type { ItemBuffKey } from "../components/inputs/ItemBuffSection";
+import { ITEM_BUFFS } from "../components/inputs/ItemBuffSection";
 
 
 export function useDamageCalculator() {
@@ -32,8 +34,17 @@ export function useDamageCalculator() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const skillCategories = Object.keys(skillsByCategory) as (keyof typeof skillsByCategory)[];
   const [skillTab, setSkillTab] = useState(0);
+  const [selectedBuffs, setSelectedBuffs] = useState<ItemBuffKey[]>([]);
 
   const availableMotions = MOTIONS_BY_WEAPON_TYPE[weaponInfo.weaponType] || [];
+
+  // アイテムバフ合計値を計算
+  const itemBuffsTotal = selectedBuffs
+    .map((key) => {
+      const buff = ITEM_BUFFS.find((b) => b.key === key);
+      return buff ? buff.attack : 0;
+    })
+    .reduce((a, b) => a + b, 0);
 
   const handleLoadPreset = (preset: PresetData) => {
     if (!preset) return;
@@ -63,7 +74,8 @@ export function useDamageCalculator() {
       selectedMotions,
       selectedMonster,
       sharpness,
-      selectedSkills
+      selectedSkills,
+      itemBuffsTotal
     );
     const result: ResultType = {
       weaponInfo,
@@ -72,10 +84,13 @@ export function useDamageCalculator() {
       selectedMonster,
       sharpness,
       damageTableRows,
+      selectedBuffs: [...selectedBuffs], // 追加
+      itemBuffsTotal, // 追加
     };
     setDamageResult(JSON.stringify(result, null, 2));
     setDamageTableRows(damageTableRows);
     setResults((prev) => {
+      // すべての履歴を現在のselectedMotionsで再計算 → 削除
       // 直前と同じ内容なら履歴を増やさない
       const prev0 = prev[0];
       if (
@@ -86,14 +101,16 @@ export function useDamageCalculator() {
           selectedMotions: prev0.selectedMotions,
           selectedMonster: prev0.selectedMonster,
           sharpness: prev0.sharpness,
+          selectedBuffs: prev0.selectedBuffs, // 追加
         }) ===
-          JSON.stringify({
-            weaponInfo: result.weaponInfo,
-            selectedSkills: result.selectedSkills,
-            selectedMotions: result.selectedMotions,
-            selectedMonster: result.selectedMonster,
-            sharpness: result.sharpness,
-          })
+        JSON.stringify({
+          weaponInfo: result.weaponInfo,
+          selectedSkills: result.selectedSkills,
+          selectedMotions: result.selectedMotions,
+          selectedMonster: result.selectedMonster,
+          sharpness: result.sharpness,
+          selectedBuffs: result.selectedBuffs, // 追加
+        })
       ) {
         // 内容が同じならdamageTableRowsだけ更新
         return [{ ...result }, ...prev.slice(1)];
@@ -110,6 +127,26 @@ export function useDamageCalculator() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [weaponInfo.weaponType]);
+
+  // selectedMotionsが変わったら全履歴のdamageTableRowsを再計算し、selectedMotionsも揃える
+  useEffect(() => {
+    setResults((prev) =>
+      prev.map((old) => ({
+        ...old,
+        selectedMotions,
+        damageTableRows: calculateDamageTable(
+          old.weaponInfo,
+          selectedMotions,
+          old.selectedMonster,
+          old.sharpness,
+          old.selectedSkills,
+          old.itemBuffsTotal ?? 0
+        ),
+      }))
+    );
+  }, [selectedMotions]);
+
+  // アイテムバフ・selectedBuffs依存の再計算・履歴上書きuseEffectは削除
 
   return {
     weaponInfo, setWeaponInfo,
@@ -128,5 +165,7 @@ export function useDamageCalculator() {
     handleLoadPreset,
     handleCalculateDamage,
     MONSTER_LIST,
+    selectedBuffs, setSelectedBuffs,
+    itemBuffsTotal,
   };
 }

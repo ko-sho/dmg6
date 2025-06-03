@@ -3,7 +3,6 @@ import { render, screen } from "@testing-library/react";
 import SelectedParamsSummary from "./SelectedParamsSummary";
 import type { WeaponParameters } from "../../models/Weapon";
 import type { SkillParameters } from "../../models/Skill";
-import type { Motion } from "../../models/Motion";
 import type { SharpnessColor } from "../../models/Sharpness";
 
 describe("SelectedParamsSummary", () => {
@@ -15,7 +14,6 @@ describe("SelectedParamsSummary", () => {
     criticalRate: 0,
   };
   const baseSkills: { key: string; level: number; skillData: SkillParameters[] }[] = [];
-  const baseMotions: Motion[] = [];
   const sharpness: SharpnessColor = "white";
 
   it("renders summary table with basic weapon info", () => {
@@ -23,7 +21,6 @@ describe("SelectedParamsSummary", () => {
       <SelectedParamsSummary
         weapon={baseWeapon}
         selectedSkills={baseSkills}
-        selectedMotions={baseMotions}
         sharpnessColor={sharpness}
       />
     );
@@ -38,7 +35,6 @@ describe("SelectedParamsSummary", () => {
       <SelectedParamsSummary
         weapon={weapon}
         selectedSkills={baseSkills}
-        selectedMotions={baseMotions}
         sharpnessColor={sharpness}
       />
     );

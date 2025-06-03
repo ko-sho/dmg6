@@ -18,8 +18,17 @@ const ELEMENT_HITZONE_KEY: Record<string, string> = {
 };
 
 // --- プロパティ対応表に基づき、FullDataMotion型の値参照を厳密化 ---
-function getMotionValue(motion: FullDataMotion): number {
-  // motionValue → Attack
+function getMotionValue(motion: FullDataMotion, weaponInfo?: WeaponParameters): number {
+  // 太刀の練気ゲージ赤・GeneralValue2>0ならGeneralValue2を優先
+  if (
+    weaponInfo?.weaponType === 'longsword' &&
+    weaponInfo?.tachiSpiritGauge === 'red' &&
+    typeof motion.GeneralValue2 === 'number' &&
+    motion.GeneralValue2 > 0
+  ) {
+    return motion.GeneralValue2;
+  }
+  // 通常はAttack
   return typeof motion.Attack === 'number' ? motion.Attack : 0;
 }
 function getElementMultiplier(motion: FullDataMotion): number {
@@ -116,7 +125,7 @@ function getPhysicalParams(
     baseWeaponMultiplier: weaponInfo.weaponMultiplier,
     additionAttackBonus: totalAttackBonus,
     attackMultiplierBonus: totalAttackMultiplierBonus,
-    motionValue: getMotionValue(motion),
+    motionValue: getMotionValue(motion, weaponInfo),
     sharpnessModifier,
     elementalSharpnessModifier, // 追加
     criticalDamageModifier: 1,
@@ -245,7 +254,7 @@ export function calculateDamageTable(
         }
         totalElemental += elemental;
         totalCritElemental += critElemental;
-        totalMotionValue += getMotionValue(motion);
+        totalMotionValue += getMotionValue(motion, weaponInfo);
       });
       // Use the maximum crit rate bonus for this part state
       const critRate = Math.max(

@@ -11,7 +11,8 @@ OUT_DIR = os.path.join("src", "data", "fullDataWeapons")
 # 武器シート名リスト（full_dataのシート名）
 WEAPON_SHEETS = [
     'wp00GS', 'wp01Sns', 'wp02DB', 'wp03LS', 'wp04Ham', 'wp05HH',
-    'wp06Lan', 'wp07GL', 'wp08SA', 'wp09CB', 'wp10IG', 'wp11Bow', 'wp12HBG', 'wp13LBG'
+    'wp06Lan', 'wp07GL', 'wp08SA', 'wp09CB', 'wp10IG', 'wp11Bow',
+    # 'wp12HBG', 'wp13LBG',  # ボウガン系は一旦除外
 ]
 
 # 2行目のカラム名を取得して型に合わせてdictを作る

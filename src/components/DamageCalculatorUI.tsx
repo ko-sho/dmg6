@@ -24,8 +24,6 @@ import wp08SA from '../data/fullDataWeapons/wp08SA.json';
 import wp09CB from '../data/fullDataWeapons/wp09CB.json';
 import wp10IG from '../data/fullDataWeapons/wp10IG.json';
 import wp11Bow from '../data/fullDataWeapons/wp11Bow.json';
-import wp12HBG from '../data/fullDataWeapons/wp12HBG.json';
-import wp13LBG from '../data/fullDataWeapons/wp13LBG.json';
 
 // weaponTypeToMotionsのキーをすべて小文字に統一し、weaponTypeも小文字で参照
 const weaponTypeToMotions: Record<string, FullDataMotion[]> = {
@@ -41,8 +39,8 @@ const weaponTypeToMotions: Record<string, FullDataMotion[]> = {
   chargeblade: wp09CB,
   insectglaive: wp10IG,
   bow: wp11Bow,
-  heavybowgun: wp12HBG,
-  lightbowgun: wp13LBG,
+  // heavybowgun: wp12HBG,
+  // lightbowgun: wp13LBG,
 };
 
 const DamageCalculatorUI = () => {
@@ -106,7 +104,7 @@ const DamageCalculatorUI = () => {
         </Box>
         <CalculateButton onClick={calc.handleCalculateDamage} errorMessage={calc.errorMessage} />
         {/* 現在選択中のモーションセットをグローバルに1つだけ表示 */}
-        <SelectedMotionsTable motions={calc.selectedMotions as FullDataMotion[]} />
+        <SelectedMotionsTable motions={calc.selectedMotions as FullDataMotion[]} tachiSpiritGauge={calc.weaponInfo.tachiSpiritGauge} />
         <DamageResultTabs
           tabIndex={calc.tabIndex}
           setTabIndex={calc.setTabIndex}

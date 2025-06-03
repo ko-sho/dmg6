@@ -27,8 +27,8 @@ const WEAPON_TYPES: { key: WeaponType; label: string }[] = [
   { key: 'chargeblade', label: 'チャージアックス' },
   { key: 'insectglaive', label: '操虫棍' },
   { key: 'bow', label: '弓' },
-  { key: 'heavybowgun', label: 'ヘビィボウガン' },
-  { key: 'lightbowgun', label: 'ライトボウガン' },
+  // { key: 'heavybowgun', label: 'ヘビィボウガン' },
+  // { key: 'lightbowgun', label: 'ライトボウガン' },
 ];
 
 interface WeaponInputProps {

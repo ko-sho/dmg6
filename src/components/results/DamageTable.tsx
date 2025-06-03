@@ -45,6 +45,7 @@ interface DamageTableProps {
     damageTableRows: DamageTableRow[];
   }>;
   currentIndex?: number;
+  compareRows?: DamageTableRow[];
 }
 
 const STATE_OPTIONS = [
@@ -63,6 +64,7 @@ const DamageTable: React.FC<DamageTableProps> = ({
   rows,
   allResults,
   currentIndex = 0,
+  compareRows: externalCompareRows,
 }) => {
   const [selectedStates, setSelectedStates] = React.useState<string[]>(
     STATE_OPTIONS.map((opt) => opt.value)
@@ -82,9 +84,12 @@ const DamageTable: React.FC<DamageTableProps> = ({
       : [];
   }, [hasAllResults, allResults, currentIndex]);
 
+  // 比較用: 部位+状態で一致する行を返す
   const compareRows =
-    hasAllResults && compareIdx !== ""
-      ? allResults[compareIdx as number]?.damageTableRows
+    externalCompareRows !== undefined
+      ? externalCompareRows
+      : hasAllResults && compareIdx !== ""
+      ? allResults?.[compareIdx as number]?.damageTableRows
       : undefined;
 
   React.useEffect(() => {
@@ -107,14 +112,6 @@ const DamageTable: React.FC<DamageTableProps> = ({
     partRowSpans[row.part] = (partRowSpans[row.part] || 0) + 1;
   });
   const renderedParts: Record<string, boolean> = {};
-
-  // 比較用: 部位+状態で一致する行を返す
-  const getCompareRow = (row: DamageTableRow) => {
-    if (!compareRows) return undefined;
-    return compareRows.find(
-      (r) => r.part === row.part && r.state === row.state
-    );
-  };
 
   return (
     <TableContainer component={Paper} sx={{ mt: 2, boxShadow: 0 }}>
@@ -217,8 +214,10 @@ const DamageTable: React.FC<DamageTableProps> = ({
             {filteredRows.map((row) => {
               const showPart = !renderedParts[row.part];
               if (showPart) renderedParts[row.part] = true;
-              const compareRow =
-                typeof compareIdx === "number" && compareIdx >= 0 ? getCompareRow(row) : undefined;
+              // 比較用: 部位+状態で一致する行を返す
+              const compareRow = compareRows ? compareRows.find(
+                (r) => r.part === row.part && r.state === row.state
+              ) : undefined;
               // パーセンテージ差分計算
               const percent = (val: number, base?: number) => {
                 if (base === undefined || base === 0) return "";

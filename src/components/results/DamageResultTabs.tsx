@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Tabs, Tab, Box, Button } from "@mui/material";
 import ResultPanel from "./ResultPanel";
 import type { ResultType } from "../../models/DamageCalculatorTypes";
@@ -16,6 +16,20 @@ const DamageResultTabs: React.FC<DamageResultTabsProps> = ({
   results,
   onDeleteHistory,
 }) => {
+  // 比較対象インデックスをここで管理
+  const [compareIdx, setCompareIdx] = useState<number | "">("");
+  const hasAllResults = results.length > 1;
+  const compareOptions = hasAllResults
+    ? results
+        .map((_, idx) => ({
+          label: idx === 0 ? "現在" : `履歴${results.length - idx}`,
+          idx,
+        }))
+        .filter((opt) => opt.idx !== tabIndex)
+    : [];
+  const compareResult =
+    hasAllResults && compareIdx !== "" ? results[compareIdx as number] : undefined;
+
   // 現在のタブのResultType
   const currentResult = results[tabIndex] || results[0];
 
@@ -38,12 +52,15 @@ const DamageResultTabs: React.FC<DamageResultTabsProps> = ({
           ))}
         </Tabs>
       )}
-      {/* タブ内容の切り替え。比較対象選択はResultPanelに委譲 */}
+      {/* 比較対象セレクタをResultPanelの上部に移動して渡す */}
       <ResultPanel
         result={currentResult}
         fallback={currentResult}
-        allResults={results}
-        currentIndex={tabIndex}
+        compareIdx={compareIdx}
+        setCompareIdx={setCompareIdx}
+        compareOptions={compareOptions}
+        compareResult={compareResult}
+        compareRows={compareResult?.damageTableRows}
       />
       {tabIndex > 0 && results[tabIndex] && (
         <Box

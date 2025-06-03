@@ -29,11 +29,29 @@ def extract_full_data_motions():
         for row in ws.iter_rows(min_row=4, values_only=True):
             if not any(row):
                 continue
-            # name, enNameはcolName, RSNameから
-            d = {h: v for h, v in zip(headers, row)}
+            d = {h: (None if v == "NULL" else v) for h, v in zip(headers, row)}
+            # RSIDがNoneまたは空文字の場合のみ除外（0や'0'は許容）
+            if d.get("RSID") is None or d.get("RSID") == "":
+                continue
+            # 必須カラムがすべて存在しない場合はスキップ
+            if not (d.get("colName") or d.get("RSName")):
+                continue
+            if d.get("Attack") is None:
+                continue
+            if d.get("StatusAttrRate") is None:
+                continue
+            if d.get("IsSkillHien") is None:
+                continue
             d["name"] = d.get("colName") or d.get("RSName") or ""
-            d["enName"] = d.get("RSName") or d.get("colName") or ""
+            # A列（1列目）の英語名をenNameに優先して格納
+            a_col_en = row[0] if len(row) > 0 and row[0] else None
+            d["enName"] = a_col_en or d.get("RSName") or d.get("colName") or ""
+            # key: name + '-' + RSID
+            d["key"] = f"{d['name']}-{d['RSID']}"
             motions.append(d)
+        # RSID順にソート
+        motions.sort(key=lambda d: int(d["RSID"]))
+        motions.sort(key=lambda d: int(d["GroupIndex"]) if d.get("GroupIndex") == 0 else 99)  # GroupIndexがない場合は99に設定
         # ファイル名例: wp00GS.json
         out_path = os.path.join(OUT_DIR, f"{ws_name}.json")
         with open(out_path, "w", encoding="utf-8") as f:

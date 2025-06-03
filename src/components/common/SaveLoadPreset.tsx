@@ -3,14 +3,14 @@ import { Button, TextField, Stack, Typography, List, ListItem, ListItemText, Ico
 import DeleteIcon from '@mui/icons-material/Delete';
 import type { WeaponParameters } from '../../models/Weapon';
 import type { SelectedSkill } from '../../models/Skill';
-import type { Motion } from '../../models/Motion';
+import type { FullDataMotion } from '../../models/FullDataMotion';
 import type { Monster } from '../../models/Monster';
 import type { SharpnessColor } from '../../models/Sharpness';
 
 export interface PresetData {
   weaponInfo: WeaponParameters;
   selectedSkills: SelectedSkill[];
-  selectedMotions: Motion[];
+  selectedMotions: FullDataMotion[];
   selectedMonster: Monster | null;
   sharpness: SharpnessColor;
 }

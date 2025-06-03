@@ -13,7 +13,22 @@ export const ELEMENT_TYPES: readonly ElementType[] = [
   { key: 'dragon', label: '龍' },
 ] as const;
 
-export type WeaponType = 'longsword' | 'greatsword';
+// --- WeaponType型を全武器種対応に拡張 ---
+export type WeaponType =
+  | 'greatsword'
+  | 'sword'
+  | 'dualblades'
+  | 'longsword'
+  | 'hammer'
+  | 'huntinghorn'
+  | 'lance'
+  | 'gunlance'
+  | 'switchaxe'
+  | 'chargeblade'
+  | 'insectglaive'
+  | 'bow'
+  | 'heavybowgun'
+  | 'lightbowgun';
 
 // 太刀の練気ゲージ段階
 export type TachiSpiritGauge = 'none' | 'white' | 'yellow' | 'red';

@@ -1,5 +1,4 @@
 import type { WeaponParameters } from "../models/Weapon";
-import type { Motion } from "../models/Motion";
 import type { Monster, MonsterPartStateDetails } from "../models/Monster";
 import { DamageCalculator, type DamageParameters } from "./DamageCalculator";
 import { SHARPNESS_LEVELS } from "../models/Sharpness";
@@ -7,6 +6,7 @@ import type { SharpnessColor } from "../models/Sharpness";
 import type { SkillParameters } from "../models/Skill";
 import { TACHI_SPIRIT_GAUGE_MODIFIER } from '../data/weapons/TachiSpiritGaugeBonus';
 import type { DamageTableRow } from "../models/DamageCalculatorTypes";
+import type { FullDataMotion } from "../models/FullDataMotion";
 
 // 属性タイプ→HitZone名のマッピング定数
 const ELEMENT_HITZONE_KEY: Record<string, string> = {
@@ -17,6 +17,33 @@ const ELEMENT_HITZONE_KEY: Record<string, string> = {
   dragon: "dragonHitZone",
 };
 
+// --- プロパティ対応表に基づき、FullDataMotion型の値参照を厳密化 ---
+function getMotionValue(motion: FullDataMotion): number {
+  // motionValue → Attack
+  return typeof motion.Attack === 'number' ? motion.Attack : 0;
+}
+function getElementMultiplier(motion: FullDataMotion): number {
+  // elementMultiplier → StatusAttrRate
+  return typeof motion.StatusAttrRate === 'number' ? motion.StatusAttrRate : 1;
+}
+// --- 型エラー修正: getAttackType, getHitCount, getIsJumpを明示的にexport ---
+export function getAttackType(motion: FullDataMotion): 'slash' | 'blunt' | 'shot' {
+  // ActionTypeFixed列の値で判定
+  const type = (motion.ActionTypeFixed || '').toUpperCase();
+  if (type.includes('SLASH')) return 'slash';
+  if (type.includes('BLUNT')) return 'blunt';
+  if (type.includes('SHOT') || type.includes('BULLET') || type.includes('ARROW')) return 'shot';
+  return 'slash'; // デフォルト
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function getHitCount(_: FullDataMotion): number {
+  // HitCountは一旦無視: 常に1を返す
+  return 1;
+}
+export function getIsJump(motion: FullDataMotion): boolean {
+  return !!motion.IsSkillHien;
+}
+
 // getApplicableSkillsをテスト用にexport
 export function getApplicableSkills(
   selectedSkills: {
@@ -24,7 +51,7 @@ export function getApplicableSkills(
     level: number;
     skillData: SkillParameters[];
   }[],
-  motion: Motion,
+  motion: FullDataMotion,
   state: MonsterPartStateDetails,
   weaponType?: string // 追加: 呼び出し元で渡す
 ) {
@@ -43,20 +70,20 @@ export function getApplicableSkills(
       // 武器種一致判定
       if (skillParam.weaponType && weaponType && skillParam.weaponType !== weaponType) return false;
       // ジャンプ攻撃専用スキルの適用判定
-      if (!!skillParam.isJumpAttackOnly && !motion.isJump) return false;
+      if (!!skillParam.isJumpAttackOnly && !getIsJump(motion)) return false;
       // 部位の状態が適用可能かどうか
       if (skillParam.applicableStates && !skillParam.applicableStates?.includes(state.state)) return false;
       // minHitZone/maxHitZoneは number 型のみを許容
       const min = skillParam.minHitZone;
       const max = skillParam.maxHitZone;
-      const hitZone = state[`${motion.attackType}HitZone`];
+      const hitZone = state[`${getAttackType(motion)}HitZone`];
       return hitZone >= min && hitZone <= max;
     });
 }
 
 function getPhysicalParams(
   weaponInfo: WeaponParameters,
-  motion: Motion,
+  motion: FullDataMotion,
   sharpnessModifier: number,
   elementalSharpnessModifier: number, // 追加
   state: {
@@ -89,7 +116,7 @@ function getPhysicalParams(
     baseWeaponMultiplier: weaponInfo.weaponMultiplier,
     additionAttackBonus: totalAttackBonus,
     attackMultiplierBonus: totalAttackMultiplierBonus,
-    motionValue: motion.motionValue,
+    motionValue: getMotionValue(motion),
     sharpnessModifier,
     elementalSharpnessModifier, // 追加
     criticalDamageModifier: 1,
@@ -98,9 +125,9 @@ function getPhysicalParams(
     slashHitZone: state.slashHitZone,
     bluntHitZone: state.bluntHitZone,
     shotHitZone: state.shotHitZone,
-    attackType: motion.attackType,
+    attackType: getAttackType(motion),
     baseElementValue: weaponInfo.baseElementValue,
-    elementMultiplier: motion.elementMultiplier,
+    elementMultiplier: getElementMultiplier(motion),
     elementAddition: 0,
     elementModifier: 1,
     elementalHitZone: state.slashHitZone, // ←ここは属性ごとに上書きするので仮
@@ -110,13 +137,13 @@ function getPhysicalParams(
       state.state as import("../models/Monster").MonsterPartState,
     ],
     elementalCriticalModifier: 1,
-    hitcount: motion.hitCount ?? 1,
+    hitcount: getHitCount(motion),
   };
 }
 
 export function calculateDamageTable(
   weaponInfo: WeaponParameters,
-  selectedMotions: Motion[],
+  selectedMotions: FullDataMotion[],
   selectedMonster: Monster | null,
   sharpnessColor: SharpnessColor = "white",
   selectedSkills: {
@@ -208,7 +235,7 @@ export function calculateDamageTable(
               (mul, s) => mul * (s.elementalCriticalModifier ?? 1),
               1
             ),
-            hitcount: motion.hitCount ?? 1,
+            hitcount: getHitCount(motion),
           };
           elemental = DamageCalculator.calculateElementalDamage(elementalParams);
           critElemental = DamageCalculator.calculateElementalDamage({
@@ -218,7 +245,7 @@ export function calculateDamageTable(
         }
         totalElemental += elemental;
         totalCritElemental += critElemental;
-        totalMotionValue += motion.motionValue;
+        totalMotionValue += getMotionValue(motion);
       });
       // Use the maximum crit rate bonus for this part state
       const critRate = Math.max(
@@ -245,7 +272,7 @@ export function calculateDamageTable(
         sharpnessModifier: sharpnessObj.modifier,
         criticalDamageModifier: 1,
         baseElementValue: weaponInfo.baseElementValue,
-        elementMultiplier: selectedMotions[0]?.elementMultiplier ?? 1,
+        elementMultiplier: getElementMultiplier(selectedMotions[0]) ?? 1,
         elementAddition: 0,
         elementModifier: 1,
       });

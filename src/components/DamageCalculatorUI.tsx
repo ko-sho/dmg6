@@ -11,9 +11,44 @@ import MotionSection from "./inputs/MotionSection";
 import MonsterSelector from "./inputs/MonsterSelector";
 import SelectedMotionsTable from "./results/SelectedMotionsTable";
 import ItemBuffSection from "./inputs/ItemBuffSection";
+import type { FullDataMotion } from '../models/FullDataMotion';
+import wp00GS from '../data/fullDataWeapons/wp00GS.json';
+import wp01Sns from '../data/fullDataWeapons/wp01Sns.json';
+import wp02DB from '../data/fullDataWeapons/wp02DB.json';
+import wp03LS from '../data/fullDataWeapons/wp03LS.json';
+import wp04Ham from '../data/fullDataWeapons/wp04Ham.json';
+import wp05HH from '../data/fullDataWeapons/wp05HH.json';
+import wp06Lan from '../data/fullDataWeapons/wp06Lan.json';
+import wp07GL from '../data/fullDataWeapons/wp07GL.json';
+import wp08SA from '../data/fullDataWeapons/wp08SA.json';
+import wp09CB from '../data/fullDataWeapons/wp09CB.json';
+import wp10IG from '../data/fullDataWeapons/wp10IG.json';
+import wp11Bow from '../data/fullDataWeapons/wp11Bow.json';
+import wp12HBG from '../data/fullDataWeapons/wp12HBG.json';
+import wp13LBG from '../data/fullDataWeapons/wp13LBG.json';
+
+// weaponTypeToMotionsのキーをすべて小文字に統一し、weaponTypeも小文字で参照
+const weaponTypeToMotions: Record<string, FullDataMotion[]> = {
+  greatsword: wp00GS,
+  sword: wp01Sns,
+  dualblades: wp02DB,
+  longsword: wp03LS,
+  hammer: wp04Ham,
+  huntinghorn: wp05HH,
+  lance: wp06Lan,
+  gunlance: wp07GL,
+  switchaxe: wp08SA,
+  chargeblade: wp09CB,
+  insectglaive: wp10IG,
+  bow: wp11Bow,
+  heavybowgun: wp12HBG,
+  lightbowgun: wp13LBG,
+};
 
 const DamageCalculatorUI = () => {
   const calc = useDamageCalculator();
+  // weaponTypeを小文字化して参照
+  const motions = weaponTypeToMotions[calc.weaponInfo.weaponType.toLowerCase?.() ?? calc.weaponInfo.weaponType] || [];
 
   return (
     <Box sx={{ maxWidth: 700, mx: "auto", my: 4 }}>
@@ -50,13 +85,9 @@ const DamageCalculatorUI = () => {
         />
         {/* モーション選択欄を履歴タブの外にグローバルで表示 */}
         <MotionSection
-          availableMotions={calc.availableMotions.map((motion, idx) => ({
-            key: `${motion.name}_${idx}`,
-            label: motion.name,
-            motionData: motion,
-          }))}
-          selectedMotions={calc.selectedMotions}
-          setSelectedMotions={calc.setSelectedMotions}
+          availableMotions={motions}
+          selectedMotions={calc.selectedMotions as FullDataMotion[]}
+          setSelectedMotions={calc.setSelectedMotions as React.Dispatch<React.SetStateAction<FullDataMotion[]>>}
         />
         <Box
           sx={{
@@ -75,7 +106,7 @@ const DamageCalculatorUI = () => {
         </Box>
         <CalculateButton onClick={calc.handleCalculateDamage} errorMessage={calc.errorMessage} />
         {/* 現在選択中のモーションセットをグローバルに1つだけ表示 */}
-        <SelectedMotionsTable motions={calc.selectedMotions} />
+        <SelectedMotionsTable motions={calc.selectedMotions as FullDataMotion[]} />
         <DamageResultTabs
           tabIndex={calc.tabIndex}
           setTabIndex={calc.setTabIndex}

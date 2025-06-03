@@ -13,9 +13,22 @@ import type { SelectChangeEvent } from '@mui/material/Select';
 import SharpnessSelector from './SharpnessSelector';
 import type { TachiSpiritGauge } from '../../models/Weapon';
 
+// --- 全武器種対応: WEAPON_TYPESを全武器種・ラベルで拡張 ---
 const WEAPON_TYPES: { key: WeaponType; label: string }[] = [
-  { key: 'longsword', label: '太刀' },
   { key: 'greatsword', label: '大剣' },
+  { key: 'sword', label: '片手剣' },
+  { key: 'dualblades', label: '双剣' },
+  { key: 'longsword', label: '太刀' },
+  { key: 'hammer', label: 'ハンマー' },
+  { key: 'huntinghorn', label: '狩猟笛' },
+  { key: 'lance', label: 'ランス' },
+  { key: 'gunlance', label: 'ガンランス' },
+  { key: 'switchaxe', label: 'スラッシュアックス' },
+  { key: 'chargeblade', label: 'チャージアックス' },
+  { key: 'insectglaive', label: '操虫棍' },
+  { key: 'bow', label: '弓' },
+  { key: 'heavybowgun', label: 'ヘビィボウガン' },
+  { key: 'lightbowgun', label: 'ライトボウガン' },
 ];
 
 interface WeaponInputProps {

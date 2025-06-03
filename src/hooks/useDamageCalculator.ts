@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { skillsByCategory } from "../data/skills/index";
-import { MOTIONS_BY_WEAPON_TYPE } from "../data/weapons/WeaponMotions";
 import { MONSTER_LIST } from "../data/monsters/index";
 import { calculateDamageTable } from "../services/DamageTableService";
-import type { Motion } from "../models/Motion";
+// import type { Motion } from "../models/Motion";
+import type { FullDataMotion } from "../models/FullDataMotion";
 import type { WeaponParameters } from "../models/Weapon";
 import type { SelectedSkill } from "../models/Skill";
 import type { Monster } from "../models/Monster";
@@ -23,7 +23,7 @@ export function useDamageCalculator() {
     criticalRate: 5,
   });
   const [selectedSkills, setSelectedSkills] = useState<SelectedSkill[]>([]);
-  const [selectedMotions, setSelectedMotions] = useState<Motion[]>([]);
+  const [selectedMotions, setSelectedMotions] = useState<FullDataMotion[]>([]);
   const [selectedMonster, setSelectedMonster] = useState<Monster | null>(null);
   const [damageResult, setDamageResult] = useState<string | null>(null);
   const [damageTableRows, setDamageTableRows] = useState<DamageTableRow[]>([]);
@@ -36,7 +36,8 @@ export function useDamageCalculator() {
   const [skillTab, setSkillTab] = useState(0);
   const [selectedBuffs, setSelectedBuffs] = useState<ItemBuffKey[]>([]);
 
-  const availableMotions = MOTIONS_BY_WEAPON_TYPE[weaponInfo.weaponType] || [];
+  // ここは後でfullDataWeaponsから取得に切り替え予定
+  const availableMotions: FullDataMotion[] = [];
 
   // アイテムバフ合計値を計算
   const itemBuffsTotal = selectedBuffs
@@ -122,10 +123,7 @@ export function useDamageCalculator() {
   };
 
   useEffect(() => {
-    setSelectedMotions((prev) =>
-      prev.filter((motion) => availableMotions.some((m) => m.name === motion.name))
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setSelectedMotions([]); // 武器種切り替え時に選択モーションをリセット
   }, [weaponInfo.weaponType]);
 
   // selectedMotionsが変わったら全履歴のdamageTableRowsを再計算し、selectedMotionsも揃える

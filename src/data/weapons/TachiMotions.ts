@@ -1,7 +1,8 @@
-import type { Motion } from '../../models/Motion';
+// Motion型は廃止。FullDataMotion型/JSONデータを参照すること。
+// このファイルのTACHI_MOTIONSは今後使用禁止。src/data/fullDataWeapons/wp03LS.json等のFullDataMotion[]を参照してください。
 
 // 太刀のモーション値リスト（2024年新表準拠）
-export const TACHI_MOTIONS: Motion[] = [
+export const TACHI_MOTIONS = [
   { name: '縦斬り1', motionValue: 24, elementMultiplier: 1, sharpnessModifier: 1, hitCount: 1, attackType: 'slash' },
   { name: '縦斬り2', motionValue: 18, elementMultiplier: 1, sharpnessModifier: 1, hitCount: 1, attackType: 'slash' },
   { name: '逆袈裟斬り', motionValue: 32, elementMultiplier: 1, sharpnessModifier: 1, hitCount: 1, attackType: 'slash' },

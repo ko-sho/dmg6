@@ -9,20 +9,13 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-
-export interface SelectedMotion {
-  name: string;
-  motionValue: number;
-  elementMultiplier?: number;
-  hitCount?: number;
-}
+import type { FullDataMotion } from '../../models/FullDataMotion';
 
 interface SelectedMotionsTableProps {
-  motions: SelectedMotion[];
+  motions: FullDataMotion[];
 }
 
 const SelectedMotionsTable: React.FC<SelectedMotionsTableProps> = ({ motions }) => {
-  if (!motions.length) return null;
   return (
     <TableContainer component={Paper} sx={{ mt: 2, boxShadow: 0 }}>
       <Typography variant="subtitle2" sx={{ p: 1 }}>
@@ -34,16 +27,14 @@ const SelectedMotionsTable: React.FC<SelectedMotionsTableProps> = ({ motions }) 
             <TableCell>モーション名</TableCell>
             <TableCell>モーション値</TableCell>
             <TableCell>属性補正</TableCell>
-            <TableCell>ヒット数</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {motions.map((motion, idx) => (
-            <TableRow key={motion.name + idx}>
+          {motions.map((motion) => (
+            <TableRow key={motion.key}>
               <TableCell>{motion.name}</TableCell>
-              <TableCell>{motion.motionValue}</TableCell>
-              <TableCell>{motion.elementMultiplier !== undefined ? motion.elementMultiplier : "-"}</TableCell>
-              <TableCell>{motion.hitCount !== undefined ? motion.hitCount : "-"}</TableCell>
+              <TableCell>{motion.Attack}</TableCell>
+              <TableCell>{motion.StatusAttrRate}</TableCell>
             </TableRow>
           ))}
         </TableBody>

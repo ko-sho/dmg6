@@ -1,7 +1,9 @@
-import type { Motion } from '../../models/Motion';
+// Motion型は廃止。FullDataMotion型/JSONデータを参照すること。
+// import type { FullDataMotion } from '../../models/FullDataMotion';
+// export const GREATSWORD_MOTIONS: FullDataMotion[] = [];
 
 // 大剣のモーション値リスト（2025年表準拠）
-export const GREATSWORD_MOTIONS: Motion[] = [
+export const GREATSWORD_MOTIONS = [
   { name: 'Charged Slash Lv0', motionValue: 78, elementMultiplier: 1, sharpnessModifier: 1, hitCount: 1, attackType: 'slash' },
   { name: 'Charged Slash Lv1', motionValue: 101, elementMultiplier: 1.1, sharpnessModifier: 1, hitCount: 1, attackType: 'slash' },
   { name: 'Charged Slash Lv2', motionValue: 129, elementMultiplier: 1.2, sharpnessModifier: 1, hitCount: 1, attackType: 'slash' },

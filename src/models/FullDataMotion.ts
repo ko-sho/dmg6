@@ -5,8 +5,8 @@ export interface FullDataMotion {
   name: string; // 日本語名
   enName: string; // 英語名
   RSID: number | string;
-  RSName: string;
-  colName: string;
+  RSName: string | null;
+  colName: string | null;
   DamageTypeFixed: string;
   DamageTypeCustom: string;
   DamageAngleFixed: string;
@@ -26,10 +26,10 @@ export interface FullDataMotion {
   IsUseCondDefaultSec: boolean;
   CondCustomSec: number;
   StunDamage: number;
-  FlagBit: number;
+  FlagBit: string;
   MultiHitTimer: number;
   HealValue: number;
-  PriorityFixed: number;
+  PriorityFixed: string;
   PriorityTypeFixed: string;
   DisableContactPointAdjust: boolean;
   IsContactPointAdjustIgnoreDamageAngle: boolean;
@@ -39,15 +39,14 @@ export interface FullDataMotion {
   ParryDamage: number;
   RideDamage: number;
   BattleRidingAttackType: string;
-  RidingScarDamage: number;
-  RidingSuccessDamage: number;
+  RidingScarDamage: number | null;
   RidingSuccessDamageRawScar: number;
   IsSkillHien: boolean;
   IsPointAttack: boolean;
   IsPrePointHitReaction: boolean;
   TearScarCreateRate: number;
   TearScarDamageRate: number;
-  RawScarDamageRate: number;
+  RawScarDamageRate: number | null;
   OldScarDamageRate: number;
   IsScarForceChange: boolean;
   IsRawScarForce: boolean;
@@ -58,7 +57,7 @@ export interface FullDataMotion {
   MultiHitEmPartsMaxNum: number;
   IsMultiHitEmWeak: boolean;
   MultiHitEmWeakMaxNum: number;
-  MultiHitRateCurve: string;
+  MultiHitRateCurve: string | null;
   IsLaserGuardCounter: boolean;
   IsWpPhysicalAttack: boolean;
   IsNoUseKireaji: boolean;
@@ -71,16 +70,16 @@ export interface FullDataMotion {
   StatusConditionRate: number;
   UseSkillAdditionalDamage: boolean;
   UseSkillContinuousAttack: boolean;
-  MultiHitStatusRateCurve: string;
+  MultiHitStatusRateCurve?: string | null;
   IsNoCritical: boolean;
   IsCustomShockAbsorberRate: boolean;
   CustomShockAbsorberRate: number;
   IsGestureAttack: boolean;
   HitEffectTypeFixed: string;
-  DisableHitEffect: boolean;
+  DisableHitEffect: string | null;
   HitEffectAngleZ: number;
   HitEffectAngleX: number;
-  HitEffectOverwriteConnectID: string;
+  HitEffectOverwriteConnectID: number;
   GeneralValue1: number;
   GeneralValue2: number;
   GeneralValue3: number;
@@ -88,19 +87,20 @@ export interface FullDataMotion {
   IsSensor: boolean;
   CameraShakeGuid: string;
   IsEnableMotSeqCameraShake: boolean;
-  IgnoreRecoil: boolean;
-  HitStopType: string;
-  HitStopIgnoreResponse: boolean;
-  RSKName: string;
-  colShapeName: string;
+  IgnoreRecoil?: boolean | null;
+  HitStopType: string | null;
+  HitStopIgnoreResponse: boolean | null;
+  RSKName: string | null;
+  colShapeName: string | null;
   GroupIndex: number;
-  GName: string;
+  GName: string | null;
   GLayerIndex: number;
-  GShapeNames: string;
-  GJointNames1: string;
-  GJointNames2: string;
+  GShapeNames: string | null;
+  GJointNames1: string | null;
+  GJointNames2: string | null;
   GShapeTypes: string;
   GShapeParams: string;
+  key: string; // name+RSID等の一意キー
 }
 
 export type FullDataMotionList = FullDataMotion[];

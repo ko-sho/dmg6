@@ -1,7 +1,7 @@
 // Damage計算UIで使う型まとめ
 import type { WeaponParameters } from "./Weapon";
 import type { SkillParameters } from "./Skill";
-import type { Motion } from "./Motion";
+import type { FullDataMotion } from "./FullDataMotion";
 import type { Monster } from "./Monster";
 import type { SharpnessColor } from "./Sharpness";
 
@@ -33,7 +33,7 @@ export type ResultType = {
     level: number;
     skillData: SkillParameters[];
   }[];
-  selectedMotions: Motion[];
+  selectedMotions: FullDataMotion[];
   selectedMonster: Monster | null;
   sharpness: SharpnessColor;
   damageTableRows: DamageTableRow[];

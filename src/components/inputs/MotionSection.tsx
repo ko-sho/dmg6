@@ -3,12 +3,12 @@ import type { Dispatch, SetStateAction } from "react";
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MotionSelector from "./MotionSelector";
-import type { Motion, AvailableMotion } from "../../models/Motion";
+import type { FullDataMotion } from "../../models/FullDataMotion";
 
 interface MotionSectionProps {
-  availableMotions: AvailableMotion[];
-  selectedMotions: Motion[];
-  setSelectedMotions: Dispatch<SetStateAction<Motion[]>>;
+  availableMotions: FullDataMotion[];
+  selectedMotions: FullDataMotion[];
+  setSelectedMotions: Dispatch<SetStateAction<FullDataMotion[]>>;
 }
 
 const MotionSection: React.FC<MotionSectionProps> = ({

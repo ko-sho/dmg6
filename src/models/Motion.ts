@@ -2,6 +2,7 @@ export const MOTION_ATTACK_TYPES = ['slash', 'blunt', 'shot'] as const;
 export type MotionAttackType = typeof MOTION_ATTACK_TYPES[number];
 
 export interface Motion {
+  source?: string; // モーションのソース（省略可能）
   name: string; // モーション名
   motionValue: number; // モーション値
   elementMultiplier: number; // 属性倍率
